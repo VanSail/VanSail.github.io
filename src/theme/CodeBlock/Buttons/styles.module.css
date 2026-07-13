@@ -1,0 +1,25 @@
+.buttonGroup {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-right: 8px;
+}
+
+.iconBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent !important;
+  border: none !important;
+  cursor: pointer;
+  padding: 0 !important;
+  flex-shrink: 0;
+}
+
+.iconBtn:hover {
+  opacity: 0.75;
+}
+
+.iconBtn:active {
+  opacity: 0.5;
+}

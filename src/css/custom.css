@@ -1,0 +1,632 @@
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* You can override the default Infima variables here. */
+/* ============================================================
+ * 方案 1：暖灰深色 (Warm Dark)
+ * 昼夜通用：暖色调降低 OLED 光晕，对比度 ~13:1 (WCAG AAA)
+ * 同一套色应用于 light + dark 主题块，避免切换时跳色
+ * ============================================================ */
+
+:root {
+  /* 主色调：暖橙 — 比浅色模式提亮 8、降饱和 20% */
+  --ifm-color-primary: #f0a070;
+  --ifm-color-primary-dark: #d88a5c;
+  --ifm-color-primary-darker: #c2784f;
+  --ifm-color-primary-darkest: #a0603e;
+  --ifm-color-primary-light: #f4b48d;
+  --ifm-color-primary-lighter: #f7c4a3;
+  --ifm-color-primary-lightest: #fbd9c4;
+
+  /* 链接色：柔和蓝 */
+  --ifm-link-color: #8ab4f8;
+  --ifm-link-hover-color: #a8c5fa;
+
+  /* 背景层：暖深炭灰，避免纯黑 */
+  --ifm-background-color: #1a1917;          /* oklch(0.10 0.012 30) — 页面底色 */
+  --ifm-background-surface-color: #221e1a;  /* 卡片表面 */
+
+  /* 代码高亮当前行 */
+  --docusaurus-highlighted-code-line-bg: rgba(240, 160, 112, 0.12);
+
+  /* 文字层：暖白，避免纯白刺眼 */
+  --ifm-color-base: #edeae5;                /* oklch(0.93 0.005 60) */
+  --ifm-color-base-100: #edeae5;
+  --ifm-color-base-90: rgba(237, 234, 229, 0.9);
+  --ifm-color-base-80: rgba(237, 234, 229, 0.8);
+  --ifm-color-base-70: rgba(237, 234, 229, 0.7);
+  --ifm-color-base-60: rgba(237, 234, 229, 0.6);
+  --ifm-color-base-50: rgba(237, 234, 229, 0.5);
+  --ifm-heading-color: #edeae5;
+  --ifm-font-color-base: #d4cfc7;           /* 略暗于 base，长文阅读更舒适 */
+
+  /* 代码块变量 */
+  --code-toolbar-bg: #2c2723;
+  --code-tab-color: #b0a89e;
+  --code-content-bg: #131211;               /* 代码块比页面背景更深，形成"凹陷"感 */
+  --code-line-number-color: #6e6860;
+
+  /* 字体 */
+  --ifm-font-family-base: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+
+  /* 字号（整体略缩，阅读更紧凑） */
+  --ifm-font-size: 0.94rem;
+  --ifm-h1-font-size: 1.75rem;
+  --ifm-h2-font-size: 1.375rem;
+  --ifm-h3-font-size: 1.15rem;
+  --ifm-h4-font-size: 0.95rem;
+  --ifm-h5-font-size: 0.85rem;
+  --ifm-h6-font-size: 0.8rem;
+
+  /* 边框/分隔线 */
+  --ifm-hr-border-color: rgba(237, 234, 229, 0.12);
+  --ifm-table-border-color: rgba(237, 234, 229, 0.15);
+}
+
+/* dark 主题块：与 light 完全一致 — 真正的"不分昼夜" */
+[data-theme='dark'] {
+  --ifm-color-primary: #f0a070;
+  --ifm-color-primary-dark: #d88a5c;
+  --ifm-color-primary-darker: #c2784f;
+  --ifm-color-primary-darkest: #a0603e;
+  --ifm-color-primary-light: #f4b48d;
+  --ifm-color-primary-lighter: #f7c4a3;
+  --ifm-color-primary-lightest: #fbd9c4;
+
+  --ifm-link-color: #8ab4f8;
+  --ifm-link-hover-color: #a8c5fa;
+
+  --ifm-background-color: #1a1917;
+  --ifm-background-surface-color: #221e1a;
+
+  --docusaurus-highlighted-code-line-bg: rgba(240, 160, 112, 0.12);
+
+  --ifm-color-base: #edeae5;
+  --ifm-color-base-100: #edeae5;
+  --ifm-color-base-90: rgba(237, 234, 229, 0.9);
+  --ifm-color-base-80: rgba(237, 234, 229, 0.8);
+  --ifm-color-base-70: rgba(237, 234, 229, 0.7);
+  --ifm-color-base-60: rgba(237, 234, 229, 0.6);
+  --ifm-color-base-50: rgba(237, 234, 229, 0.5);
+  --ifm-heading-color: #edeae5;
+  --ifm-font-color-base: #d4cfc7;
+
+  --code-toolbar-bg: #2c2723;
+  --code-tab-color: #b0a89e;
+  --code-content-bg: #131211;
+  --code-line-number-color: #6e6860;
+
+  /* 字号（与 :root 一致，确保 dark 模式同样生效） */
+  --ifm-font-size: 0.94rem;
+  --ifm-h1-font-size: 1.75rem;
+  --ifm-h2-font-size: 1.375rem;
+  --ifm-h3-font-size: 1.15rem;
+  --ifm-h4-font-size: 0.95rem;
+  --ifm-h5-font-size: 0.85rem;
+  --ifm-h6-font-size: 0.8rem;
+
+  --ifm-hr-border-color: rgba(237, 234, 229, 0.12);
+  --ifm-table-border-color: rgba(237, 234, 229, 0.15);
+}
+
+/* 代码块全局样式（兼容无标题的fallback） */
+.markdown pre {
+  margin: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+div[class*="codeBlockContainer"] {
+  border-radius: 8px !important;
+  margin: 1rem 0 !important;
+  overflow: hidden !important;
+}
+
+/* Tab 选项被选中加背景 */
+.tabs__item--active {
+  background: rgba(240, 160, 112, 0.1) !important;
+  border-bottom: 2px solid var(--ifm-color-primary) !important;
+}
+
+html, body {
+  background: var(--ifm-background-color) !important;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  /* 整站字号基准：小一号（16px → 15px），所有 rem 同步缩小 */
+  font-size: 15px;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Arial, sans-serif !important;
+}
+
+#root {
+  background: var(--ifm-background-color) !important;
+  min-height: 100vh;
+}
+
+/* 粘性毛玻璃导航栏（只作用于带 .navbar 类的真正导航栏，
+   避免误伤文档标题所在的 <header> 元素） */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  height: 56px;
+  /* 与页面底色 (#1a1917) 一致的半透明版本，保留毛玻璃模糊 */
+  background: rgba(26, 25, 23, 0.85) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  border-bottom: 1px solid rgba(184, 233, 134, 0.2) !important;
+  box-shadow: none !important;
+}
+
+.navbar__inner {
+  height: 100%;
+}
+
+.navbar__brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #ffffff !important;
+  text-decoration: none;
+}
+
+.navbar__brand:hover {
+  color: #ffffff !important;
+}
+
+.navbar__logo {
+  height: 28px;
+}
+
+.navbar__title {
+  font-size: 16px;
+  font-weight: 500;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+}
+
+.navbar__link {
+  color: rgba(184, 233, 134, 0.8) !important;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.navbar__link:hover {
+  color: rgba(184, 233, 134, 1) !important;
+}
+
+.navbar__link--active {
+  color: rgba(184, 233, 134, 1) !important;
+}
+
+.dropdown__menu {
+  background: rgba(0, 0, 0, 0.7) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  border: 1px solid rgba(184, 233, 134, 0.2) !important;
+  box-shadow: none !important;
+  border-radius: 8px;
+  margin-top: 4px;
+}
+
+.dropdown__link {
+  color: rgba(237, 234, 229, 0.9) !important;
+  font-size: 14px;
+}
+
+.dropdown__link:hover {
+  color: rgba(184, 233, 134, 1) !important;
+  background: rgba(184, 233, 134, 0.1) !important;
+}
+
+.dropdown__link--active {
+  color: rgba(184, 233, 134, 1) !important;
+  font-weight: bold !important;
+}
+
+.navbar__toggle {
+  color: #ffffff !important;
+}
+
+/* 纯图标导航链接（GitHub、语言切换） */
+.header-icon-link {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0 !important;
+  border-radius: 8px;
+  color: rgba(184, 233, 134, 0.8) !important;
+  transition: background 0.15s ease, color 0.15s ease;
+  /* Hide any text label; icon is drawn via ::before mask */
+  font-size: 0 !important;
+}
+
+.header-icon-link:hover {
+  color: rgba(184, 233, 134, 1) !important;
+  background: rgba(184, 233, 134, 0.1);
+}
+
+.header-icon-link::before {
+  content: '';
+  width: 20px;
+  height: 20px;
+  background-color: currentColor;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
+.header-github-link::before {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12'/%3E%3C/svg%3E");
+}
+
+.header-guide-link::before {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z'/%3E%3Cpath d='M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z'/%3E%3Cpath d='M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z'/%3E%3C/svg%3E");
+}
+
+/* Hide the default navbar shadow when sidebar is shown */
+.navbar-sidebar--show {
+  box-shadow: none !important;
+}
+
+main {
+  background: transparent !important;
+}
+
+footer {
+  display: none !important;
+}
+
+/* Tutorial/Documentation page text colors */
+.markdown h1, .markdown h2, .markdown h3, .markdown h4, .markdown h5, .markdown h6 {
+  color: var(--ifm-heading-color) !important;
+}
+
+/* 缩小各级标题与正文字号（直接指定，覆盖 Infima 的
+   .markdown h1:first-child / 移动端媒体查询里用变量设的字号） */
+.markdown {
+  font-size: 0.92rem !important;
+}
+
+.markdown h1 {
+  font-size: 1.6rem !important;
+}
+
+.markdown h2 {
+  font-size: 1.3rem !important;
+}
+
+.markdown h3 {
+  font-size: 1.1rem !important;
+}
+
+.markdown h4 {
+  font-size: 0.98rem !important;
+}
+
+.markdown h5 {
+  font-size: 0.88rem !important;
+}
+
+.markdown h6 {
+  font-size: 0.82rem !important;
+}
+
+/* Auto-numbering for headings (starting from h2) */
+.markdown {
+  counter-reset: h2-counter;
+}
+
+.markdown h2 {
+  counter-reset: h3-counter;
+}
+
+.markdown h3 {
+  counter-reset: h4-counter;
+}
+
+.markdown h4 {
+  counter-reset: h5-counter;
+}
+
+.markdown h5 {
+  counter-reset: h6-counter;
+}
+
+.markdown h2::before {
+  content: counter(h2-counter) ". ";
+  counter-increment: h2-counter;
+  color: var(--ifm-color-primary);
+  font-weight: 600;
+  margin-right: 8px;
+}
+
+.markdown h3::before {
+  content: counter(h2-counter) "." counter(h3-counter) ". ";
+  counter-increment: h3-counter;
+  color: var(--ifm-color-primary);
+  font-weight: 600;
+  margin-right: 8px;
+}
+
+.markdown h4::before {
+  content: counter(h2-counter) "." counter(h3-counter) "." counter(h4-counter) ". ";
+  counter-increment: h4-counter;
+  color: var(--ifm-color-primary);
+  font-weight: 600;
+  margin-right: 8px;
+}
+
+.markdown h5::before {
+  content: counter(h2-counter) "." counter(h3-counter) "." counter(h4-counter) "." counter(h5-counter) ". ";
+  counter-increment: h5-counter;
+  color: var(--ifm-color-primary);
+  font-weight: 600;
+  margin-right: 8px;
+}
+
+.markdown h6::before {
+  content: counter(h2-counter) "." counter(h3-counter) "." counter(h4-counter) "." counter(h5-counter) "." counter(h6-counter) ". ";
+  counter-increment: h6-counter;
+  color: var(--ifm-color-primary);
+  font-weight: 600;
+  margin-right: 8px;
+}
+
+.markdown p, .markdown li, .markdown span {
+  color: var(--ifm-font-color-base) !important;
+}
+
+.markdown a {
+  color: var(--ifm-link-color) !important;
+}
+
+.markdown a:hover {
+  color: var(--ifm-link-hover-color) !important;
+}
+
+.markdown pre, .markdown code {
+  font-family: 'SF Mono', 'Fira Code', 'Menlo', Monaco, 'Courier New', monospace !important;
+}
+
+/* Table styling */
+.markdown table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  display: table;
+}
+
+.markdown table th, .markdown table td {
+  color: var(--ifm-font-color-base) !important;
+  border: 1px solid var(--ifm-table-border-color) !important;
+  padding: 0.75rem 1rem !important;
+  text-align: left !important;
+}
+
+.markdown table th {
+  background: var(--ifm-background-surface-color) !important;
+  font-weight: 600 !important;
+  color: var(--ifm-heading-color) !important;
+}
+
+.markdown table tr:nth-child(even) {
+  background: rgba(237, 234, 229, 0.03) !important;
+}
+
+.markdown table tr:hover {
+  background: rgba(240, 160, 112, 0.08) !important;
+}
+
+/* ============================================================
+ * 文档（教程）正文页打磨
+ * ============================================================ */
+
+/* —— 阅读宽度与行高：限制超宽屏下正文铺太开，长文更舒适 —— */
+.theme-doc-markdown {
+  max-width: 62rem;
+}
+
+.markdown {
+  line-height: 1.75;
+}
+
+.markdown p,
+.markdown li {
+  line-height: 1.8;
+}
+
+.markdown p {
+  margin: 0 0 1.1rem;
+}
+
+/* —— 行内代码：做成胶囊样式，与代码块区分 —— */
+.markdown :not(pre) > code {
+  background: var(--ifm-background-surface-color) !important;
+  border: 1px solid var(--ifm-hr-border-color) !important;
+  border-radius: 6px;
+  padding: 0.12em 0.42em !important;
+  font-size: 0.88em;
+  color: var(--ifm-color-primary-light) !important;
+  word-break: break-word;
+}
+
+/* —— 引用块：做成左侧强调的 callout —— */
+.markdown blockquote {
+  border-left: 3px solid var(--ifm-color-primary) !important;
+  background: rgba(240, 160, 112, 0.06) !important;
+  border-radius: 0 8px 8px 0;
+  padding: 0.6rem 1rem !important;
+  color: var(--ifm-font-color-base) !important;
+}
+
+/* —— 标题锚点（# 链接）hover 时才显现 —— */
+.markdown .hash-link {
+  color: var(--ifm-color-primary);
+  opacity: 0;
+  text-decoration: none;
+  transition: opacity 0.15s ease;
+  margin-left: 0.3rem;
+}
+
+.markdown h1:hover .hash-link,
+.markdown h2:hover .hash-link,
+.markdown h3:hover .hash-link,
+.markdown h4:hover .hash-link,
+.markdown h5:hover .hash-link,
+.markdown h6:hover .hash-link {
+  opacity: 0.85;
+}
+
+/* —— 图片圆角 + 细边框 —— */
+.markdown img {
+  border-radius: 10px;
+  border: 1px solid var(--ifm-hr-border-color);
+  max-width: 100%;
+}
+
+/* —— 面包屑：弱化、缩小 —— */
+.breadcrumbs {
+  font-size: 0.85rem;
+  margin-bottom: 0.75rem;
+}
+
+.breadcrumbs__link {
+  color: var(--ifm-font-color-base) !important;
+  opacity: 0.7;
+  background: transparent !important;
+}
+
+.breadcrumbs__link:hover {
+  color: var(--ifm-color-primary) !important;
+  opacity: 1;
+}
+
+/* —— 侧边栏菜单项高亮与 hover —— */
+.menu__link {
+  border-radius: 8px;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.menu__link:hover {
+  background: rgba(237, 234, 229, 0.06) !important;
+}
+
+.menu__link--active:not(.menu__link--sublist) {
+  background: rgba(240, 160, 112, 0.12) !important;
+  color: var(--ifm-color-primary) !important;
+  font-weight: 600;
+}
+
+/* —— 右侧目录（TOC）：激活项与 hover 反馈 —— */
+.table-of-contents {
+  border-left: 1px solid var(--ifm-hr-border-color);
+  /* 留出左内边距，避免链接文字紧贴左侧竖线 */
+  padding-left: 0.85rem !important;
+  /* TOC 编号基底，与正文标题层级对应 */
+  counter-reset: toc-h2;
+}
+
+/* TOC 编号：与正文标题保持一致（h2→1. h3→1.1. h4→1.1.1.）
+   结构与正文分离，需单独用计数器重做一遍 */
+.table-of-contents > li {
+  counter-increment: toc-h2;
+}
+
+.table-of-contents > li > .table-of-contents__link::before {
+  content: counter(toc-h2) ". ";
+  color: var(--ifm-color-primary);
+  font-weight: 600;
+  margin-right: 6px;
+}
+
+/* h3（二级嵌套） */
+.table-of-contents > li > ul {
+  counter-reset: toc-h3;
+}
+
+.table-of-contents > li > ul > li {
+  counter-increment: toc-h3;
+}
+
+.table-of-contents > li > ul > li > .table-of-contents__link::before {
+  content: counter(toc-h2) "." counter(toc-h3) ". ";
+  color: var(--ifm-color-primary);
+  font-weight: 600;
+  margin-right: 6px;
+}
+
+/* h4（三级嵌套） */
+.table-of-contents > li > ul > li > ul {
+  counter-reset: toc-h4;
+}
+
+.table-of-contents > li > ul > li > ul > li {
+  counter-increment: toc-h4;
+}
+
+.table-of-contents > li > ul > li > ul > li > .table-of-contents__link::before {
+  content: counter(toc-h2) "." counter(toc-h3) "." counter(toc-h4) ". ";
+  color: var(--ifm-color-primary);
+  font-weight: 600;
+  margin-right: 6px;
+}
+
+.table-of-contents li {
+  margin: 0.35rem 0 !important;
+}
+
+.table-of-contents__link {
+  color: var(--ifm-font-color-base);
+  opacity: 0.72;
+  transition: color 0.15s ease, opacity 0.15s ease;
+}
+
+.table-of-contents__link:hover {
+  color: var(--ifm-color-primary);
+  opacity: 1;
+}
+
+.table-of-contents__link--active {
+  color: var(--ifm-color-primary) !important;
+  opacity: 1;
+  font-weight: 600;
+  border-left: 2px solid var(--ifm-color-primary);
+  padding-left: 10px !important;
+  margin-left: -13px;
+}
+
+/* —— 上一篇 / 下一篇 卡片 —— */
+.pagination-nav__link {
+  border: 1px solid var(--ifm-hr-border-color) !important;
+  border-radius: 12px;
+  background: var(--ifm-background-surface-color);
+  padding: 1rem 1.25rem;
+  transition: border-color 0.15s ease, transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.pagination-nav__link:hover {
+  border-color: var(--ifm-color-primary) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+}
+
+.pagination-nav__sublabel {
+  color: var(--ifm-color-primary) !important;
+  opacity: 0.8;
+}
+
+.pagination-nav__label {
+  color: var(--ifm-heading-color) !important;
+}

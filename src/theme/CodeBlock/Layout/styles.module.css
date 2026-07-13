@@ -1,0 +1,51 @@
+.card {
+  border-radius: 8px !important;
+  overflow: hidden;
+  margin: 1rem 0;
+  border: none !important;
+  box-shadow: none !important;
+  width: 100%;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--code-toolbar-bg, #d9d9d9);
+  padding: 0 24px 0 0;
+  height: 52px;
+}
+
+.tab {
+  background: transparent;
+  color: var(--code-tab-color, #333333);
+  font-size: 14px;
+  font-weight: 600;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  padding: 0 12px;
+  border-radius: 0;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  align-self: center;
+  margin-left: 4px;
+}
+
+.content {
+  background: var(--code-content-bg, #8fcc9e);
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 0.3s ease;
+}
+
+.card[data-collapsed='true'] .content {
+  grid-template-rows: 0fr;
+}
+
+.contentInner {
+  min-height: 0;
+  overflow: hidden;
+}

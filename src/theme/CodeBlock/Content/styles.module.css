@@ -1,0 +1,13 @@
+.codeBlock {
+  margin: 0;
+  padding: 12px 0;
+}
+
+.codeBlockLines {
+  font: inherit;
+  display: block;
+}
+
+.codeBlockLinesWithNumbering {
+  display: block;
+}

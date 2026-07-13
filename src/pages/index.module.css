@@ -1,0 +1,223 @@
+/**
+ * CSS files with the .module.css suffix will be treated as CSS modules
+ * and scoped locally.
+ */
+
+.page {
+  width: 60%;
+  margin: 0 auto;
+  padding: 48px 20px 64px;
+}
+
+/* ---------------- Section ---------------- */
+.section {
+  margin-bottom: 48px;
+}
+
+.section:last-child {
+  margin-bottom: 0;
+}
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ifm-heading-color);
+  margin: 0 0 20px;
+  padding-left: 12px;
+  border-left: 3px solid var(--ifm-color-primary);
+  line-height: 1.2;
+}
+
+/* ---------------- Grid & Cards ---------------- */
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+
+.card {
+  /* 固定 3 列：卡片不拉伸，单张也只占 1/3 宽度靠左，避免空旷 */
+  flex: 0 1 calc((100% - 36px) / 3);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 22px;
+  background: var(--ifm-background-surface-color);
+  border: 1px solid var(--ifm-hr-border-color);
+  border-radius: 16px;
+  text-decoration: none;
+  color: var(--ifm-color-base);
+  transition: border-color 0.15s ease, transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.card:hover {
+  border-color: var(--ifm-color-primary);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+}
+
+.card:hover .cardIcon {
+  background: rgba(240, 160, 112, 0.22);
+}
+
+.cardIcon {
+  flex: 0 0 auto;
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(240, 160, 112, 0.12);
+  color: var(--ifm-color-primary);
+  transition: background 0.15s ease;
+}
+
+.cardIcon svg {
+  width: 26px;
+  height: 26px;
+}
+
+.cardBody {
+  display: flex;
+  flex-direction: column;
+}
+
+.cardTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ifm-heading-color);
+  margin-bottom: 6px;
+}
+
+.cardDesc {
+  font-size: 13px;
+  color: var(--ifm-font-color-base);
+  opacity: 0.7;
+  line-height: 1.55;
+}
+
+/* ---------------- Responsive ---------------- */
+@media screen and (max-width: 860px) {
+  .card {
+    flex-basis: calc((100% - 18px) / 2);
+  }
+}
+
+@media screen and (max-width: 560px) {
+  .page {
+    padding: 32px 16px 48px;
+  }
+  .card {
+    flex-basis: 100%;
+  }
+}
+
+/* ---------------- Menu card (ROS distro picker) ---------------- */
+.menuCardWrap {
+  position: relative;
+  flex: 0 1 calc((100% - 36px) / 3);
+}
+
+.menuCardWrap .card {
+  width: 100%;
+  flex: initial;
+  position: relative;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  background: var(--ifm-background-surface-color);
+  border: 1px solid var(--ifm-hr-border-color);
+  border-radius: 16px;
+}
+
+.menuCardWrap .card:hover {
+  border-color: var(--ifm-color-primary);
+}
+
+.cardCaret {
+  position: absolute;
+  top: 18px;
+  right: 20px;
+  font-size: 12px;
+  opacity: 0.6;
+  transition: transform 0.15s ease;
+}
+
+.menuCardWrap .card[aria-expanded='true'] .cardCaret {
+  transform: rotate(180deg);
+}
+
+.menuPopover {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--ifm-background-surface-color);
+  border: 1px solid var(--ifm-color-primary);
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  z-index: 30;
+}
+
+.menuItem {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  text-decoration: none;
+  color: var(--ifm-color-base);
+  font-size: 14px;
+  border-bottom: 1px solid var(--ifm-hr-border-color);
+}
+
+.menuItem:last-child {
+  border-bottom: none;
+}
+
+.menuItem:hover {
+  background: rgba(240, 160, 112, 0.12);
+}
+
+.menuExt {
+  opacity: 0.55;
+  font-size: 12px;
+}
+
+.menuStep {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid var(--ifm-color-primary);
+  color: var(--ifm-color-primary);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.menuItemStatic {
+  cursor: default;
+}
+
+.menuItemStatic:hover {
+  background: transparent;
+}
+
+@media screen and (max-width: 860px) {
+  .menuCardWrap {
+    flex-basis: calc((100% - 18px) / 2);
+  }
+}
+
+@media screen and (max-width: 560px) {
+  .menuCardWrap {
+    flex-basis: 100%;
+  }
+}
