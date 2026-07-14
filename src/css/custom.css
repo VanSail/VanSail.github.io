@@ -301,7 +301,8 @@ main {
   background: transparent !important;
 }
 
-footer {
+/* Only hide the site-level footer, keep the doc footer (Edit this page) visible */
+.footer {
   display: none !important;
 }
 
