@@ -1,2 +1,9 @@
 #!/usr/bin/env sh
-npx --no -- commitlint --edit $1
+# 1) Enforce Conventional Commits format (type + subject)
+npx --no -- commitlint --edit "$1"
+
+# 2) Commit message must be written in English (ASCII only)
+if LC_ALL=C grep -q '[^[:print:]]' "$1"; then
+  echo "commit-msg: ERROR: Commit messages must be written in English (ASCII only)."
+  exit 1
+fi
