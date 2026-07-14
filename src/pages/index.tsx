@@ -127,7 +127,8 @@ const robots: CardItem[] = [
   },
 ];
 
-const tools: CardItem[] = [
+// 网页内运行的小工具
+const webTools: CardItem[] = [
   {
     to: '/serial-monitor',
     title: '串口监视器',
@@ -139,6 +140,38 @@ const tools: CardItem[] = [
       </svg>
     ),
   },
+  {
+    to: '/calculator',
+    title: '计算器',
+    desc: '科学计算 · 实时计算',
+    icon: (
+      <svg {...svgProps}>
+        <rect x="5" y="3" width="14" height="18" rx="2" />
+        <line x1="8" y1="7" x2="16" y2="7" />
+        <circle cx="9" cy="13" r="1" />
+        <circle cx="13" cy="13" r="1" />
+        <circle cx="15" cy="13" r="1" />
+        <circle cx="9" cy="16" r="1" />
+        <circle cx="13" cy="16" r="1" />
+        <circle cx="15" cy="16" r="1" />
+      </svg>
+    ),
+  },
+  {
+    to: '/base-converter',
+    title: '进制转换',
+    desc: '二/八/十/十六进制互转',
+    icon: (
+      <svg {...svgProps}>
+        <path d="M4 8h13l-3-3" />
+        <path d="M20 16H7l3 3" />
+      </svg>
+    ),
+  },
+];
+
+// 外部开发资源 / 文档
+const devResources: CardItem[] = [
   {
     to: '/docs/zsh',
     title: 'Z Shell',
@@ -167,34 +200,6 @@ const tools: CardItem[] = [
       <svg {...svgProps}>
         <path d="M12 2.5 21 7.5v9L12 21.5 3 16.5v-9z" />
         <path d="M9.5 14c0 1.2 1 1.8 2.4 1.8 1.6 0 2.6-.7 2.6-2.1V9.5h-1.7v3.7c0 .7-.4 1-1.1 1-.6 0-1-.3-1-1V9.5H9.5z" />
-      </svg>
-    ),
-  },
-  {
-    to: '/calculator',
-    title: '计算器',
-    desc: '网页四则运算 · 实时计算',
-    icon: (
-      <svg {...svgProps}>
-        <rect x="5" y="3" width="14" height="18" rx="2" />
-        <line x1="8" y1="7" x2="16" y2="7" />
-        <circle cx="9" cy="13" r="1" />
-        <circle cx="13" cy="13" r="1" />
-        <circle cx="15" cy="13" r="1" />
-        <circle cx="9" cy="16" r="1" />
-        <circle cx="13" cy="16" r="1" />
-        <circle cx="15" cy="16" r="1" />
-      </svg>
-    ),
-  },
-  {
-    to: '/base-converter',
-    title: '进制转换',
-    desc: '二/八/十/十六进制互转',
-    icon: (
-      <svg {...svgProps}>
-        <path d="M4 8h13l-3-3" />
-        <path d="M20 16H7l3 3" />
       </svg>
     ),
   },
@@ -349,8 +354,15 @@ export default function Home(): ReactNode {
 
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>实用工具</h2>
+            <h3 className={styles.subTitle}>网页工具</h3>
             <div className={styles.grid}>
-              {tools.map(item => (
+              {webTools.map(item => (
+                <Card key={item.to} item={item} />
+              ))}
+            </div>
+            <h3 className={styles.subTitle}>开发资源</h3>
+            <div className={styles.grid}>
+              {devResources.map(item => (
                 <Card key={item.to} item={item} />
               ))}
             </div>

@@ -39,7 +39,7 @@ export default function BaseConverter(): ReactNode {
 
   return (
     <Layout title="进制转换" description="二进制/八进制/十进制/十六进制互转">
-      <main className={styles.page}>
+      <main className={`${styles.page} ${styles.wide}`}>
         <div className={styles.header}>
           <h1 className={styles.title}>进制转换</h1>
           <p className={styles.subtitle}>在二进制、八进制、十进制、十六进制之间实时互转</p>

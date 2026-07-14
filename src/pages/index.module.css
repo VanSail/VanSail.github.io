@@ -28,6 +28,18 @@
   line-height: 1.2;
 }
 
+.subTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ifm-font-color-base);
+  opacity: 0.85;
+  margin: 28px 0 14px;
+}
+
+.subTitle:first-of-type {
+  margin-top: 8px;
+}
+
 /* ---------------- Grid & Cards ---------------- */
 .grid {
   display: flex;
