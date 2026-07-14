@@ -14,7 +14,7 @@ export default function CodeBlockLayout({className}) {
     <Container as="div" className={clsx(className, metadata.className, styles.card)}>
       <div className={styles.toolbar}>
         <div className={styles.tab}>
-          {metadata.title ? <Title>{metadata.title}</Title> : '代码块标题'}
+          {metadata.title ? <Title>{metadata.title}</Title> : null}
         </div>
         <Buttons />
       </div>

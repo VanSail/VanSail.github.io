@@ -1,25 +1,46 @@
 .buttonGroup {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding-right: 8px;
+  gap: 2px;
+  padding-right: 6px;
 }
 
 .iconBtn {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 26px;
+  height: 26px;
   background: transparent !important;
   border: none !important;
+  border-radius: 7px;
   cursor: pointer;
   padding: 0 !important;
   flex-shrink: 0;
+  color: var(--code-toolbar-fg, #444);
+  transition: background-color 0.15s ease, opacity 0.15s ease;
 }
 
 .iconBtn:hover {
-  opacity: 0.75;
+  background: rgba(0, 0, 0, 0.08) !important;
+  opacity: 1;
 }
 
 .iconBtn:active {
-  opacity: 0.5;
+  background: rgba(0, 0, 0, 0.14) !important;
+}
+
+.iconBtn svg {
+  width: 15px;
+  height: 15px;
+  transition: transform 0.15s ease;
+}
+
+.iconBtn:active svg {
+  transform: scale(0.88);
+}
+
+/* 复制成功：图标变绿，强化反馈 */
+.copied {
+  color: #3fb950;
 }

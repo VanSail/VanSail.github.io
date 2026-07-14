@@ -13,6 +13,16 @@
   opacity: 1;
 }
 
+/* 行高亮：Docusaurus 为 {2,4-6} 匹配行加的全局类，需在此补背景 */
+.lineRow:global(.theme-code-block-highlighted-line) {
+  background: var(--docusaurus-highlighted-code-line-bg);
+}
+
+.lineRow:global(.theme-code-block-highlighted-line) .lineContent,
+.lineRow:global(.theme-code-block-highlighted-line) .lineNumber {
+  background: var(--docusaurus-highlighted-code-line-bg) !important;
+}
+
 /* table-cell for line number (counter via ::before) */
 .lineNumber {
   display: table-cell;
@@ -62,12 +72,17 @@
   background: transparent !important;
   border: none !important;
   cursor: pointer;
-  padding: 4px;
+  padding: 2px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #1598c5;
+  color: var(--code-toolbar-fg, #555);
   transition: opacity 0.2s, color 0.2s;
+}
+
+.copyBtn svg {
+  width: 15px;
+  height: 15px;
 }
 
 .copyBtn:hover {

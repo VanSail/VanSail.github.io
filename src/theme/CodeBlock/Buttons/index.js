@@ -9,7 +9,7 @@ export default function CodeBlockButtons({className}) {
   return (
     <BrowserOnly>
       {() => (
-        <div className={clsx(className, styles.buttonGroup)}>
+        <div className={clsx(className, styles.buttonGroup, 'codeBlockButtons')}>
           <CollapseButton />
           <CopyButton />
         </div>

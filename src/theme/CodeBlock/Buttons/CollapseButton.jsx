@@ -24,23 +24,20 @@ export default function CollapseButton({className}) {
       className={clsx(styles.iconBtn, className)}
       aria-label={collapsed ? '展开' : '折叠'}
       title={collapsed ? '展开' : '折叠'}>
-      {collapsed ? (
-        // 展开：四角向外箭头
-        <svg viewBox="0 0 28 28" style={{width: 28, height: 28, fill: 'none', stroke: '#1598c5', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round'}}>
-          <path d="M6 12 L6 6 L12 6" />
-          <path d="M22 12 L22 6 L16 6" />
-          <path d="M6 16 L6 22 L12 22" />
-          <path d="M22 16 L22 22 L16 22" />
-        </svg>
-      ) : (
-        // 折叠：四角向内箭头
-        <svg viewBox="0 0 28 28" style={{width: 28, height: 28, fill: 'none', stroke: '#f6b300', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round'}}>
-          <path d="M6 6 L12 6 L12 12" />
-          <path d="M22 6 L16 6 L16 12" />
-          <path d="M6 22 L12 22 L12 16" />
-          <path d="M22 22 L16 22 L16 16" />
-        </svg>
-      )}
+      {/* 单个 chevron，根据状态旋转：收起朝下、展开朝上 */}
+      <svg
+        viewBox="0 0 24 24"
+        style={{
+          fill: 'none',
+          stroke: 'currentColor',
+          strokeWidth: 2.2,
+          strokeLinecap: 'round',
+          strokeLinejoin: 'round',
+          transform: collapsed ? 'rotate(0deg)' : 'rotate(180deg)',
+          transition: 'transform 0.2s ease',
+        }}>
+        <polyline points="6 9 12 15 18 9" />
+      </svg>
     </button>
   );
 }
