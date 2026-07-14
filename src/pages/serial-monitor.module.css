@@ -4,13 +4,13 @@
   padding: 48px 20px 64px;
 }
 
-/* 工具页加宽：占网页约 60% 宽度 */
+/* 工具页加宽：占网页约 50% 宽度 */
 .wide {
-  max-width: 60vw;
+  max-width: 50vw;
   width: 100%;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .wide {
     max-width: 94vw;
   }
@@ -41,6 +41,40 @@
   color: var(--ifm-color-primary);
   min-height: 24px;
   margin-top: 6px;
+}
+
+.calcMode {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.modeLabel {
+  font-size: 13px;
+  color: var(--ifm-font-color-base);
+  opacity: 0.8;
+  margin-right: 4px;
+}
+
+.modeBtn,
+.modeBtnActive {
+  padding: 6px 14px;
+  font-size: 13px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1px solid var(--ifm-hr-border-color);
+  background: transparent;
+  color: var(--ifm-color-base);
+  font-family: inherit;
+  transition: all 0.15s ease;
+}
+
+.modeBtnActive {
+  background: var(--ifm-color-primary);
+  border-color: var(--ifm-color-primary);
+  color: var(--ifm-color-primary-contrast-background, #1a1917);
+  font-weight: 600;
 }
 
 .calcGrid {

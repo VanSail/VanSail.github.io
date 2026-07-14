@@ -3,19 +3,6 @@ import Layout from '@theme/Layout';
 
 import styles from './serial-monitor.module.css';
 
-// 仅允许的白名单标识符 → Math 引用，杜绝任意代码执行
-const TOKENS: Record<string, string> = {
-  sin: 'Math.sin',
-  cos: 'Math.cos',
-  tan: 'Math.tan',
-  ln: 'Math.log',
-  log: 'Math.log10',
-  sqrt: 'Math.sqrt',
-  abs: 'Math.abs',
-  pi: 'Math.PI',
-  e: 'Math.E',
-};
-
 // 显示屏符号 → JS 运算符
 const DISPLAY_TO_JS: Record<string, string> = {
   '×': '*',
@@ -23,27 +10,59 @@ const DISPLAY_TO_JS: Record<string, string> = {
   '÷': '/',
 };
 
-const safeEval = (raw: string): string => {
+// 角度制时，正三角函数换算输入，反三角函数换算输出
+const fwd =
+  (fn: (x: number) => number, deg: boolean) =>
+  (x: number) =>
+    deg ? fn((x * Math.PI) / 180) : fn(x);
+const inv =
+  (fn: (number) => number, deg: boolean) =>
+  (x: number) =>
+    deg ? (fn(x) * 180) / Math.PI : fn(x);
+
+const buildCtx = (deg: boolean) =>
+  ({
+    sin: fwd(Math.sin, deg),
+    cos: fwd(Math.cos, deg),
+    tan: fwd(Math.tan, deg),
+    asin: inv(Math.asin, deg),
+    acos: inv(Math.acos, deg),
+    atan: inv(Math.atan, deg),
+    ln: Math.log,
+    log: Math.log10,
+    sqrt: Math.sqrt,
+    abs: Math.abs,
+    pi: Math.PI,
+    e: Math.E,
+  }) as Record<string, unknown>;
+
+// 仅允许已知标识符（函数名/常量），杜绝 alert 等任意全局调用
+const ALLOWED_IDENTS = [
+  'sin', 'cos', 'tan', 'asin', 'acos', 'atan',
+  'ln', 'log', 'sqrt', 'abs', 'pi', 'e', 'π',
+];
+const safeEval = (raw: string, deg: boolean): string => {
   if (!raw.trim()) return '';
   let expr = raw;
-  // 1) 函数名/常量替换为 Math 引用（按长度降序避免部分替换）
-  Object.keys(TOKENS)
-    .sort((a, b) => b.length - a.length)
-    .forEach(name => {
-      expr = expr.replace(new RegExp(`\\b${name}\\b`, 'g'), TOKENS[name]);
-    });
-  // 2) 显示符号转为 JS 运算符
   Object.keys(DISPLAY_TO_JS).forEach(sym => {
     expr = expr.split(sym).join(DISPLAY_TO_JS[sym]);
   });
-  // 3) 替换后仅允许数字/运算符/括号/点/空格与 Math 相关字母
-  if (!/^[0-9+\-*/().\sMashPItncoelgrxqbE]+$/.test(expr)) return 'Error';
+  // 先粗筛：仅允许数字/运算符/括号/点/空格/字母/π
+  if (!/^[0-9+\-*/().\sπa-zA-Z]+$/.test(expr)) return 'Error';
+  // 再精筛：每个标识符必须是白名单中的已知函数/常量
+  const idents = expr.match(/[a-zA-Zπ]+/g) || [];
+  for (const id of idents) {
+    if (!ALLOWED_IDENTS.includes(id)) return 'Error';
+  }
+  const ctx = buildCtx(deg);
   try {
     // eslint-disable-next-line @typescript-eslint/no-implied-eval
-    const fn = new Function(`"use strict"; return (${expr});`);
-    const v = fn() as unknown;
+    const fn = new Function(
+      ...Object.keys(ctx),
+      `"use strict"; return (${expr});`,
+    );
+    const v = fn(...Object.values(ctx)) as unknown;
     if (typeof v !== 'number' || !isFinite(v)) return 'Error';
-    // 消除浮点误差
     return String(Math.round((v + Number.EPSILON) * 1e12) / 1e12);
   } catch {
     return 'Error';
@@ -55,44 +74,52 @@ interface BtnSpec {
   label: string;
   insert?: string;
   kind: 'clear' | 'util' | 'op' | 'fn' | 'num' | 'eq';
+  span?: boolean;
 }
 
 const BUTTONS: BtnSpec[] = [
+  {key: 'sin', label: 'sin', insert: 'sin(', kind: 'fn'},
+  {key: 'cos', label: 'cos', insert: 'cos(', kind: 'fn'},
+  {key: 'tan', label: 'tan', insert: 'tan(', kind: 'fn'},
+  {key: 'asin', label: 'sin⁻¹', insert: 'asin(', kind: 'fn'},
+  {key: 'acos', label: 'cos⁻¹', insert: 'acos(', kind: 'fn'},
+  {key: 'atan', label: 'tan⁻¹', insert: 'atan(', kind: 'fn'},
+  {key: '√', label: '√', insert: 'sqrt(', kind: 'fn'},
+  {key: 'x²', label: 'x²', insert: '**2', kind: 'fn'},
+  {key: 'xʸ', label: 'xʸ', insert: '**(', kind: 'fn'},
+  {key: 'π', label: 'π', insert: 'pi', kind: 'fn'},
+  {key: 'ln', label: 'ln', insert: 'ln(', kind: 'fn'},
+  {key: 'log', label: 'log', insert: 'log(', kind: 'fn'},
+  {key: 'e', label: 'e', insert: 'e', kind: 'fn'},
+  {key: '1/x', label: '1/x', kind: 'util'},
+  {key: '%', label: '%', kind: 'util'},
   {key: 'C', label: 'C', kind: 'clear'},
   {key: '⌫', label: '⌫', kind: 'util'},
   {key: '(', label: '(', insert: '(', kind: 'op'},
   {key: ')', label: ')', insert: ')', kind: 'op'},
   {key: '÷', label: '÷', insert: '÷', kind: 'op'},
-  {key: 'sin', label: 'sin', insert: 'sin(', kind: 'fn'},
-  {key: 'cos', label: 'cos', insert: 'cos(', kind: 'fn'},
-  {key: 'tan', label: 'tan', insert: 'tan(', kind: 'fn'},
-  {key: 'π', label: 'π', insert: 'π', kind: 'fn'},
-  {key: '×', label: '×', insert: '×', kind: 'op'},
-  {key: '√', label: '√', insert: 'sqrt(', kind: 'fn'},
-  {key: 'x²', label: 'x²', insert: '**2', kind: 'fn'},
-  {key: 'xʸ', label: 'xʸ', insert: '**(', kind: 'fn'},
-  {key: 'e', label: 'e', insert: 'e', kind: 'fn'},
-  {key: '−', label: '−', insert: '−', kind: 'op'},
   {key: '7', label: '7', insert: '7', kind: 'num'},
   {key: '8', label: '8', insert: '8', kind: 'num'},
   {key: '9', label: '9', insert: '9', kind: 'num'},
-  {key: '%', label: '%', kind: 'util'},
-  {key: '+', label: '+', insert: '+', kind: 'op'},
+  {key: '±', label: '±', kind: 'util'},
+  {key: '×', label: '×', insert: '×', kind: 'op'},
   {key: '4', label: '4', insert: '4', kind: 'num'},
   {key: '5', label: '5', insert: '5', kind: 'num'},
   {key: '6', label: '6', insert: '6', kind: 'num'},
-  {key: '1/x', label: '1/x', kind: 'util'},
-  {key: '=', label: '=', kind: 'eq'},
+  {key: '0', label: '0', insert: '0', kind: 'num'},
+  {key: '.', label: '.', insert: '.', kind: 'num'},
   {key: '1', label: '1', insert: '1', kind: 'num'},
   {key: '2', label: '2', insert: '2', kind: 'num'},
   {key: '3', label: '3', insert: '3', kind: 'num'},
-  {key: '0', label: '0', insert: '0', kind: 'num'},
-  {key: '.', label: '.', insert: '.', kind: 'num'},
+  {key: '+', label: '+', insert: '+', kind: 'op'},
+  {key: '−', label: '−', insert: '−', kind: 'op'},
+  {key: '=', label: '=', kind: 'eq', span: true},
 ];
 
 export default function Calculator(): ReactNode {
   const [expr, setExpr] = useState('');
-  const result = useMemo(() => safeEval(expr), [expr]);
+  const [deg, setDeg] = useState(false);
+  const result = useMemo(() => safeEval(expr, deg), [expr, deg]);
 
   const press = (b: BtnSpec) => {
     if (b.kind === 'clear') {
@@ -110,6 +137,10 @@ export default function Calculator(): ReactNode {
       }
       if (b.key === '%') {
         setExpr(p => (p ? `(${p})/100` : ''));
+        return;
+      }
+      if (b.key === '±') {
+        setExpr(p => (p.startsWith('-') ? p.slice(1) : `-${p}`));
         return;
       }
     }
@@ -165,6 +196,21 @@ export default function Calculator(): ReactNode {
                   : ''}
             </div>
           </div>
+          <div className={styles.calcMode}>
+            <span className={styles.modeLabel}>角度单位</span>
+            <button
+              type="button"
+              className={!deg ? styles.modeBtnActive : styles.modeBtn}
+              onClick={() => setDeg(false)}>
+              RAD
+            </button>
+            <button
+              type="button"
+              className={deg ? styles.modeBtnActive : styles.modeBtn}
+              onClick={() => setDeg(true)}>
+              DEG
+            </button>
+          </div>
           <div className={styles.calcGrid}>
             {BUTTONS.map(b => {
               const primary = b.kind === 'eq' || b.kind === 'clear';
@@ -176,7 +222,10 @@ export default function Calculator(): ReactNode {
                   className={`${styles.btn} ${styles.calcKey} ${
                     primary ? styles.btnPrimary : ''
                   }`}
-                  style={op ? {fontWeight: 600} : undefined}
+                  style={{
+                    ...(op ? {fontWeight: 600} : {}),
+                    ...(b.span ? {gridColumn: '1 / -1'} : {}),
+                  }}
                   onClick={() => press(b)}>
                   {b.label}
                 </button>
