@@ -331,7 +331,7 @@ export default function Home(): ReactNode {
   return (
     <div
       style={{background: 'var(--ifm-background-color)', minHeight: '100vh'}}>
-      <Layout title="VanSail" description="教程文档与实用工具">
+      <Layout title="VanSail" description="教程文档与网页工具">
         <main className={styles.page}>
           <section className={styles.section}>
             <Hero3D />
@@ -353,14 +353,15 @@ export default function Home(): ReactNode {
           </section>
 
           <section className={styles.section}>
-            <h2 className={styles.sectionTitle}>实用工具</h2>
-            <h3 className={styles.subTitle}>网页工具</h3>
+            <h2 className={styles.sectionTitle}>网页工具</h2>
             <div className={styles.grid}>
               {webTools.map(item => (
                 <Card key={item.to} item={item} />
               ))}
             </div>
-            <h3 className={styles.subTitle}>开发资源</h3>
+            <h2 className={`${styles.sectionTitle} ${styles.sectionGap}`}>
+              软件工具
+            </h2>
             <div className={styles.grid}>
               {devResources.map(item => (
                 <Card key={item.to} item={item} />
