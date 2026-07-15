@@ -131,25 +131,25 @@ const aiAgents: CardItem[] = [
   {
     to: 'https://opencode.ai/',
     title: {zh: 'OpenCode', en: 'OpenCode'},
-    desc: {zh: '开源 AI 编程代理', en: 'Open-source AI coding agent'},
+    desc: {zh: '开源 AI 编程代理', en: 'Open-Source AI Coding Agent'},
     icon: aiIcon.opencode,
   },
   {
     to: 'https://openclaw.ai/',
     title: {zh: 'OpenClaw', en: 'OpenClaw'},
-    desc: {zh: '开源个人 AI 助手', en: 'Open-source personal AI assistant'},
+    desc: {zh: '开源个人 AI 助手', en: 'Open-Source Personal AI Assistant'},
     icon: aiIcon.openclaw,
   },
   {
     to: 'https://hermes-agent.nousresearch.com/',
     title: {zh: 'Hermes', en: 'Hermes'},
-    desc: {zh: '跨平台 AI 代理', en: 'Cross-platform AI agent'},
+    desc: {zh: '跨平台 AI 代理', en: 'Cross-Platform AI Agent'},
     icon: aiIcon.hermes,
   },
   {
     to: 'https://tinyhumans.ai/openhuman',
     title: {zh: 'OpenHuman', en: 'OpenHuman'},
-    desc: {zh: '个人 AI 超级智能', en: 'Personal AI super intelligence'},
+    desc: {zh: '个人 AI 超级智能', en: 'Personal AI Super Intelligence'},
     icon: aiIcon.openhuman,
   },
 ];
@@ -158,7 +158,7 @@ const robots: CardItem[] = [
   {
     to: 'https://wiki.ros.org/noetic',
     title: {zh: 'ROS1', en: 'ROS1'},
-    desc: {zh: '经典 ROS · 基于 ROS Master', en: 'Classic ROS · ROS Master based'},
+    desc: {zh: '经典 ROS · 基于 ROS Master', en: 'Classic ROS · ROS Master Based'},
     menu: [
       {label: 'Melodic', to: 'https://wiki.ros.org/melodic'},
       {label: 'Noetic', to: 'https://wiki.ros.org/noetic'},
@@ -168,7 +168,7 @@ const robots: CardItem[] = [
   {
     to: '/docs/ros2',
     title: {zh: 'ROS2', en: 'ROS2'},
-    desc: {zh: '新一代 · DDS 实时跨平台', en: 'Next-gen · DDS realtime cross-platform'},
+    desc: {zh: '新一代 · DDS 实时跨平台', en: 'Next-Gen · DDS Realtime Cross-Platform'},
     menu: [
       {label: 'Humble', to: 'https://docs.ros.org/en/humble/'},
       {label: 'Jazzy', to: 'https://docs.ros.org/en/jazzy/'},
@@ -182,19 +182,19 @@ const webTools: CardItem[] = [
   {
     to: '/serial-monitor',
     title: {zh: '串口监视器', en: 'Serial Monitor'},
-    desc: {zh: '网页串口调试 · 免驱动', en: 'Web serial monitor · driver-free'},
+    desc: {zh: '网页串口调试 · 免驱动', en: 'Web Serial Monitor · Driver-Free'},
     icon: serialIcon,
   },
   {
     to: '/calculator',
     title: {zh: '计算器', en: 'Calculator'},
-    desc: {zh: '科学计算 · 实时计算', en: 'Scientific calc · live results'},
+    desc: {zh: '科学计算 · 实时计算', en: 'Scientific Calc · Live Results'},
     icon: calcIcon,
   },
   {
     to: '/base-converter',
     title: {zh: '进制转换', en: 'Base Converter'},
-    desc: {zh: '二/八/十/十六进制互转', en: 'Binary/octal/dec/hex convert'},
+    desc: {zh: '二/八/十/十六进制互转', en: 'Binary/Octal/Dec/Hex Convert'},
     icon: baseIcon,
   },
 ];
@@ -204,7 +204,7 @@ const devResources: CardItem[] = [
   {
     to: '/docs/zsh',
     title: {zh: 'Z Shell', en: 'Z Shell'},
-    desc: {zh: '现代终端 · 插件化增强', en: 'Modern shell · plugin enhanced'},
+    desc: {zh: '现代终端 · 插件化增强', en: 'Modern Shell · Plugin Enhanced'},
     numbered: true,
     menu: [
       {label: '安装 Zsh'},
@@ -216,14 +216,14 @@ const devResources: CardItem[] = [
   {
     to: 'https://nodejs.org/',
     title: {zh: 'Node.js', en: 'Node.js'},
-    desc: {zh: 'JavaScript 运行时', en: 'JavaScript runtime'},
+    desc: {zh: 'JavaScript 运行时', en: 'JavaScript Runtime'},
     icon: nodeIcon,
   },
 ];
 
 const sections = {
   ai: {zh: 'AI 智能体', en: 'AI Agents'},
-  robots: {zh: '机器人操作系统', en: 'Robotics OS'},
+  robots: {zh: '机器人操作系统', en: 'Robot Operating System'},
   web: {zh: '网页工具', en: 'Web Tools'},
   software: {zh: '软件工具', en: 'Software Tools'},
 };
