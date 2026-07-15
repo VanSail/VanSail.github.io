@@ -4,11 +4,11 @@
     "description": "The label for version current"
   },
   "sidebar.guideSidebar.category.基础语法": {
-    "message": "基础语法",
+    "message": "Basic Syntax",
     "description": "The label for category '基础语法' in sidebar 'guideSidebar'"
   },
   "sidebar.guideSidebar.category.进阶语法": {
-    "message": "进阶语法",
+    "message": "Advanced Syntax",
     "description": "The label for category '进阶语法' in sidebar 'guideSidebar'"
   }
 }
