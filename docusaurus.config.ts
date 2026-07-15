@@ -94,7 +94,8 @@ const config: Config = {
         {
           to: '/docs/guide/',
           position: 'right',
-          label: '使用指南',
+          className: 'header-icon-link header-guide-link',
+          'aria-label': '使用指南',
         },
         {
           type: 'localeDropdown',

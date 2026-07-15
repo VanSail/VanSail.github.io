@@ -1,7 +1,6 @@
 import React from 'react';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import {useAlternatePageUtils} from '@docusaurus/theme-common/internal';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import styles from './LocaleDropdownNavbarItem.module.css';
 
 export default function LocaleDropdownNavbarItem(): JSX.Element {
@@ -14,7 +13,6 @@ export default function LocaleDropdownNavbarItem(): JSX.Element {
   const otherLocale = locales.find((l) => l !== currentLocale) ?? 'en';
   const targetPath = alternatePageUtils.createUrl({locale: otherLocale});
   const targetLabel = localeConfigs[otherLocale]?.label ?? 'English';
-  const logoSrc = useBaseUrl('img/logo.svg');
 
   return (
     <a
@@ -22,7 +20,19 @@ export default function LocaleDropdownNavbarItem(): JSX.Element {
       className={styles.localeSwitcher}
       aria-label={`Switch to ${targetLabel}`}
       title={`Switch to ${targetLabel}`}>
-      <img src={logoSrc} alt="" className={styles.logo} />
+      <svg
+        viewBox="0 0 24 24"
+        className={styles.globe}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true">
+        <circle cx="12" cy="12" r="10" />
+        <line x1="2" y1="12" x2="22" y2="12" />
+        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+      </svg>
     </a>
   );
 }
