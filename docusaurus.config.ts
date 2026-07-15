@@ -33,11 +33,15 @@ const config: Config = {
   // may want to replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: 'zh-CN',
-    locales: ['zh-CN'],
+    locales: ['zh-CN', 'en'],
     localeConfigs: {
       'zh-CN': {
         label: '简体中文',
         htmlLang: 'zh-CN',
+      },
+      en: {
+        label: 'English',
+        htmlLang: 'en',
       },
     },
   },
@@ -90,9 +94,11 @@ const config: Config = {
         {
           to: '/docs/guide/',
           position: 'right',
-          className: 'header-icon-link header-guide-link',
-          'aria-label': '使用指南',
-          title: '使用指南',
+          label: '使用指南',
+        },
+        {
+          type: 'localeDropdown',
+          position: 'right',
         },
       ],
     },

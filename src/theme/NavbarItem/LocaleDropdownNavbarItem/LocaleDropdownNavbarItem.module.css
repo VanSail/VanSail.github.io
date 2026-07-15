@@ -1,0 +1,27 @@
+.localeSwitcher {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid rgba(184, 233, 134, 0.4);
+  background: transparent;
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease,
+    transform 0.15s ease;
+  margin-left: 4px;
+}
+
+.localeSwitcher:hover {
+  border-color: rgba(184, 233, 134, 1);
+  box-shadow: 0 0 0 2px rgba(184, 233, 134, 0.15);
+  transform: scale(1.06);
+}
+
+.logo {
+  width: 22px;
+  height: 22px;
+  display: block;
+}
