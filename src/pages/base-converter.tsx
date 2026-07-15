@@ -1,11 +1,28 @@
 import {useState, useMemo, type ReactNode} from 'react';
 import Layout from '@theme/Layout';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
 import styles from './serial-monitor.module.css';
 
 const BASES = [2, 8, 10, 16] as const;
 
+type Locale = 'zh' | 'en';
+const T = {
+  title: {zh: '进制转换', en: 'Base Converter'},
+  desc: {zh: '二进制/八进制/十进制/十六进制互转', en: 'Convert between binary, octal, decimal and hexadecimal'},
+  subtitle: {zh: '在二进制、八进制、十进制、十六进制之间实时互转', en: 'Convert in real time between binary, octal, decimal and hexadecimal'},
+  invalidChars: {zh: `输入包含非 %BASE% 进制合法字符`, en: `Input contains characters invalid for base %BASE%`},
+  notNumber: {zh: '无法解析为有效数字', en: 'Cannot be parsed as a valid number'},
+  inputBase: {zh: '输入进制', en: 'Input Base'},
+  baseLabel: {zh: '%BASE% 进制', en: 'Base %BASE%'},
+  placeholder: {zh: '输入 %BASE% 进制数字', en: 'Enter a base-%BASE% number'},
+} as const;
+
 export default function BaseConverter(): ReactNode {
+  const {
+    i18n: {currentLocale},
+  } = useDocusaurusContext();
+  const locale: Locale = currentLocale === 'en' ? 'en' : 'zh';
   const [value, setValue] = useState('');
   const [base, setBase] = useState<number>(10);
 
@@ -25,11 +42,11 @@ export default function BaseConverter(): ReactNode {
             ? /^[0-7]+$/
             : /^[01]+$/;
     if (!pattern.test(text)) {
-      return {results: out, error: `输入包含非 ${base} 进制合法字符`};
+      return {results: out, error: T.invalidChars[locale].replace('%BASE%', String(base))};
     }
     const num = parseInt(text, base);
     if (Number.isNaN(num)) {
-      return {results: out, error: '无法解析为有效数字'};
+      return {results: out, error: T.notNumber[locale]};
     }
     BASES.forEach(b => {
       out[b] = b === 10 ? String(num) : num.toString(b).toUpperCase();
@@ -38,17 +55,17 @@ export default function BaseConverter(): ReactNode {
   }, [value, base]);
 
   return (
-    <Layout title="进制转换" description="二进制/八进制/十进制/十六进制互转">
+    <Layout title={T.title[locale]} description={T.desc[locale]}>
       <main className={`${styles.page} ${styles.wide}`}>
         <div className={styles.header}>
-          <h1 className={styles.title}>进制转换</h1>
-          <p className={styles.subtitle}>在二进制、八进制、十进制、十六进制之间实时互转</p>
+          <h1 className={styles.title}>{T.title[locale]}</h1>
+          <p className={styles.subtitle}>{T.subtitle[locale]}</p>
         </div>
         <div className={styles.panel}>
           <div className={styles.toolbar}>
             <div className={styles.field}>
               <label className={styles.label} htmlFor="base">
-                输入进制
+                {T.inputBase[locale]}
               </label>
               <select
                 id="base"
@@ -57,7 +74,7 @@ export default function BaseConverter(): ReactNode {
                 onChange={e => setBase(Number(e.target.value))}>
                 {BASES.map(b => (
                   <option key={b} value={b}>
-                    {b} 进制
+                    {T.baseLabel[locale].replace('%BASE%', String(b))}
                   </option>
                 ))}
               </select>
@@ -71,7 +88,7 @@ export default function BaseConverter(): ReactNode {
               fontSize: 18,
             }}
             value={value}
-            placeholder={`输入 ${base} 进制数字`}
+            placeholder={T.placeholder[locale].replace('%BASE%', String(base))}
             onChange={e => setValue(e.target.value)}
           />
           <div className={styles.error}>{error}</div>
@@ -86,7 +103,7 @@ export default function BaseConverter(): ReactNode {
                   borderBottom: '1px solid var(--ifm-hr-border-color)',
                   paddingBottom: 8,
                 }}>
-                <span className={styles.label}>{b} 进制</span>
+                <span className={styles.label}>{T.baseLabel[locale].replace('%BASE%', String(b))}</span>
                 <span
                   style={{
                     fontFamily: "'SF Mono','Fira Code',Menlo,Monaco,monospace",

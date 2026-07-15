@@ -1,5 +1,6 @@
 import {useEffect, useRef, useState, type ReactNode, useCallback} from 'react';
 import Layout from '@theme/Layout';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
 import styles from './serial-monitor.module.css';
 
@@ -56,20 +57,80 @@ const parseHexInput = (text: string): Uint8Array | null => {
   return bytes;
 };
 
-// 将浏览器原生（多为英文）报错转换为中文提示
-const toChineseError = (e: unknown): string => {
+type Locale = 'zh' | 'en';
+
+// 将浏览器原生（多为英文）报错转换为对应语言的提示
+const toError = (e: unknown, locale: Locale): string => {
   const msg = e instanceof Error ? e.message : String(e);
-  if (/abort/i.test(msg)) return '已取消操作（未选择串口）';
-  if (/open/i.test(msg)) return '打开串口失败：设备可能被占用或已断开';
-  if (/write|flush|send/i.test(msg)) return '发送失败：串口可能已断开';
-  if (/read/i.test(msg)) return '读取失败：串口可能已断开';
-  if (/network|frame|parity|overrun/i.test(msg)) {
-    return `串口通信异常：${msg}（请检查波特率/接线）`;
+  const zh: Array<[RegExp, string]> = [
+    [/abort/i, '已取消操作（未选择串口）'],
+    [/open/i, '打开串口失败：设备可能被占用或已断开'],
+    [/write|flush|send/i, '发送失败：串口可能已断开'],
+    [/read/i, '读取失败：串口可能已断开'],
+    [/network|frame|parity|overrun/i, `串口通信异常：${msg}（请检查波特率/接线）`],
+    [/.*/, `操作失败：${msg}`],
+  ];
+  const en: Array<[RegExp, string]> = [
+    [/abort/i, 'Operation cancelled (no port selected)'],
+    [/open/i, 'Failed to open port: device may be busy or disconnected'],
+    [/write|flush|send/i, 'Send failed: port may be disconnected'],
+    [/read/i, 'Read failed: port may be disconnected'],
+    [/network|frame|parity|overrun/i, `Serial communication error: ${msg} (check baud rate / wiring)`],
+    [/.*/, `Operation failed: ${msg}`],
+  ];
+  const map = locale === 'en' ? en : zh;
+  for (const [re, text] of map) {
+    if (re.test(msg)) return text;
   }
-  return `操作失败：${msg}`;
+  return `Operation failed: ${msg}`;
 };
 
+const T = {
+  title: {zh: '串口监视器', en: 'Serial Monitor'},
+  desc: {zh: '通过浏览器进行串口数据的发送与接收', en: 'Send and receive serial data right in the browser'},
+  subtitle: {
+    zh: '通过浏览器 Web Serial API 与串口设备通信（需使用 Chrome / Edge 等 Chromium 内核浏览器，并通过 HTTPS 访问）',
+    en: 'Communicate with serial devices via the Web Serial API (requires a Chromium-based browser such as Chrome / Edge, accessed over HTTPS)',
+  },
+  unsupported: {
+    zh: '当前浏览器不支持 Web Serial API。请使用最新版 Chrome、Edge 或 Opera 打开本页面，并确保通过 HTTPS 访问。',
+    en: 'Your browser does not support the Web Serial API. Please open this page with the latest Chrome, Edge or Opera and ensure it is accessed over HTTPS.',
+  },
+  baud: {zh: '波特率', en: 'Baud Rate'},
+  disconnect: {zh: '断开连接', en: 'Disconnect'},
+  connect: {zh: '连接串口', en: 'Connect Port'},
+  resume: {zh: '继续显示', en: 'Resume'},
+  pause: {zh: '暂停显示', en: 'Pause'},
+  clear: {zh: '清空', en: 'Clear'},
+  connected: {zh: '已连接', en: 'Connected'},
+  disconnected: {zh: '未连接', en: 'Disconnected'},
+  waiting: {zh: '等待数据…', en: 'Waiting for data…'},
+  pausedBadge: {zh: '已暂停，新数据不展示', en: 'Paused — new data is hidden'},
+  placeholderHex: {zh: '十六进制，如：48 49 0A', en: 'HEX bytes, e.g. 48 49 0A'},
+  placeholderText: {zh: '输入要发送的内容', en: 'Type something to send'},
+  send: {zh: '发送', en: 'Send'},
+  hexSend: {zh: 'HEX 发送', en: 'HEX Send'},
+  hexReceive: {zh: 'HEX 接收', en: 'HEX Receive'},
+  appendCrlf: {zh: '发送时自动追加 CRLF', en: 'Append CRLF on send'},
+  autoSend: {zh: '定时发送（自动循环）', en: 'Auto Send (timer loop)'},
+  sendContent: {zh: '发送内容', en: 'Content'},
+  placeholderAutoHex: {zh: 'HEX 字节，如 01 03 00 00', en: 'HEX bytes, e.g. 01 03 00 00'},
+  placeholderAutoText: {zh: '要循环发送的文本', en: 'Text to send repeatedly'},
+  interval: {zh: '间隔 (ms)', en: 'Interval (ms)'},
+  sendAsHex: {zh: '以 HEX 形式发送', en: 'Send as HEX'},
+  stopAuto: {zh: '停止定时发送', en: 'Stop Auto Send'},
+  startAuto: {zh: '启动定时发送', en: 'Start Auto Send'},
+  connectedMsg: {zh: '已连接，波特率 ', en: 'Connected, baud rate '},
+  disconnectedMsg: {zh: '已断开连接', en: 'Disconnected'},
+  hexFormatError: {zh: '十六进制格式错误（应为 00-FF 的空格分隔字节）', en: 'Invalid HEX format (space-separated bytes from 00 to FF)'},
+  autoEmpty: {zh: '自动发送内容为空，已暂停', en: 'Auto-send content is empty, paused'},
+} as const;
+
 export default function SerialMonitor(): ReactNode {
+  const {
+    i18n: {currentLocale},
+  } = useDocusaurusContext();
+  const locale: Locale = currentLocale === 'en' ? 'en' : 'zh';
   const [supported, setSupported] = useState(true);
   const [connected, setConnected] = useState(false);
   const [baudRate, setBaudRate] = useState(115200);
@@ -257,7 +318,7 @@ export default function SerialMonitor(): ReactNode {
     flushLogs();
 
     setConnected(false);
-    appendLog('已断开连接', 'out');
+    appendLog(T.disconnectedMsg[locale], 'out');
   };
 
   const connect = async () => {
@@ -277,7 +338,7 @@ export default function SerialMonitor(): ReactNode {
 
       setConnected(true);
       setStats({tx: 0, rx: 0});
-      appendLog(`已连接，波特率 ${baudRate}`, 'out');
+      appendLog(`${T.connectedMsg[locale]}${baudRate}`, 'out');
 
       // reader loop：单实例，避免关闭后残留
       if (!readerLoopRunningRef.current) {
@@ -302,7 +363,7 @@ export default function SerialMonitor(): ReactNode {
         })();
       }
     } catch (e) {
-      setError(toChineseError(e));
+      setError(toError(e, locale));
     }
   };
 
@@ -316,7 +377,7 @@ export default function SerialMonitor(): ReactNode {
       if (hexMode) {
         const parsed = parseHexInput(payload);
         if (!parsed) {
-          setError('十六进制格式错误（应为 00-FF 的空格分隔字节）');
+          setError(T.hexFormatError[locale]);
           return;
         }
         bytes = parsed;
@@ -331,7 +392,7 @@ export default function SerialMonitor(): ReactNode {
       appendLog(displayText, 'out');
       if (textOverride === undefined) setInput('');
     } catch (e) {
-      setError(toChineseError(e));
+      setError(toError(e, locale));
     }
   };
 
@@ -348,7 +409,7 @@ export default function SerialMonitor(): ReactNode {
     }
     if (!autoSendText.trim()) {
       setAutoSendEnabled(false);
-      setError('自动发送内容为空，已暂停');
+      setError(T.autoEmpty[locale]);
       return;
     }
     autoSendCancelledRef.current = false;
@@ -365,26 +426,22 @@ export default function SerialMonitor(): ReactNode {
   }, [autoSendEnabled, autoSendInterval, autoSendText, connected, hexMode, addNewline]);
 
   return (
-    <Layout title="串口监视器" description="通过浏览器进行串口数据的发送与接收">
+    <Layout title={T.title[locale]} description={T.desc[locale]}>
       <main className={styles.page}>
         <div className={styles.header}>
-          <h1 className={styles.title}>串口监视器</h1>
-          <p className={styles.subtitle}>
-            通过浏览器 Web Serial API 与串口设备通信（需使用 Chrome / Edge 等 Chromium 内核浏览器，并通过 HTTPS 访问）
-          </p>
+          <h1 className={styles.title}>{T.title[locale]}</h1>
+          <p className={styles.subtitle}>{T.subtitle[locale]}</p>
         </div>
 
         {!supported && (
-          <div className={styles.warning}>
-            当前浏览器不支持 Web Serial API。请使用最新版 Chrome、Edge 或 Opera 打开本页面，并确保通过 HTTPS 访问。
-          </div>
+          <div className={styles.warning}>{T.unsupported[locale]}</div>
         )}
 
         <div className={styles.panel}>
           <div className={styles.toolbar}>
             <div className={styles.field}>
               <label className={styles.label} htmlFor="baud">
-                波特率
+                {T.baud[locale]}
               </label>
               <select
                 id="baud"
@@ -402,14 +459,14 @@ export default function SerialMonitor(): ReactNode {
 
             {connected ? (
               <button className={styles.btn} onClick={() => void disconnect()}>
-                断开连接
+                {T.disconnect[locale]}
               </button>
             ) : (
               <button
                 className={`${styles.btn} ${styles.btnPrimary}`}
                 onClick={() => void connect()}
                 disabled={!supported}>
-                连接串口
+                {T.connect[locale]}
               </button>
             )}
 
@@ -417,16 +474,16 @@ export default function SerialMonitor(): ReactNode {
               className={styles.btn}
               onClick={() => setPaused(p => !p)}
               disabled={logs.length === 0}>
-              {paused ? '继续显示' : '暂停显示'}
+              {paused ? T.resume[locale] : T.pause[locale]}
             </button>
 
             <button className={styles.btn} onClick={clearLog} disabled={logs.length === 0}>
-              清空
+              {T.clear[locale]}
             </button>
 
             <div className={styles.status}>
               <span className={`${styles.dot} ${connected ? styles.dotOn : ''}`} />
-              {connected ? '已连接' : '未连接'}
+              {connected ? T.connected[locale] : T.disconnected[locale]}
               {connected && (
                 <span className={styles.stats}>
                   RX {stats.rx}B / TX {stats.tx}B
@@ -437,9 +494,9 @@ export default function SerialMonitor(): ReactNode {
 
           <div ref={logRef} className={styles.log}>
             {logs.length === 0 ? (
-              <span className={styles.logLine} style={{opacity: 0.4}}>
-                等待数据…
-              </span>
+                <span className={styles.logLine} style={{opacity: 0.4}}>
+                  {T.waiting[locale]}
+                </span>
             ) : (
               logs.map(l => (
                 <span
@@ -451,7 +508,7 @@ export default function SerialMonitor(): ReactNode {
               ))
             )}
             {paused && logs.length > 0 && (
-              <div className={styles.pausedBadge}>已暂停，新数据不展示</div>
+              <div className={styles.pausedBadge}>{T.pausedBadge[locale]}</div>
             )}
           </div>
 
@@ -461,18 +518,18 @@ export default function SerialMonitor(): ReactNode {
             <input
               className={styles.input}
               value={input}
-              placeholder={hexMode ? '十六进制，如：48 49 0A' : '输入要发送的内容'}
+              placeholder={hexMode ? T.placeholderHex[locale] : T.placeholderText[locale]}
               onChange={e => setInput(e.target.value)}
               onKeyDown={e => {
                 if (e.key === 'Enter') void send();
               }}
             />
-            <button
-              className={`${styles.btn} ${styles.btnPrimary}`}
-              onClick={() => void send()}
-              disabled={!connected}>
-              发送
-            </button>
+              <button
+                className={`${styles.btn} ${styles.btnPrimary}`}
+                onClick={() => void send()}
+                disabled={!connected}>
+                {T.send[locale]}
+              </button>
           </div>
 
           <div className={styles.inputRow} style={{marginTop: 12, flexWrap: 'wrap', gap: 16}}>
@@ -485,7 +542,7 @@ export default function SerialMonitor(): ReactNode {
                   if (e.target.checked) setAddNewline(false);
                 }}
               />
-              HEX 发送
+              {T.hexSend[locale]}
             </label>
             <label className={styles.toggle}>
               <input
@@ -493,7 +550,7 @@ export default function SerialMonitor(): ReactNode {
                 checked={hexReceive}
                 onChange={e => setHexReceive(e.target.checked)}
               />
-              HEX 接收
+              {T.hexReceive[locale]}
             </label>
             <label className={styles.toggle}>
               <input
@@ -502,28 +559,28 @@ export default function SerialMonitor(): ReactNode {
                 onChange={e => setAddNewline(e.target.checked)}
                 disabled={hexMode}
               />
-              发送时自动追加 CRLF
+              {T.appendCrlf[locale]}
             </label>
           </div>
 
           <details className={styles.advanced}>
-            <summary>定时发送（自动循环）</summary>
+            <summary>{T.autoSend[locale]}</summary>
             <div className={styles.advancedBody}>
               <div className={styles.field}>
                 <label className={styles.label} htmlFor="auto-text">
-                  发送内容
+                  {T.sendContent[locale]}
                 </label>
                 <input
                   id="auto-text"
                   className={styles.input}
                   value={autoSendText}
-                  placeholder={autoSendHex ? 'HEX 字节，如 01 03 00 00' : '要循环发送的文本'}
+                  placeholder={autoSendHex ? T.placeholderAutoHex[locale] : T.placeholderAutoText[locale]}
                   onChange={e => setAutoSendText(e.target.value)}
                 />
               </div>
               <div className={styles.field}>
                 <label className={styles.label} htmlFor="auto-interval">
-                  间隔 (ms)
+                  {T.interval[locale]}
                 </label>
                 <input
                   id="auto-interval"
@@ -544,13 +601,13 @@ export default function SerialMonitor(): ReactNode {
                     if (e.target.checked) setHexMode(true);
                   }}
                 />
-                以 HEX 形式发送
+                {T.sendAsHex[locale]}
               </label>
               <button
                 className={`${styles.btn} ${autoSendEnabled ? styles.btnDanger : styles.btnPrimary}`}
                 onClick={() => setAutoSendEnabled(v => !v)}
                 disabled={!connected || !autoSendText.trim()}>
-                {autoSendEnabled ? '停止定时发送' : '启动定时发送'}
+                {autoSendEnabled ? T.stopAuto[locale] : T.startAuto[locale]}
               </button>
             </div>
           </details>

@@ -1,7 +1,16 @@
 import {useState, useMemo, useEffect, type ReactNode} from 'react';
 import Layout from '@theme/Layout';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
 import styles from './serial-monitor.module.css';
+
+type Locale = 'zh' | 'en';
+const T = {
+  title: {zh: '计算器', en: 'Calculator'},
+  desc: {zh: '网页版科学计算器', en: 'Web Scientific Calculator'},
+  subtitle: {zh: '支持四则运算、括号与常用科学函数，可键盘输入', en: 'Supports arithmetic, parentheses and common scientific functions, with keyboard input'},
+  angleUnit: {zh: '角度单位', en: 'Angle Unit'},
+} as const;
 
 // 显示屏符号 → JS 运算符
 const DISPLAY_TO_JS: Record<string, string> = {
@@ -117,6 +126,10 @@ const BUTTONS: BtnSpec[] = [
 ];
 
 export default function Calculator(): ReactNode {
+  const {
+    i18n: {currentLocale},
+  } = useDocusaurusContext();
+  const locale: Locale = currentLocale === 'en' ? 'en' : 'zh';
   const [expr, setExpr] = useState('');
   const [deg, setDeg] = useState(false);
   const result = useMemo(() => safeEval(expr, deg), [expr, deg]);
@@ -177,13 +190,11 @@ export default function Calculator(): ReactNode {
   }, [result]);
 
   return (
-    <Layout title="计算器" description="网页版科学计算器">
+    <Layout title={T.title[locale]} description={T.desc[locale]}>
       <main className={`${styles.page} ${styles.wide}`}>
         <div className={styles.header}>
-          <h1 className={styles.title}>计算器</h1>
-          <p className={styles.subtitle}>
-            支持四则运算、括号与常用科学函数，可键盘输入
-          </p>
+          <h1 className={styles.title}>{T.title[locale]}</h1>
+          <p className={styles.subtitle}>{T.subtitle[locale]}</p>
         </div>
         <div className={styles.panel}>
           <div className={styles.calcScreen}>
@@ -197,7 +208,7 @@ export default function Calculator(): ReactNode {
             </div>
           </div>
           <div className={styles.calcMode}>
-            <span className={styles.modeLabel}>角度单位</span>
+            <span className={styles.modeLabel}>{T.angleUnit[locale]}</span>
             <button
               type="button"
               className={!deg ? styles.modeBtnActive : styles.modeBtn}
