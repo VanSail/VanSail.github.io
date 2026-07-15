@@ -7,8 +7,8 @@ import Hero3D from '@site/src/components/Hero3D';
 import styles from './index.module.css';
 
 interface MenuOption {
-  label: string;
-  to?: string;
+  label: string | LText;
+  to?: string | LText;
 }
 
 interface LText {
@@ -127,6 +127,12 @@ const nodeIcon = (
   </svg>
 );
 
+const gitIcon = (
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M12 1.27a11 11 0 0 0-3.48 21.45c.55.1.75-.24.75-.53v-1.85c-3.06.67-3.71-1.47-3.71-1.47-.5-1.27-1.22-1.6-1.22-1.6-1-.68.07-.67.07-.67 1.1.08 1.69 1.14 1.69 1.14.98 1.68 2.58 1.19 3.21.91.1-.71.38-1.19.7-1.46-2.45-.28-5.02-1.22-5.02-5.44 0-1.2.43-2.18 1.13-2.95-.11-.28-.49-1.4.11-2.92 0 0 .92-.3 3.02 1.13a10.5 10.5 0 0 1 5.5 0c2.1-1.43 3.02-1.13 3.02-1.13.6 1.52.22 2.64.11 2.92.7.77 1.13 1.75 1.13 2.95 0 4.23-2.58 5.16-5.03 5.43.4.34.75 1.01.75 2.04v3.03c0 .3.2.64.76.53A11 11 0 0 0 12 1.27Z" />
+  </svg>
+);
+
 const aiAgents: CardItem[] = [
   {
     to: 'https://opencode.ai/',
@@ -219,6 +225,19 @@ const devResources: CardItem[] = [
     desc: {zh: 'JavaScript 运行时', en: 'JavaScript Runtime'},
     icon: nodeIcon,
   },
+  {
+    to: 'https://git-scm.com/',
+    title: {zh: 'Git', en: 'Git'},
+    desc: {zh: '分布式版本控制系统', en: 'Distributed Version Control'},
+    icon: gitIcon,
+    menu: [
+      {label: {zh: 'Git 官网', en: 'Git Website'}, to: 'https://git-scm.com/'},
+      {
+        label: {zh: 'Git 文档', en: 'Git Documentation'},
+        to: {zh: 'https://git-scm.com/book/zh/v2', en: 'https://git-scm.com/book/en/v2'},
+      },
+    ],
+  },
 ];
 
 const sections = {
@@ -305,32 +324,40 @@ function MenuCard({item, locale}: {item: CardItem; locale: 'zh' | 'en'}): ReactN
       {open && (
         <div className={styles.menuPopover} role="menu">
           {item.menu!.map((opt, i) => {
+            const label =
+              typeof opt.label === 'string' ? opt.label : opt.label[locale];
+            const to =
+              opt.to === undefined
+                ? undefined
+                : typeof opt.to === 'string'
+                  ? opt.to
+                  : opt.to[locale];
             const inner = (
               <>
                 {item.numbered && (
                   <span className={styles.menuStep}>{i + 1}</span>
                 )}
-                <span className={styles.menuLabel}>{opt.label}</span>
-                {opt.to?.startsWith('http') && (
+                <span className={styles.menuLabel}>{label}</span>
+                {to?.startsWith('http') && (
                   <span className={styles.menuExt}>↗</span>
                 )}
               </>
             );
-            if (!opt.to) {
+            if (!to) {
               return (
                 <span
-                  key={opt.label}
+                  key={label}
                   className={`${styles.menuItem} ${styles.menuItemStatic}`}
                   role="menuitem">
                   {inner}
                 </span>
               );
             }
-            const ext = opt.to.startsWith('http');
+            const ext = to.startsWith('http');
             return ext ? (
               <a
-                key={opt.label}
-                href={opt.to}
+                key={label}
+                href={to}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={styles.menuItem}
@@ -340,8 +367,8 @@ function MenuCard({item, locale}: {item: CardItem; locale: 'zh' | 'en'}): ReactN
               </a>
             ) : (
               <Link
-                key={opt.label}
-                to={opt.to}
+                key={label}
+                to={to}
                 className={styles.menuItem}
                 role="menuitem"
                 onClick={() => setOpen(false)}>
