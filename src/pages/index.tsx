@@ -149,7 +149,7 @@ const aiAgents: CardItem[] = [
   {
     to: 'https://tinyhumans.ai/openhuman',
     title: {zh: 'OpenHuman', en: 'OpenHuman'},
-    desc: {zh: '个人 AI 超级智能', en: 'Personal AI superintelligence'},
+    desc: {zh: '个人 AI 超级智能', en: 'Personal AI super intelligence'},
     icon: aiIcon.openhuman,
   },
 ];
