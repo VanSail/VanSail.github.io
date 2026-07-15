@@ -286,6 +286,14 @@
     "message": "Search",
     "description": "The ARIA label and placeholder for search button"
   },
+  "theme.navbar.searchBar.placeholder": {
+    "message": "Search",
+    "description": "Navbar custom search input placeholder"
+  },
+  "theme.navbar.searchBar.ariaLabel": {
+    "message": "Search",
+    "description": "Navbar custom search input aria-label"
+  },
   "theme.SearchPage.existingResultsTitle": {
     "message": "Search results for \"{query}\"",
     "description": "The search page title for non-empty query"

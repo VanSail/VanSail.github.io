@@ -1,5 +1,6 @@
 import React, {type ReactNode, useState} from 'react';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
+import {translate} from '@docusaurus/Translate';
 
 import styles from './styles.module.css';
 
@@ -9,6 +10,17 @@ export default function NavbarSearchBar(): ReactNode {
   } = useDocusaurusContext();
   const locale = currentLocale as 'en' | 'zh-CN';
   const [query, setQuery] = useState('');
+
+  const searchPlaceholder = translate({
+    id: 'theme.navbar.searchBar.placeholder',
+    message: '搜索',
+    description: 'Navbar custom search input placeholder',
+  });
+  const searchAriaLabel = translate({
+    id: 'theme.navbar.searchBar.ariaLabel',
+    message: '搜索',
+    description: 'Navbar custom search input aria-label',
+  });
 
   const onSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,8 +53,8 @@ export default function NavbarSearchBar(): ReactNode {
         type="search"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        placeholder="搜索"
-        aria-label="搜索"
+        placeholder={searchPlaceholder}
+        aria-label={searchAriaLabel}
       />
     </form>
   );
