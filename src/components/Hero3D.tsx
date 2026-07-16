@@ -1,22 +1,25 @@
 import {useEffect, useRef} from 'react';
 import type {ReactElement} from 'react';
 import type {BufferGeometry, Vector3} from 'three';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 import styles from './Hero3D.module.css';
-import {EARTH_MASK_DATA_URL} from './earthMask';
 
 /**
  * 主页 hero 动画：缓慢自转的点阵地球（暖橙陆地点 + 极淡经纬网 + 星空）。
- * - 大陆轮廓由内联的陆地/海洋掩膜（earthMask.ts，base64）决定，运行时用 canvas 解码取样；
- *   不依赖任何外部图片文件，部署更干净。
+ * - 大陆轮廓由陆地/海洋掩膜图（/img/earth-mask.jpg）决定，运行时用 canvas 解码取样；
+ *   图片作为静态资源单独加载，可被浏览器独立缓存，不拖累首页 JS 体积。
  * - 颜色取自网站主色，与暖深色背景协调；保留拖拽、朝向光标、悬停放大等交互。
  * - 使用动态 import('three')，避免 Docusaurus 预渲染（SSR）时触碰 WebGL API。
+ * - 仅在进入视口时运行动画，离开时暂停以节省 GPU；并尊重 prefers-reduced-motion。
  */
 export default function Hero3D(): ReactElement {
   const mountRef = useRef<HTMLDivElement>(null);
+  const maskUrl = useBaseUrl('/img/earth-mask.jpg');
 
   useEffect(() => {
     let cleanup = () => {};
     let frame = 0;
+    let io: IntersectionObserver | undefined;
 
     (async () => {
       const THREE = await import('three');
@@ -58,7 +61,7 @@ export default function Hero3D(): ReactElement {
       //    海洋留空——一眼可辨是地球，且点正确投影在球面上（无贴图扭曲）。
       // 读取地球贴图像素，用于判断某经纬度的点是否在陆地
       const img = new Image();
-      img.src = EARTH_MASK_DATA_URL;
+      img.src = maskUrl;
       await new Promise<void>((resolve, reject) => {
         img.onload = () => resolve();
         img.onerror = () => reject(new Error('earth map load failed'));
@@ -72,7 +75,10 @@ export default function Hero3D(): ReactElement {
       const isLand = (lon: number, lat: number): boolean => {
         const u = (lon + Math.PI) / (2 * Math.PI);
         const v = (Math.PI / 2 - lat) / Math.PI;
-        const px = Math.min(img.width - 1, Math.max(0, Math.floor(u * img.width)));
+        const px = Math.min(
+          img.width - 1,
+          Math.max(0, Math.floor(u * img.width)),
+        );
         const py = Math.min(
           img.height - 1,
           Math.max(0, Math.floor(v * img.height)),
@@ -254,7 +260,47 @@ export default function Hero3D(): ReactElement {
         camera.lookAt(scene.position);
         renderer.render(scene, camera);
       };
-      animate();
+
+      // 尊重"减少动态效果"偏好：静止用户只看到一帧静态地球，不做自转
+      const prefersReduced =
+        typeof window.matchMedia === 'function' &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // 至少渲染一帧，保证暂停/减弱动画时也能看到地球
+      camera.lookAt(scene.position);
+      renderer.render(scene, camera);
+
+      let running = false;
+      const startLoop = () => {
+        if (running || prefersReduced) return;
+        running = true;
+        frame = requestAnimationFrame(animate);
+      };
+      const stopLoop = () => {
+        if (!running) return;
+        running = false;
+        cancelAnimationFrame(frame);
+      };
+
+      if (!prefersReduced) {
+        // 仅在 hero 进入视口时运行动画，滚出视口即暂停，避免持续占用 GPU
+        if (typeof IntersectionObserver === 'function') {
+          io = new IntersectionObserver(
+            entries => {
+              const entry = entries[0];
+              if (entry && entry.isIntersecting) {
+                startLoop();
+              } else {
+                stopLoop();
+              }
+            },
+            {threshold: 0},
+          );
+          io.observe(mount);
+        } else {
+          startLoop();
+        }
+      }
 
       const onResize = () => {
         const w = mount.clientWidth;
@@ -266,7 +312,9 @@ export default function Hero3D(): ReactElement {
       window.addEventListener('resize', onResize);
 
       cleanup = () => {
+        stopLoop();
         cancelAnimationFrame(frame);
+        io?.disconnect();
         mount.removeEventListener('pointermove', onMove);
         mount.removeEventListener('pointerdown', onDown);
         window.removeEventListener('pointerup', onUp);
@@ -282,7 +330,7 @@ export default function Hero3D(): ReactElement {
     })();
 
     return () => cleanup();
-  }, []);
+  }, [maskUrl]);
 
   return <div ref={mountRef} className={styles.hero3d} aria-hidden="true" />;
 }

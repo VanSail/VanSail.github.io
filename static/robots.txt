@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://vansail.github.io/sitemap.xml

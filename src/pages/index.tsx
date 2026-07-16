@@ -1,4 +1,10 @@
-import {useEffect, useRef, useState, type ReactNode} from 'react';
+import {
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+  type KeyboardEvent as ReactKeyboardEvent,
+} from 'react';
 import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
@@ -164,7 +170,10 @@ const robots: CardItem[] = [
   {
     to: 'https://wiki.ros.org/noetic',
     title: {zh: 'ROS1', en: 'ROS1'},
-    desc: {zh: '经典 ROS · 基于 ROS Master', en: 'Classic ROS · ROS Master Based'},
+    desc: {
+      zh: '经典 ROS · 基于 ROS Master',
+      en: 'Classic ROS · ROS Master Based',
+    },
     menu: [
       {label: 'Melodic', to: 'https://wiki.ros.org/melodic'},
       {label: 'Noetic', to: 'https://wiki.ros.org/noetic'},
@@ -174,7 +183,10 @@ const robots: CardItem[] = [
   {
     to: '/docs/ros2',
     title: {zh: 'ROS2', en: 'ROS2'},
-    desc: {zh: '新一代 · DDS 实时跨平台', en: 'Next-Gen · DDS Realtime Cross-Platform'},
+    desc: {
+      zh: '新一代 · DDS 实时跨平台',
+      en: 'Next-Gen · DDS Realtime Cross-Platform',
+    },
     menu: [
       {label: 'Humble', to: 'https://docs.ros.org/en/humble/'},
       {label: 'Jazzy', to: 'https://docs.ros.org/en/jazzy/'},
@@ -213,9 +225,15 @@ const devResources: CardItem[] = [
     desc: {zh: '现代终端 · 插件化增强', en: 'Modern Shell · Plugin Enhanced'},
     numbered: true,
     menu: [
-      {label: '安装 Zsh'},
-      {label: '安装 Oh My Zsh', to: 'https://ohmyz.sh/'},
-      {label: '安装终端建议插件', to: 'https://github.com/zsh-users/zsh-autosuggestions'},
+      {label: {zh: '安装 Zsh', en: 'Install Zsh'}},
+      {
+        label: {zh: '安装 Oh My Zsh', en: 'Install Oh My Zsh'},
+        to: 'https://ohmyz.sh/',
+      },
+      {
+        label: {zh: '安装终端建议插件', en: 'Install Autosuggestions Plugin'},
+        to: 'https://github.com/zsh-users/zsh-autosuggestions',
+      },
     ],
     icon: zshIcon,
   },
@@ -233,8 +251,11 @@ const devResources: CardItem[] = [
     menu: [
       {label: {zh: 'Git 官网', en: 'Git Website'}, to: 'https://git-scm.com/'},
       {
-        label: {zh: 'Git 文档', en: 'Git Documentation'},
-        to: {zh: 'https://git-scm.com/book/zh/v2', en: 'https://git-scm.com/book/en/v2'},
+        label: {zh: 'Git 文档', en: 'Git Docs'},
+        to: {
+          zh: 'https://git-scm.com/book/zh/v2',
+          en: 'https://git-scm.com/book/en/v2',
+        },
       },
     ],
   },
@@ -252,7 +273,13 @@ const meta = {
   desc: {zh: '教程文档与网页工具', en: 'Tutorials & web tools'},
 };
 
-function Card({item, locale}: {item: CardItem; locale: 'zh' | 'en'}): ReactNode {
+function Card({
+  item,
+  locale,
+}: {
+  item: CardItem;
+  locale: 'zh' | 'en';
+}): ReactNode {
   if (item.menu) {
     return <MenuCard item={item} locale={locale} />;
   }
@@ -263,7 +290,8 @@ function Card({item, locale}: {item: CardItem; locale: 'zh' | 'en'}): ReactNode 
         href={item.to}
         target="_blank"
         rel="noopener noreferrer"
-        className={styles.card}>
+        className={styles.card}
+      >
         <span className={styles.cardIcon} aria-hidden="true">
           {item.icon}
         </span>
@@ -287,9 +315,22 @@ function Card({item, locale}: {item: CardItem; locale: 'zh' | 'en'}): ReactNode 
   );
 }
 
-function MenuCard({item, locale}: {item: CardItem; locale: 'zh' | 'en'}): ReactNode {
+function MenuCard({
+  item,
+  locale,
+}: {
+  item: CardItem;
+  locale: 'zh' | 'en';
+}): ReactNode {
   const [open, setOpen] = useState(false);
   const wrapRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const popoverRef = useRef<HTMLDivElement>(null);
+
+  const close = (focusButton = false) => {
+    setOpen(false);
+    if (focusButton) buttonRef.current?.focus();
+  };
 
   useEffect(() => {
     if (!open) return;
@@ -298,18 +339,51 @@ function MenuCard({item, locale}: {item: CardItem; locale: 'zh' | 'en'}): ReactN
         setOpen(false);
       }
     };
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.stopPropagation();
+        close(true);
+      }
+    };
     document.addEventListener('mousedown', onDocClick);
-    return () => document.removeEventListener('mousedown', onDocClick);
+    document.addEventListener('keydown', onKeyDown);
+    // 打开后把焦点移到第一个菜单项，方便键盘操作
+    const first =
+      popoverRef.current?.querySelector<HTMLElement>('[role="menuitem"]');
+    first?.focus();
+    return () => {
+      document.removeEventListener('mousedown', onDocClick);
+      document.removeEventListener('keydown', onKeyDown);
+    };
   }, [open]);
+
+  // 方向键在菜单项之间移动焦点
+  const onMenuKeyDown = (e: ReactKeyboardEvent<HTMLDivElement>) => {
+    if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+    e.preventDefault();
+    const items = Array.from(
+      popoverRef.current?.querySelectorAll<HTMLElement>('[role="menuitem"]') ??
+        [],
+    );
+    if (items.length === 0) return;
+    const idx = items.indexOf(document.activeElement as HTMLElement);
+    const next =
+      e.key === 'ArrowDown'
+        ? (idx + 1) % items.length
+        : (idx - 1 + items.length) % items.length;
+    items[next]?.focus();
+  };
 
   return (
     <div className={styles.menuCardWrap} ref={wrapRef}>
       <button
+        ref={buttonRef}
         type="button"
         className={styles.card}
         onClick={() => setOpen(o => !o)}
         aria-expanded={open}
-        aria-haspopup="menu">
+        aria-haspopup="menu"
+      >
         <span className={styles.cardIcon} aria-hidden="true">
           {item.icon}
         </span>
@@ -322,7 +396,12 @@ function MenuCard({item, locale}: {item: CardItem; locale: 'zh' | 'en'}): ReactN
         </span>
       </button>
       {open && (
-        <div className={styles.menuPopover} role="menu">
+        <div
+          className={styles.menuPopover}
+          role="menu"
+          ref={popoverRef}
+          onKeyDown={onMenuKeyDown}
+        >
           {item.menu!.map((opt, i) => {
             const label =
               typeof opt.label === 'string' ? opt.label : opt.label[locale];
@@ -346,9 +425,11 @@ function MenuCard({item, locale}: {item: CardItem; locale: 'zh' | 'en'}): ReactN
             if (!to) {
               return (
                 <span
-                  key={label}
+                  key={i}
                   className={`${styles.menuItem} ${styles.menuItemStatic}`}
-                  role="menuitem">
+                  role="menuitem"
+                  tabIndex={-1}
+                >
                   {inner}
                 </span>
               );
@@ -356,22 +437,24 @@ function MenuCard({item, locale}: {item: CardItem; locale: 'zh' | 'en'}): ReactN
             const ext = to.startsWith('http');
             return ext ? (
               <a
-                key={label}
+                key={i}
                 href={to}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={styles.menuItem}
                 role="menuitem"
-                onClick={() => setOpen(false)}>
+                onClick={() => close()}
+              >
                 {inner}
               </a>
             ) : (
               <Link
-                key={label}
+                key={i}
                 to={to}
                 className={styles.menuItem}
                 role="menuitem"
-                onClick={() => setOpen(false)}>
+                onClick={() => close()}
+              >
                 {inner}
               </Link>
             );
@@ -389,7 +472,8 @@ export default function Home(): ReactNode {
   const locale: 'zh' | 'en' = currentLocale === 'en' ? 'en' : 'zh';
   return (
     <div
-      style={{background: 'var(--ifm-background-color)', minHeight: '100vh'}}>
+      style={{background: 'var(--ifm-background-color)', minHeight: '100vh'}}
+    >
       <Layout title={meta.title[locale]} description={meta.desc[locale]}>
         <main className={styles.page}>
           <section className={styles.section}>

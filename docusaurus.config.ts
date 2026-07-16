@@ -15,11 +15,12 @@ const config: Config = {
   },
 
   // Set the production url of your site here
-  url: 'https://VanSail.github.io',
+  url: 'https://vansail.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
-  scripts: ['/js/codeblock-toggle.js'],
+  // 代码块折叠交互改用 client module 注入（非阻塞），见下方 clientModules
+  clientModules: ['./src/clientModules/codeblockCollapse.ts'],
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
@@ -73,6 +74,21 @@ const config: Config = {
   ],
 
   themeConfig: {
+    // 默认社交分享卡片（1200×630），生成 og:image / twitter:image
+    image: 'img/social-card.png',
+    metadata: [
+      {name: 'twitter:card', content: 'summary_large_image'},
+      {
+        name: 'keywords',
+        content: 'VanSail, 教程, 文档, ROS, AI, 网页工具, Zsh, Git',
+      },
+      {
+        name: 'description',
+        content: '教程文档与网页工具 · With Sincere Mind, Build Tech Sail',
+      },
+      {property: 'og:type', content: 'website'},
+      {property: 'og:site_name', content: 'VanSail'},
+    ],
     colorMode: {
       disableSwitch: true,
       defaultMode: 'dark',
