@@ -10,7 +10,7 @@ export default function LocaleDropdownNavbarItem(): JSX.Element {
   const alternatePageUtils = useAlternatePageUtils();
 
   // 在默认语言(zh-CN) 与英文(en) 之间来回切换
-  const otherLocale = locales.find((l) => l !== currentLocale) ?? 'en';
+  const otherLocale = locales.find(l => l !== currentLocale) ?? 'en';
   const targetPath = alternatePageUtils.createUrl({locale: otherLocale});
   const targetLabel = localeConfigs[otherLocale]?.label ?? 'English';
 
@@ -19,7 +19,8 @@ export default function LocaleDropdownNavbarItem(): JSX.Element {
       href={targetPath}
       className={styles.localeSwitcher}
       aria-label={`Switch to ${targetLabel}`}
-      title={`Switch to ${targetLabel}`}>
+      title={`Switch to ${targetLabel}`}
+    >
       <svg
         viewBox="0 0 24 24"
         className={styles.globe}
@@ -28,11 +29,13 @@ export default function LocaleDropdownNavbarItem(): JSX.Element {
         strokeWidth={2}
         strokeLinecap="round"
         strokeLinejoin="round"
-        aria-hidden="true">
+        aria-hidden="true"
+      >
         <circle cx="12" cy="12" r="10" />
         <line x1="2" y1="12" x2="22" y2="12" />
         <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
       </svg>
+      <span className={styles.localeText}>中/E</span>
     </a>
   );
 }

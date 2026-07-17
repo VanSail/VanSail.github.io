@@ -2,15 +2,18 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
+  gap: 4px;
+  height: 28px;
+  padding: 0 8px;
+  border-radius: 999px;
   overflow: hidden;
   border: 1px solid rgba(184, 233, 134, 0.4);
   background: transparent;
   cursor: pointer;
   color: rgba(184, 233, 134, 0.85);
-  transition: border-color 0.15s ease, box-shadow 0.15s ease,
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
     transform 0.15s ease;
   margin-left: 4px;
 }
@@ -22,7 +25,17 @@
 }
 
 .globe {
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   display: block;
+  flex-shrink: 0;
+}
+
+/* 地球图标旁的小字，示意可切换中 / 英语言 */
+.localeText {
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
 }

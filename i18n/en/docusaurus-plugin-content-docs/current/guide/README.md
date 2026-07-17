@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# Documentation Guide
+# Docs Guide
 
 This section helps documentation contributors get started quickly, breaking each topic into a short tutorial.
 

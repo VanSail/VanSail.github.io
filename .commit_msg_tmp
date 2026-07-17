@@ -1,0 +1,6 @@
+feat: add 中/E hint to locale switcher, rename guide to Docs Guide
+
+- Locale switcher: replace round globe-only button with a pill showing
+  the globe icon plus a small "中/E" label hinting language switching
+- Rename the English guide doc title from "Documentation Guide" to "Docs Guide"
+- Revert the earlier accidental "中/E" badge placed on the site logo
