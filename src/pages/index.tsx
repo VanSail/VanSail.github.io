@@ -139,6 +139,13 @@ const gitIcon = (
   </svg>
 );
 
+// 开发工具：扳手 + 螺丝刀组合，表达“工具/开发工具”
+const toolIcon = (
+  <svg {...svgProps}>
+    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+  </svg>
+);
+
 const aiAgents: CardItem[] = [
   {
     to: 'https://opencode.ai/',
@@ -261,11 +268,22 @@ const devResources: CardItem[] = [
   },
 ];
 
+// STM32 开发
+const stm32Tools: CardItem[] = [
+  {
+    to: '/docs/stm32/dev-tools',
+    title: {zh: '开发工具', en: 'Dev Tools'},
+    desc: {zh: '以 STM32F103C8T6 为例', en: 'Using STM32F103C8T6 as example'},
+    icon: toolIcon,
+  },
+];
+
 const sections = {
   ai: {zh: 'AI 智能体', en: 'AI Agents'},
   robots: {zh: '机器人操作系统', en: 'Robot Operating System'},
   web: {zh: '网页工具', en: 'Web Tools'},
   software: {zh: '软件工具', en: 'Software Tools'},
+  stm32: {zh: 'STM32 开发', en: 'STM32 Development'},
 };
 
 const meta = {
@@ -507,6 +525,15 @@ export default function Home(): ReactNode {
             </h2>
             <div className={styles.grid}>
               {devResources.map(item => (
+                <Card key={item.to} item={item} locale={locale} />
+              ))}
+            </div>
+          </section>
+
+          <section className={styles.section}>
+            <h2 className={styles.sectionTitle}>{sections.stm32[locale]}</h2>
+            <div className={styles.grid}>
+              {stm32Tools.map(item => (
                 <Card key={item.to} item={item} locale={locale} />
               ))}
             </div>

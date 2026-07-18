@@ -31,6 +31,8 @@ jobs:
           cache: yarn
       - name: Install dependencies
         run: yarn install --frozen-lockfile
+      - name: Check zh/en tutorial sync
+        run: yarn check:i18n
       - name: Build website
         run: yarn build
       - name: Upload artifact

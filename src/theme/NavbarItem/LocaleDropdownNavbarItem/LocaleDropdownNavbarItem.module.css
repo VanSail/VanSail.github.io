@@ -1,41 +1,42 @@
 .localeSwitcher {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  height: 28px;
-  padding: 0 8px;
-  border-radius: 999px;
-  overflow: hidden;
-  border: 1px solid rgba(184, 233, 134, 0.4);
+  width: 20px;
+  height: 20px;
+  border: none;
   background: transparent;
   cursor: pointer;
   color: rgba(184, 233, 134, 0.85);
+  padding: 0;
+  margin-left: 8px;
   transition:
-    border-color 0.15s ease,
-    box-shadow 0.15s ease,
+    color 0.15s ease,
     transform 0.15s ease;
-  margin-left: 4px;
 }
 
 .localeSwitcher:hover {
-  border-color: rgba(184, 233, 134, 1);
-  box-shadow: 0 0 0 2px rgba(184, 233, 134, 0.15);
+  color: rgba(184, 233, 134, 1);
   transform: scale(1.06);
 }
 
 .globe {
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
   display: block;
-  flex-shrink: 0;
 }
 
-/* 地球图标旁的小字，示意可切换中 / 英语言 */
+/* 地球中心的中/E 字样，示意可切换中 / 英；与 GitHub 等 logo 同色，居中无胶囊包裹 */
 .localeText {
-  font-size: 11px;
-  font-weight: 600;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 8px;
   line-height: 1;
-  letter-spacing: 0.5px;
-  white-space: nowrap;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  color: rgba(184, 233, 134, 1);
+  pointer-events: none;
 }
