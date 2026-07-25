@@ -3,7 +3,7 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import {useAlternatePageUtils} from '@docusaurus/theme-common/internal';
 import styles from './LocaleDropdownNavbarItem.module.css';
 
-export default function LocaleDropdownNavbarItem(): JSX.Element {
+export default function LocaleDropdownNavbarItem(): React.JSX.Element {
   const {
     i18n: {currentLocale, locales, localeConfigs},
   } = useDocusaurusContext();
@@ -11,7 +11,10 @@ export default function LocaleDropdownNavbarItem(): JSX.Element {
 
   // 在默认语言(zh-CN) 与英文(en) 之间来回切换
   const otherLocale = locales.find(l => l !== currentLocale) ?? 'en';
-  const targetPath = alternatePageUtils.createUrl({locale: otherLocale});
+  const targetPath = alternatePageUtils.createUrl({
+    locale: otherLocale,
+    fullyQualified: false,
+  });
   const targetLabel = localeConfigs[otherLocale]?.label ?? 'English';
 
   return (

@@ -1,0 +1,435 @@
+.page {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+  color: var(--ifm-font-color-base);
+}
+
+/* 返回 */
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: transparent;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  color: var(--ifm-color-emphasis-700);
+  border-radius: 8px;
+  padding: 0.35rem 0.8rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  margin-bottom: 1.4rem;
+}
+
+.back:hover {
+  border-color: rgba(184, 233, 134, 0.6);
+  color: rgba(184, 233, 134, 1);
+}
+
+/* 首页：两个模式卡片 */
+.home {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+}
+
+.modeCard {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.7rem;
+  text-align: left;
+  background: var(--ifm-background-surface-color);
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 16px;
+  padding: 1.8rem 1.6rem;
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.modeCard:hover {
+  transform: translateY(-3px);
+  border-color: rgba(184, 233, 134, 0.7);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+}
+
+.modeIcon {
+  width: 46px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: rgba(184, 233, 134, 0.12);
+  color: rgba(184, 233, 134, 1);
+}
+
+.modeIcon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.modeTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--ifm-color-primary);
+}
+
+.modeSub {
+  font-size: 0.9rem;
+  color: var(--ifm-color-emphasis-600);
+  line-height: 1.5;
+}
+
+/* 选择器（单参 / 对比共用） */
+.picker {
+  position: relative;
+  display: inline-block;
+  min-width: 260px;
+  max-width: 100%;
+}
+
+.pickerBtn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  width: 100%;
+  background: var(--ifm-background-surface-color);
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 10px;
+  padding: 0.6rem 0.9rem;
+  font-size: 0.95rem;
+  color: var(--ifm-font-color-base);
+  cursor: pointer;
+}
+
+.pickerBtn:hover {
+  border-color: rgba(184, 233, 134, 0.6);
+}
+
+.pickerVal {
+  font-weight: 600;
+}
+
+.pickerPlaceholder {
+  color: var(--ifm-color-emphasis-500);
+}
+
+.caret {
+  color: var(--ifm-color-emphasis-500);
+  font-size: 0.8rem;
+}
+
+.pickerMenu {
+  position: absolute;
+  z-index: 50;
+  top: calc(100% + 6px);
+  left: 0;
+  width: 280px;
+  max-width: 90vw;
+  max-height: 340px;
+  display: flex;
+  flex-direction: column;
+  background: var(--ifm-background-color);
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 12px;
+  padding: 0.5rem;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+}
+
+.pickerSearch {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 8px;
+  padding: 0.45rem 0.6rem;
+  font-size: 0.85rem;
+  background: var(--ifm-background-surface-color);
+  color: var(--ifm-font-color-base);
+  margin-bottom: 0.4rem;
+}
+
+.pickerSearch:focus {
+  outline: none;
+  border-color: rgba(184, 233, 134, 0.7);
+}
+
+.pickerList {
+  overflow-y: auto;
+}
+
+.pickerEmpty {
+  padding: 0.6rem;
+  font-size: 0.85rem;
+  color: var(--ifm-color-emphasis-500);
+  text-align: center;
+}
+
+.pickerItem,
+.pickerItemActive {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  padding: 0.45rem 0.6rem;
+  font-size: 0.9rem;
+  color: var(--ifm-font-color-base);
+  cursor: pointer;
+}
+
+.pickerItem:hover {
+  background: var(--ifm-color-emphasis-100);
+}
+
+.pickerItemActive {
+  background: rgba(184, 233, 134, 0.16);
+  color: rgba(184, 233, 134, 1);
+  font-weight: 600;
+}
+
+/* 单参视图 */
+.single {
+  margin-top: 1.8rem;
+}
+
+.specCard {
+  margin-top: 1.2rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 14px;
+  background: var(--ifm-background-surface-color);
+  overflow: hidden;
+}
+
+.specHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  padding: 1rem 1.2rem;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.specHead h2 {
+  margin: 0;
+  font-size: 1.3rem;
+  color: var(--ifm-color-primary);
+}
+
+.specList {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  column-gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+}
+
+.specRow {
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-column: 1 / -1;
+  padding: 0.6rem 1.2rem;
+  border-bottom: 1px solid var(--ifm-color-emphasis-100);
+}
+
+.specRow:last-child {
+  border-bottom: 0;
+}
+
+.specRow dt {
+  color: var(--ifm-color-emphasis-600);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.specRow dd {
+  margin: 0;
+  white-space: pre-line;
+}
+
+.specRow:nth-child(even) {
+  background: var(--ifm-color-emphasis-50);
+}
+
+/* 对比视图 */
+.compare {
+  margin-top: 1.8rem;
+}
+
+.slots {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.vs {
+  font-weight: 700;
+  color: var(--ifm-color-emphasis-500);
+}
+
+/* 对比表 */
+.tableWrap {
+  margin-top: 1.4rem;
+  overflow: auto;
+  max-height: 72vh;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 12px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.table th,
+.table td {
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+  padding: 0.6rem 0.9rem;
+  text-align: left;
+  vertical-align: top;
+  white-space: pre-line;
+}
+
+.table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background: var(--ifm-background-surface-color);
+  border-bottom: 2px solid var(--ifm-color-emphasis-300);
+}
+
+.table th.fieldCol {
+  color: var(--ifm-color-emphasis-600);
+  font-weight: 600;
+  white-space: nowrap;
+  background: var(--ifm-background-surface-color);
+  position: sticky;
+  left: 0;
+  z-index: 1;
+}
+
+.table thead .fieldCol {
+  z-index: 4;
+}
+
+/* 两列取值不同的行高亮 */
+.diffRow > td {
+  background: rgba(184, 233, 134, 0.1);
+}
+
+/* 缺失值淡化 */
+.muted {
+  color: var(--ifm-color-emphasis-400);
+}
+
+.procCol {
+  min-width: 0;
+}
+
+.procHead {
+  font-weight: 700;
+  margin-bottom: 0.2rem;
+  color: var(--ifm-color-primary);
+}
+
+.procActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.pdfBtn {
+  display: inline-block;
+  background: transparent;
+  border: 1px solid rgba(184, 233, 134, 0.5);
+  color: rgba(184, 233, 134, 0.9);
+  border-radius: 6px;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  line-height: 1.4;
+  text-decoration: none;
+}
+
+.pdfBtn:hover {
+  border-color: rgba(184, 233, 134, 1);
+  color: rgba(184, 233, 134, 1);
+}
+
+.empty {
+  color: var(--ifm-color-emphasis-600);
+  margin-top: 1.4rem;
+}
+
+.diffNote {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0.7rem 0.2rem 0;
+  font-size: 0.8rem;
+  color: var(--ifm-color-emphasis-500);
+}
+
+.diffSwatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  background: rgba(184, 233, 134, 0.35);
+  border: 1px solid rgba(184, 233, 134, 0.7);
+}
+
+/* PDF 预览弹窗 */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 2rem;
+}
+
+.modalInner {
+  width: min(900px, 100%);
+  height: min(80vh, 100%);
+  background: var(--ifm-background-color);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.modalBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 0.9rem;
+  border-bottom: 1px solid var(--ifm-color-emphasis-300);
+}
+
+.modalActions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.pdfFrame {
+  flex: 1 1 auto;
+  border: 0;
+  width: 100%;
+}
+
+@media (max-width: 640px) {
+  .home {
+    grid-template-columns: 1fr;
+  }
+}

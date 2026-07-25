@@ -116,6 +116,16 @@ const baseIcon = (
   </svg>
 );
 
+const mindmapIcon = (
+  <svg {...svgProps}>
+    <circle cx="18" cy="5" r="3" />
+    <circle cx="6" cy="12" r="3" />
+    <circle cx="18" cy="19" r="3" />
+    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+  </svg>
+);
+
 const zshIcon = (
   <svg {...svgProps}>
     <path d="M6 5h12" />
@@ -221,6 +231,15 @@ const webTools: CardItem[] = [
     title: {zh: '进制转换', en: 'Base Converter'},
     desc: {zh: '二/八/十/十六进制互转', en: 'Binary/Octal/Dec/Hex Convert'},
     icon: baseIcon,
+  },
+  {
+    to: '/mindmap',
+    title: {zh: '思维导图', en: 'Mind Map'},
+    desc: {
+      zh: '可缩放 · 可折叠 · 导出 SVG/PNG',
+      en: 'Zoomable · Collapsible · Export SVG/PNG',
+    },
+    icon: mindmapIcon,
   },
 ];
 
