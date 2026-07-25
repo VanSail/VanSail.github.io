@@ -29,14 +29,15 @@ function NavbarItems({items}: {items: NavbarItemConfig[]}): ReactNode {
       {items.map((item, i) => (
         <ErrorCauseBoundary
           key={i}
-          onError={(error) =>
+          onError={error =>
             new Error(
               `A theme navbar item failed to render.
 Please double-check the following navbar item (themeConfig.navbar.items) of your Docusaurus config:
 ${JSON.stringify(item, null, 2)}`,
               {cause: error},
             )
-          }>
+          }
+        >
           <NavbarItem {...item} />
         </ErrorCauseBoundary>
       ))}
@@ -59,7 +60,8 @@ function NavbarContentLayout({
         className={clsx(
           ThemeClassNames.layout.navbar.containerLeft,
           'navbar__items',
-        )}>
+        )}
+      >
         {left}
       </div>
       {center && (
@@ -71,7 +73,8 @@ function NavbarContentLayout({
         className={clsx(
           ThemeClassNames.layout.navbar.containerRight,
           'navbar__items navbar__items--right',
-        )}>
+        )}
+      >
         {right}
       </div>
     </div>
@@ -84,7 +87,7 @@ export default function NavbarContent(): ReactNode {
   const items = useNavbarItems();
   const [leftItems, rightItems] = splitNavbarItems(items);
 
-  const searchBarItem = items.find((item) => item.type === 'search');
+  const searchBarItem = items.find(item => item.type === 'search');
 
   return (
     <NavbarContentLayout
@@ -101,12 +104,11 @@ export default function NavbarContent(): ReactNode {
         // TODO stop hardcoding items?
         // Ask the user to add the respective navbar items => more flexible
         <>
-          <WechatQrcode />
           <NavbarItems items={rightItems} />
+          <WechatQrcode />
           <NavbarColorModeToggle className={styles.colorModeToggle} />
         </>
       }
     />
   );
 }
-

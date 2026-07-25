@@ -102,6 +102,12 @@ const config: Config = {
       },
       items: [
         {
+          to: '/processor-compare',
+          position: 'right',
+          className: 'header-icon-link header-chip-link',
+          'aria-label': 'Processor Compare',
+        },
+        {
           href: 'https://github.com/VanSail/VanSail.github.io',
           position: 'right',
           className: 'header-icon-link header-github-link',
