@@ -1,42 +1,49 @@
 .localeSwitcher {
-  position: relative;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  color: rgba(184, 233, 134, 0.85);
-  padding: 0;
+  height: 32px;
+  padding: 3px;
   margin-left: 8px;
+  border-radius: 999px;
+  background: rgba(184, 233, 134, 0.08);
+  border: 1px solid rgba(184, 233, 134, 0.2);
+  gap: 2px;
   transition:
-    color 0.15s ease,
-    transform 0.15s ease;
+    background 0.15s ease,
+    border-color 0.15s ease;
 }
 
 .localeSwitcher:hover {
-  color: rgba(184, 233, 134, 1);
-  transform: scale(1.06);
+  background: rgba(184, 233, 134, 0.12);
+  border-color: rgba(184, 233, 134, 0.32);
 }
 
-.globe {
-  width: 20px;
-  height: 20px;
-  display: block;
-}
-
-/* 地球中心的中/E 字样，示意可切换中 / 英；与 GitHub 等 logo 同色，居中无胶囊包裹 */
-.localeText {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 8px;
+.segment {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 26px;
+  height: 26px;
+  padding: 0 9px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
   line-height: 1;
-  font-weight: 700;
-  letter-spacing: -0.3px;
+  text-decoration: none;
+  color: rgba(184, 233, 134, 0.7);
+  transition:
+    color 0.15s ease,
+    background 0.15s ease;
+}
+
+.segment:hover:not(.active) {
   color: rgba(184, 233, 134, 1);
-  pointer-events: none;
+}
+
+/* 当前语种：绿色填充、深色字 */
+.segment.active {
+  background: rgba(184, 233, 134, 0.95);
+  color: #1a1917;
+  cursor: default;
 }

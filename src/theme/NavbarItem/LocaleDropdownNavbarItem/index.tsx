@@ -9,34 +9,42 @@ export default function LocaleDropdownNavbarItem(): React.JSX.Element {
   } = useDocusaurusContext();
   const alternatePageUtils = useAlternatePageUtils();
 
-  // 在默认语言(zh-CN) 与英文(en) 之间来回切换
-  const otherLocale = locales.find(l => l !== currentLocale) ?? 'en';
-  const targetPath = alternatePageUtils.createUrl({
-    locale: otherLocale,
-    fullyQualified: false,
-  });
-  const targetLabel = localeConfigs[otherLocale]?.label ?? 'English';
+  // 语种缩写：中文「中」、英文「EN」
+  const localeList = locales.map(locale => ({
+    key: locale,
+    short: locale === 'zh-CN' ? '中' : 'EN',
+    label: localeConfigs[locale]?.label ?? locale,
+  }));
 
   return (
-    <a
-      href={targetPath}
-      className={styles.localeSwitcher}
-      aria-label={`Switch to ${targetLabel}`}
-      title={`Switch to ${targetLabel}`}
-    >
-      <svg
-        viewBox="0 0 24 24"
-        className={styles.globe}
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={2}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        aria-hidden="true"
-      >
-        <circle cx="12" cy="12" r="10" />
-      </svg>
-      <span className={styles.localeText}>中/E</span>
-    </a>
+    <div className={styles.localeSwitcher} role="group" aria-label="Language">
+      {localeList.map(({key, short, label}) => {
+        const isActive = key === currentLocale;
+        const targetPath = alternatePageUtils.createUrl({
+          locale: key,
+          fullyQualified: false,
+        });
+        return isActive ? (
+          <span
+            key={key}
+            className={`${styles.segment} ${styles.active}`}
+            aria-current="true"
+            title={label}
+          >
+            {short}
+          </span>
+        ) : (
+          <a
+            key={key}
+            href={targetPath}
+            className={styles.segment}
+            aria-label={`Switch to ${label}`}
+            title={label}
+          >
+            {short}
+          </a>
+        );
+      })}
+    </div>
   );
 }
