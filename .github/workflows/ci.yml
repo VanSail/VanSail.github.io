@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  GITHUB_ACTIONS_SKIP_NODE_DEPRECATION_WARNING: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Lint changed markdown (markdownlint)
+        run: |
+          FILES=$(git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}" -- '*.md' || true)
+          if [ -n "$FILES" ]; then echo "$FILES" | xargs npx markdownlint --config .markdownlint.json; fi
+
+      - name: Check formatting of changed files (prettier)
+        run: |
+          FILES=$(git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}" -- '*.ts' '*.tsx' '*.js' '*.jsx' '*.css' '*.json' || true)
+          if [ -n "$FILES" ]; then echo "$FILES" | xargs npx prettier --check; fi
+
+      - name: Check commit message format (commitlint)
+        if: github.event.pull_request.head.repo.full_name == github.repository
+        run: npx commitlint --from "${{ github.event.pull_request.base.sha }}" --to "${{ github.event.pull_request.head.sha }}" --verbose
+
+      - name: Check zh/en tutorial sync
+        run: yarn check:i18n
+
+      - name: Build website
+        run: yarn build
