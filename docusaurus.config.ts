@@ -95,9 +95,8 @@ const config: Config = {
       respectPrefersColorScheme: false,
     },
     navbar: {
-      title: 'VanSail',
       logo: {
-        alt: 'VanSail Logo',
+        alt: 'VanSail',
         src: 'img/logo.svg',
       },
       items: [

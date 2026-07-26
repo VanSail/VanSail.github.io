@@ -332,5 +332,13 @@ export default function Hero3D(): ReactElement {
     return () => cleanup();
   }, [maskUrl]);
 
-  return <div ref={mountRef} className={styles.hero3d} aria-hidden="true" />;
+  return (
+    <div className={styles.hero3d}>
+      <div ref={mountRef} className={styles.canvas} aria-hidden="true" />
+      <div className={styles.brandMark}>
+        <span className={styles.brandName}>VanSail</span>
+        <span className={styles.brandLine} />
+      </div>
+    </div>
+  );
 }

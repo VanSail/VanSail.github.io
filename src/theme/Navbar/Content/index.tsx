@@ -87,6 +87,12 @@ export default function NavbarContent(): ReactNode {
   const items = useNavbarItems();
   const [leftItems, rightItems] = splitNavbarItems(items);
 
+  // 语言切换始终置于最右侧
+  const localeItems = rightItems.filter(item => item.type === 'localeDropdown');
+  const otherRightItems = rightItems.filter(
+    item => item.type !== 'localeDropdown',
+  );
+
   const searchBarItem = items.find(item => item.type === 'search');
 
   return (
@@ -104,9 +110,10 @@ export default function NavbarContent(): ReactNode {
         // TODO stop hardcoding items?
         // Ask the user to add the respective navbar items => more flexible
         <>
-          <NavbarItems items={rightItems} />
+          <NavbarItems items={otherRightItems} />
           <WechatQrcode />
           <NavbarColorModeToggle className={styles.colorModeToggle} />
+          <NavbarItems items={localeItems} />
         </>
       }
     />
