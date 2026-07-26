@@ -6,18 +6,18 @@ import {useColorMode} from '@docusaurus/theme-common';
 import styles from './mindmap.module.css';
 
 /* ============ 常量 ============ */
-const FONT_SIZE = 14;
-const FONT_FAMILY =
+export const FONT_SIZE = 14;
+export const FONT_FAMILY =
   "system-ui, -apple-system, 'Segoe UI', Roboto, 'PingFang SC', 'Microsoft YaHei', sans-serif";
-const PAD_X = 14;
-const NODE_H = 34;
+export const PAD_X = 14;
+export const NODE_H = 34;
 const H_GAP = 48; // 相邻层级水平间距
 const ROW_GAP = 46; // 同级叶子垂直间距
 const MARGIN = 30;
-const MAX_W = 260; // 单节点最大宽度
+export const MAX_W = 260; // 单节点最大宽度
 
-type Direction = 'right' | 'left' | 'both';
-type ThemeName = 'fresh' | 'deep' | 'vivid';
+export type Direction = 'right' | 'left' | 'both';
+export type ThemeName = 'fresh' | 'deep' | 'vivid';
 type BgId =
   'grid' | 'white' | 'dark' | 'gray' | 'cream' | 'blue' | 'green' | 'custom';
 
@@ -155,7 +155,7 @@ function getCtx(): CanvasRenderingContext2D | null {
 }
 
 /* ============ 数据结构 ============ */
-interface TNode {
+export interface TNode {
   id: string;
   text: string;
   level: number;
@@ -165,8 +165,9 @@ interface TNode {
   side?: Direction; // 该子树生长方向（根节点为 undefined）
   _y?: number;
   x?: number;
+  note?: string;
 }
-interface LaidNode {
+export interface LaidNode {
   id: string;
   text: string;
   depth: number;
@@ -178,12 +179,13 @@ interface LaidNode {
   side: Direction;
   hasChildren: boolean;
   collapsed: boolean;
+  note?: string;
 }
-interface LaidLink {
+export interface LaidLink {
   id: string;
   d: string;
 }
-interface Bounds {
+export interface Bounds {
   minX: number;
   minY: number;
   maxX: number;
@@ -208,7 +210,7 @@ interface ThemeDef {
   dark: ThemeVariant;
 }
 
-const THEMES: Record<ThemeName, ThemeDef> = {
+export const THEMES: Record<ThemeName, ThemeDef> = {
   fresh: {
     light: {
       palette: [
@@ -316,6 +318,12 @@ function parseMarkdown(md: string): TNode {
   for (const raw of md.split('\n')) {
     const line = raw.replace(/\s+$/, '');
     if (!line.trim()) continue;
+    const noteM = /^\|\s?(.*)$/.exec(line);
+    if (noteM) {
+      const top = stack[stack.length - 1].node;
+      top.note = top.note ? `${top.note}\n${noteM[1]}` : noteM[1];
+      continue;
+    }
     const m = /^(#{1,6})\s+(.*)$/.exec(line);
     if (!m) continue;
     const level = m[1].length;
@@ -350,7 +358,7 @@ function collectParentIds(node: TNode, acc: string[] = []): string[] {
 }
 
 /* ============ 布局：支持 向右 / 向左 / 两侧 平衡 ============ */
-type LinkStyle = 'smooth' | 'straight' | 'elbow' | 'rounded';
+export type LinkStyle = 'smooth' | 'straight' | 'elbow' | 'rounded';
 
 function linkPath(
   px: number,
@@ -384,7 +392,7 @@ function linkPath(
   return `M ${px} ${py} L ${midX - sx * r} ${py} Q ${midX} ${py} ${midX} ${py + sy * r} L ${midX} ${cy - sy * r} Q ${midX} ${cy} ${midX + sx * r} ${cy} L ${cx} ${cy}`;
 }
 
-function computeLayout(
+export function computeLayout(
   tree: TNode,
   collapsed: Set<string>,
   direction: Direction,
@@ -474,6 +482,7 @@ function computeLayout(
       side: (n.side ?? 'right') as Direction,
       hasChildren: n.children.length > 0,
       collapsed: collapsed.has(n.id),
+      note: n.note,
     });
     if (!collapsed.has(n.id)) {
       n.children.forEach(c => {
@@ -521,6 +530,7 @@ function serializeTree(tree: TNode): string {
   const startDepth = tree.id === 'root' ? 0 : 1;
   const walk = (n: TNode, depth: number) => {
     lines.push(`${'#'.repeat(depth)} ${n.text}`);
+    if (n.note) n.note.split('\n').forEach(l => lines.push(`| ${l}`));
     n.children.forEach(c => walk(c, depth + 1));
   };
   walk(tree, startDepth);
@@ -572,46 +582,224 @@ function updateNodeText(md: string, id: string, text: string): string {
   return serializeTree(tree);
 }
 
-/* ============ 示例文案 ============ */
-const exampleMd = (locale: 'zh' | 'en') =>
-  locale === 'zh'
-    ? `# 产品规划
-## 用户研究
-### 用户访谈
-#### 目标人群
-#### 痛点梳理
-### 数据分析
-#### 行为路径
-#### 留存指标
-## 功能设计
-### 核心功能
-#### 快速记录
-#### 智能整理
-### 体验优化
-#### 交互流程
-#### 视觉规范
-## 技术实现
-### 前端架构
-### 数据同步`
-    : `# Product Plan
-## User Research
-### Interviews
-#### Target Users
-#### Pain Points
-### Analytics
-#### Behavior
-#### Retention
-## Design
-### Core Features
-#### Quick Capture
-#### Smart Organize
-### UX
-#### Flow
-#### Visual
-## Engineering
-### Frontend
-### Sync`;
+function updateNodeNote(md: string, id: string, note: string): string {
+  const tree = parseMarkdown(md);
+  const node = findNode(tree, id);
+  if (!node) return md;
+  const next = note.trim();
+  node.note = next;
+  return serializeTree(tree);
+}
 
+/* ============ 节点增删 ============ */
+function findParent(tree: TNode, id: string): TNode | null {
+  for (const c of tree.children) {
+    if (c.id === id) return tree;
+    const r = findParent(c, id);
+    if (r) return r;
+  }
+  return null;
+}
+
+function findByText(tree: TNode, text: string): TNode | null {
+  if (tree.text === text) return tree;
+  for (const c of tree.children) {
+    const r = findByText(c, text);
+    if (r) return r;
+  }
+  return null;
+}
+
+function allIds(tree: TNode): string[] {
+  const out: string[] = [];
+  const walk = (n: TNode) => {
+    out.push(n.id);
+    n.children.forEach(walk);
+  };
+  walk(tree);
+  return out;
+}
+
+let _mmUid = 0;
+function _mmToken() {
+  _mmUid += 1;
+  return `__mm_${Date.now().toString(36)}_${_mmUid}__`;
+}
+
+/* 在 parentId 下插入新节点：afterId 为相对子节点（null 表示追加到末尾），返回新 md 与新节点 id */
+function insertNode(
+  md: string,
+  parentId: string,
+  afterId: string | null,
+  label: string,
+): {md: string; id: string} {
+  const tree = parseMarkdown(md);
+  const parent = findNode(tree, parentId);
+  if (!parent) return {md, id: ''};
+  const token = _mmToken();
+  const node: TNode = {
+    id: token,
+    text: token,
+    level: (parent.level ?? 0) + 1,
+    children: [],
+    width: 0,
+    display: token,
+  };
+  if (afterId == null) parent.children.push(node);
+  else {
+    const idx = parent.children.findIndex(c => c.id === afterId);
+    parent.children.splice(idx + 1, 0, node);
+  }
+  const tmp = serializeTree(tree);
+  const reparsed = parseMarkdown(tmp);
+  const added = findByText(reparsed, token);
+  if (!added) return {md, id: ''};
+  return {md: updateNodeText(tmp, added.id, label), id: added.id};
+}
+
+function addChild(
+  md: string,
+  parentId: string,
+  label: string,
+): {md: string; id: string} {
+  return insertNode(md, parentId, null, label);
+}
+
+function addSibling(
+  md: string,
+  id: string,
+  label: string,
+): {md: string; id: string} {
+  const tree = parseMarkdown(md);
+  const parent = findParent(tree, id);
+  if (!parent) return insertNode(md, id, null, label); // 顶层节点：改为加子节点
+  return insertNode(md, parent.id, id, label);
+}
+
+function deleteNode(md: string, id: string): string {
+  if (id === 'root') return md;
+  const tree = parseMarkdown(md);
+  if (tree.id === id) return ''; // 删除唯一根节点
+  const parent = findParent(tree, id);
+  if (!parent) return md;
+  parent.children = parent.children.filter(c => c.id !== id);
+  return serializeTree(tree);
+}
+
+/* ============ 模板库 ============ */
+interface Template {
+  id: string;
+  zh: string;
+  en: string;
+  zhMd: string;
+  enMd: string;
+}
+
+const TEMPLATES: Template[] = [
+  {
+    id: 'reading',
+    zh: '读书笔记',
+    en: 'Reading Notes',
+    zhMd: `# 书名《思考，快与慢》
+| 作者：丹尼尔·卡尼曼；核心讲人类两套思维系统。
+## 系统 1：直觉
+| 快速、自动、情绪化，容易受偏见影响。
+### 典型偏差
+#### 锚定效应
+#### 可得性启发
+## 系统 2：理性
+| 缓慢、费力、需要专注，负责逻辑与计算。
+### 应用场景
+#### 决策复核
+#### 复杂推理`,
+    enMd: `# Book《Thinking, Fast and Slow》
+| Author: Daniel Kahneman; about two systems of thought.
+## System 1: Intuition
+| Fast, automatic, emotional, bias-prone.
+### Biases
+#### Anchoring
+#### Availability
+## System 2: Reason
+| Slow, effortful, logical.
+### Use cases
+#### Decision review
+#### Complex reasoning`,
+  },
+  {
+    id: 'project',
+    zh: '项目规划',
+    en: 'Project Plan',
+    zhMd: `# 新功能上线
+| 目标：提升激活率 15%。
+## 范围
+### 必须做
+#### 核心流程
+#### 数据埋点
+### 可选做
+#### 引导动画
+## 排期
+### 设计
+#### 交互稿
+### 研发
+#### 前端
+#### 后端
+## 风险
+#### 依赖外部服务`,
+    enMd: `# Feature Launch
+| Goal: +15% activation.
+## Scope
+### Must
+#### Core flow
+#### Tracking
+### Nice-to-have
+#### Onboarding animation
+## Timeline
+### Design
+#### Wireframe
+### Build
+#### Frontend
+#### Backend
+## Risks
+#### External dependency`,
+  },
+  {
+    id: 'learning',
+    zh: '学习路线',
+    en: 'Learning Path',
+    zhMd: `# 前端工程师路线
+| 目标：一年内达到中级。
+## 基础
+### HTML/CSS
+#### 布局
+#### 响应式
+### JavaScript
+#### 异步
+#### 原型链
+## 进阶
+### 框架
+#### React
+#### 状态管理
+### 工程化
+#### 构建
+#### 测试`,
+    enMd: `# Frontend Path
+| Goal: mid-level in a year.
+## Basics
+### HTML/CSS
+#### Layout
+#### Responsive
+### JavaScript
+#### Async
+#### Prototypes
+## Advanced
+### Frameworks
+#### React
+#### State
+### Tooling
+#### Build
+#### Testing`,
+  },
+];
 function MindMapInner() {
   const {
     i18n: {currentLocale},
@@ -640,6 +828,8 @@ function MindMapInner() {
     sy: number;
     sw: number;
     sh: number;
+    isNew?: boolean;
+    selectAll?: boolean;
   } | null>(null);
   const [drag, setDrag] = useState<{
     id: string;
@@ -655,6 +845,29 @@ function MindMapInner() {
 
   const [hydrated, setHydrated] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [tplId, setTplId] = useState('');
+  const [query, setQuery] = useState('');
+  const [activeMatch, setActiveMatch] = useState(0);
+  const [noteView, setNoteView] = useState<{
+    id: string;
+    value: string;
+    sx: number;
+    sy: number;
+    sw: number;
+    sh: number;
+  } | null>(null);
+
+  const [selected, setSelected] = useState('');
+  const [pendingEdit, setPendingEdit] = useState<{
+    id: string;
+    value: string;
+  } | null>(null);
+  const [canUndo, setCanUndo] = useState(false);
+  const [canRedo, setCanRedo] = useState(false);
+  const historyRef = useRef<{past: string[]; future: string[]}>({
+    past: [],
+    future: [],
+  });
 
   const tree = useMemo(() => parseMarkdown(md), [md]);
   const layout = useMemo(
@@ -750,6 +963,54 @@ function MindMapInner() {
     });
   };
 
+  const centerOn = useCallback((n: LaidNode) => {
+    const el = wrapRef.current;
+    if (!el) return;
+    const W = el.clientWidth;
+    const H = el.clientHeight;
+    const cx = n.x + n.w / 2;
+    const cy = n.y + n.h / 2;
+    setTransform(t => ({k: t.k, x: W / 2 - cx * t.k, y: H / 2 - cy * t.k}));
+  }, []);
+
+  /* 搜索匹配（按布局顺序） */
+  const matchedList = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return [] as LaidNode[];
+    return layout.nodes.filter(n => n.text.toLowerCase().includes(q));
+  }, [layout, query]);
+  const matchedIds = useMemo(
+    () => new Set(matchedList.map(n => n.id)),
+    [matchedList],
+  );
+
+  const gotoMatch = (idx: number) => {
+    if (matchedList.length === 0) return;
+    const i =
+      ((idx % matchedList.length) + matchedList.length) % matchedList.length;
+    setActiveMatch(i);
+    centerOn(matchedList[i]);
+  };
+
+  const openNote = (n: LaidNode, e: React.MouseEvent) => {
+    e.stopPropagation();
+    const k = transform.k;
+    setNoteView({
+      id: n.id,
+      value: n.note ?? '',
+      sx: transform.x + n.x * k,
+      sy: transform.y + n.y * k,
+      sw: n.w * k,
+      sh: n.h * k,
+    });
+  };
+
+  const onNoteChange = (val: string) => {
+    if (!noteView) return;
+    setMd(updateNodeNote(md, noteView.id, val));
+    setNoteView(v => (v ? {...v, value: val} : v));
+  };
+
   const toggle = (id: string) =>
     setCollapsed(prev => {
       const n = new Set(prev);
@@ -778,6 +1039,7 @@ function MindMapInner() {
   ) => {
     if (editing) return;
     (e.currentTarget as Element).setPointerCapture(e.pointerId);
+    setSelected(id);
     dragStart.current = {x: e.clientX, y: e.clientY, id};
     setDrag({
       id,
@@ -790,17 +1052,127 @@ function MindMapInner() {
     });
   };
 
+  const applyHistory = useCallback(
+    (next: string, record = true) => {
+      if (record) {
+        historyRef.current.past.push(md);
+        if (historyRef.current.past.length > 100)
+          historyRef.current.past.shift();
+        historyRef.current.future = [];
+        setCanUndo(true);
+        setCanRedo(false);
+      }
+      setMd(next);
+    },
+    [md],
+  );
+
+  const undo = useCallback(() => {
+    const h = historyRef.current;
+    if (h.past.length === 0) return;
+    const prev = h.past.pop()!;
+    h.future.unshift(md);
+    setCanUndo(h.past.length > 0);
+    setCanRedo(true);
+    setMd(prev);
+  }, [md]);
+
+  const redo = useCallback(() => {
+    const h = historyRef.current;
+    if (h.future.length === 0) return;
+    const next = h.future.shift()!;
+    h.past.push(md);
+    if (h.past.length > 100) h.past.shift();
+    setCanUndo(true);
+    setCanRedo(h.future.length > 0);
+    setMd(next);
+  }, [md]);
+
   const commitEdit = () => {
-    setEditing(cur => {
-      if (!cur) return null;
-      const newMd = updateNodeText(md, cur.id, cur.value);
-      if (newMd !== md) setMd(newMd);
-      return null;
+    if (!editing) return;
+    const {id, value, isNew} = editing;
+    setEditing(null);
+    if (
+      isNew &&
+      value.trim() === '' &&
+      (findNode(parseMarkdown(md), id)?.children.length ?? 0) === 0
+    ) {
+      applyHistory(deleteNode(md, id));
+      return;
+    }
+    const newMd = updateNodeText(md, id, value);
+    if (newMd !== md) applyHistory(newMd);
+  };
+
+  const cancelEdit = () => {
+    if (!editing) return;
+    const {id, isNew} = editing;
+    setEditing(null);
+    if (isNew) applyHistory(deleteNode(md, id));
+  };
+
+  const applyAddSibling = (curId: string, curValue: string) => {
+    const label = locale === 'zh' ? '新节点' : 'New node';
+    const base = updateNodeText(md, curId, curValue);
+    const r = addSibling(base, curId, label);
+    applyHistory(r.md);
+    setSelected(r.id);
+    setPendingEdit({id: r.id, value: ''});
+  };
+
+  const applyAddChild = (curId: string, curValue: string) => {
+    const label = locale === 'zh' ? '新节点' : 'New node';
+    const base = updateNodeText(md, curId, curValue);
+    const r = addChild(base, curId, label);
+    applyHistory(r.md);
+    setSelected(r.id);
+    setPendingEdit({id: r.id, value: ''});
+  };
+
+  const addChildAndEdit = (parentId: string) => {
+    const label = locale === 'zh' ? '新节点' : 'New node';
+    const r = addChild(md, parentId, label);
+    if (!r.id) return;
+    applyHistory(r.md);
+    setCollapsed(prev => {
+      if (!prev.has(parentId)) return prev;
+      const n = new Set(prev);
+      n.delete(parentId);
+      return n;
+    });
+    setSelected(r.id);
+    setPendingEdit({id: r.id, value: ''});
+  };
+
+  const addSiblingAndEdit = (siblingId: string) => {
+    const label = locale === 'zh' ? '新节点' : 'New node';
+    const r = addSibling(md, siblingId, label);
+    if (!r.id) return;
+    applyHistory(r.md);
+    setSelected(r.id);
+    setPendingEdit({id: r.id, value: ''});
+  };
+
+  const removeNode = (id: string) => {
+    if (id === 'root' || id === '') return;
+    const tree = parseMarkdown(md);
+    const parent = findParent(tree, id);
+    const newMd = deleteNode(md, id);
+    applyHistory(newMd);
+    setSelected(sel => (sel === id ? (parent ? parent.id : '') : sel));
+    setEditing(cur => (cur?.id === id ? null : cur));
+    setNoteView(v => (v?.id === id ? null : v));
+    setCollapsed(prev => {
+      if (prev.size === 0) return prev;
+      const ids = new Set(allIds(parseMarkdown(newMd)));
+      return new Set([...prev].filter(x => ids.has(x)));
     });
   };
 
   const onPointerDown = (e: React.PointerEvent<SVGSVGElement>) => {
     if ((e.target as Element).closest('[data-node-id]')) return;
+    setSelected('');
+    setNoteView(null);
     dragRef.current = {
       active: true,
       sx: e.clientX,
@@ -848,7 +1220,7 @@ function MindMapInner() {
       if (drag.moved && drag.targetId) {
         const tree2 = parseMarkdown(md);
         if (reparent(tree2, drag.id, drag.targetId)) {
-          setMd(serializeTree(tree2));
+          applyHistory(serializeTree(tree2));
         }
       }
       setDrag(null);
@@ -882,6 +1254,65 @@ function MindMapInner() {
     if (!hydrated) return;
     writeSaved({md, direction, themeName, linkStyle, bgId, bgCustom});
   }, [hydrated, md, direction, themeName, linkStyle, bgId, bgCustom]);
+
+  /* 待编辑节点：布局就绪后定位输入框并进入编辑 */
+  useEffect(() => {
+    if (!pendingEdit) return;
+    const n = layout.nodes.find(x => x.id === pendingEdit.id);
+    if (!n) return;
+    const k = transform.k;
+    setEditing({
+      id: n.id,
+      value: pendingEdit.value,
+      sx: transform.x + n.x * k,
+      sy: transform.y + n.y * k,
+      sw: n.w * k,
+      sh: n.h * k,
+      isNew: true,
+      selectAll: true,
+    });
+    setPendingEdit(null);
+  }, [pendingEdit, layout, transform]);
+
+  /* 全局快捷键：选中节点后用 Tab/Enter/Delete 操作，Ctrl/Cmd+Z 撤销重做 */
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const tag = (document.activeElement?.tagName ?? '').toLowerCase();
+      if (tag === 'input' || tag === 'textarea') return;
+      if (e.ctrlKey || e.metaKey) {
+        if (e.key.toLowerCase() === 'z') {
+          e.preventDefault();
+          if (e.shiftKey) redo();
+          else undo();
+        }
+        return;
+      }
+      if (e.altKey) return;
+      if (editing) return;
+      if (!selected) return;
+      if (e.key === 'Tab') {
+        e.preventDefault();
+        addChildAndEdit(selected);
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        addSiblingAndEdit(selected);
+      } else if (e.key === 'Delete' || e.key === 'Backspace') {
+        e.preventDefault();
+        removeNode(selected);
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [
+    selected,
+    editing,
+    md,
+    undo,
+    redo,
+    addChildAndEdit,
+    addSiblingAndEdit,
+    removeNode,
+  ]);
 
   const share = useCallback(async () => {
     const hash = buildHash({
@@ -987,7 +1418,7 @@ function MindMapInner() {
     const file = e.target.files?.[0];
     if (!file) return;
     const reader = new FileReader();
-    reader.onload = () => setMd(String(reader.result ?? ''));
+    reader.onload = () => applyHistory(String(reader.result ?? ''));
     reader.readAsText(file);
     e.target.value = '';
   };
@@ -1016,8 +1447,9 @@ function MindMapInner() {
             'Auto-save',
             'Import/Export',
           ],
-    example: locale === 'zh' ? '示例' : 'Example',
     clear: locale === 'zh' ? '清空' : 'Clear',
+    undo: locale === 'zh' ? '撤销' : 'Undo',
+    redo: locale === 'zh' ? '重做' : 'Redo',
     share: locale === 'zh' ? '复制链接' : 'Copy link',
     copied: locale === 'zh' ? '已复制' : 'Copied',
     fileGroup: locale === 'zh' ? '文件' : 'File',
@@ -1025,12 +1457,11 @@ function MindMapInner() {
     exportMd: locale === 'zh' ? '导出 .md' : 'Export .md',
     placeholder:
       locale === 'zh'
-        ? '输入大纲，或点击「示例」'
-        : 'Type an outline, or click “Example”',
+        ? '从模板开始，或输入 Markdown 大纲'
+        : 'Start from a template, or type a Markdown outline',
     source: locale === 'zh' ? '大纲编辑' : 'Outline',
     preview: locale === 'zh' ? '实时预览' : 'Live Preview',
     viewGroup: locale === 'zh' ? '查看' : 'View',
-    opGroup: locale === 'zh' ? '操作' : 'Actions',
     exportGroup: locale === 'zh' ? '导出' : 'Export',
     layoutLabel: locale === 'zh' ? '布局' : 'Layout',
     themeLabel: locale === 'zh' ? '主题' : 'Theme',
@@ -1055,6 +1486,19 @@ function MindMapInner() {
     lsStraight: locale === 'zh' ? '直线' : 'Straight',
     lsElbow: locale === 'zh' ? '折线' : 'Elbow',
     lsRounded: locale === 'zh' ? '圆角' : 'Rounded',
+    tplGroup: locale === 'zh' ? '模板' : 'Template',
+    tplPlaceholder: locale === 'zh' ? '选择模板…' : 'Pick a template…',
+    searchLabel: locale === 'zh' ? '搜索' : 'Search',
+    matchCount: locale === 'zh' ? '匹配' : 'matches',
+    prev: locale === 'zh' ? '上一个' : 'Prev',
+    next: locale === 'zh' ? '下一个' : 'Next',
+    noteTitle: locale === 'zh' ? '节点备注' : 'Node note',
+    notePlaceholder:
+      locale === 'zh'
+        ? '输入备注，回车换行…'
+        : 'Type a note, Enter for newline…',
+    noteHint:
+      locale === 'zh' ? '以「| 」开头写备注' : 'Use “| ” to write notes',
   };
 
   return (
@@ -1141,52 +1585,6 @@ function MindMapInner() {
         <span className={styles.sep} />
 
         <div className={styles.group}>
-          <span className={styles.groupLabel}>{t.opGroup}</span>
-          <button
-            className={styles.tbtn}
-            onClick={() => zoomBy(1.2)}
-            title={t.zoomIn}
-            aria-label="zoom in"
-          >
-            ＋
-          </button>
-          <button
-            className={styles.tbtn}
-            onClick={() => zoomBy(1 / 1.2)}
-            title={t.zoomOut}
-            aria-label="zoom out"
-          >
-            －
-          </button>
-          <button
-            className={styles.tbtn}
-            onClick={fit}
-            title={t.fit}
-            aria-label="fit"
-          >
-            ⤢
-          </button>
-          <button
-            className={styles.tbtn}
-            onClick={expandAll}
-            title={t.expandAll}
-            aria-label="expand all"
-          >
-            ⤤
-          </button>
-          <button
-            className={styles.tbtn}
-            onClick={collapseAll}
-            title={t.collapseAll}
-            aria-label="collapse all"
-          >
-            ⤡
-          </button>
-        </div>
-
-        <span className={styles.sep} />
-
-        <div className={styles.group}>
           <span className={styles.groupLabel}>{t.exportGroup}</span>
           <button
             className={styles.tbtn}
@@ -1209,17 +1607,31 @@ function MindMapInner() {
         <div className={styles.group}>
           <button
             className={styles.tbtn}
-            onClick={() => setMd(exampleMd(locale))}
-            title={t.example}
-          >
-            {t.example}
-          </button>
-          <button
-            className={styles.tbtn}
-            onClick={() => setMd('')}
+            onClick={() => applyHistory('')}
             title={t.clear}
           >
             {t.clear}
+          </button>
+        </div>
+
+        <div className={styles.group}>
+          <button
+            className={styles.tbtn}
+            onClick={undo}
+            disabled={!canUndo}
+            title={t.undo}
+            aria-label="undo"
+          >
+            ↶
+          </button>
+          <button
+            className={styles.tbtn}
+            onClick={redo}
+            disabled={!canRedo}
+            title={t.redo}
+            aria-label="redo"
+          >
+            ↷
           </button>
         </div>
 
@@ -1233,6 +1645,30 @@ function MindMapInner() {
           >
             {copied ? t.copied : t.share}
           </button>
+        </div>
+
+        <span className={styles.sep} />
+
+        <div className={styles.group}>
+          <span className={styles.groupLabel}>{t.tplGroup}</span>
+          <select
+            className={styles.select}
+            value={tplId}
+            onChange={e => {
+              const id = e.target.value;
+              setTplId('');
+              if (!id) return;
+              const tpl = TEMPLATES.find(tp => tp.id === id);
+              if (tpl) applyHistory(locale === 'zh' ? tpl.zhMd : tpl.enMd);
+            }}
+          >
+            <option value="">{t.tplPlaceholder}</option>
+            {TEMPLATES.map(tp => (
+              <option key={tp.id} value={tp.id}>
+                {locale === 'zh' ? tp.zh : tp.en}
+              </option>
+            ))}
+          </select>
         </div>
 
         <span className={styles.sep} />
@@ -1256,6 +1692,51 @@ function MindMapInner() {
             className={styles.hiddenFile}
             onChange={onImportFile}
           />
+        </div>
+
+        <span className={styles.sep} />
+
+        <div className={styles.group}>
+          <span className={styles.groupLabel}>{t.searchLabel}</span>
+          <input
+            className={styles.searchInput}
+            type="text"
+            value={query}
+            placeholder={t.searchLabel}
+            onChange={e => {
+              setQuery(e.target.value);
+              setActiveMatch(0);
+            }}
+            onKeyDown={e => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                gotoMatch(activeMatch + (e.shiftKey ? -1 : 1));
+              }
+            }}
+          />
+          {query.trim() && (
+            <>
+              <span className={styles.matchCount}>
+                {matchedList.length} {t.matchCount}
+              </span>
+              <button
+                className={styles.tbtn}
+                onClick={() => gotoMatch(activeMatch - 1)}
+                title={t.prev}
+                aria-label={t.prev}
+              >
+                ↑
+              </button>
+              <button
+                className={styles.tbtn}
+                onClick={() => gotoMatch(activeMatch + 1)}
+                title={t.next}
+                aria-label={t.next}
+              >
+                ↓
+              </button>
+            </>
+          )}
         </div>
       </div>
 
@@ -1285,6 +1766,52 @@ function MindMapInner() {
               backgroundSize: showDots ? '22px 22px' : 'auto',
             }}
           >
+            <div
+              className={styles.floatBar}
+              onPointerDown={e => e.stopPropagation()}
+            >
+              <button
+                className={styles.tbtn}
+                onClick={() => zoomBy(1.2)}
+                title={t.zoomIn}
+                aria-label="zoom in"
+              >
+                ＋
+              </button>
+              <button
+                className={styles.tbtn}
+                onClick={() => zoomBy(1 / 1.2)}
+                title={t.zoomOut}
+                aria-label="zoom out"
+              >
+                －
+              </button>
+              <button
+                className={styles.tbtn}
+                onClick={fit}
+                title={t.fit}
+                aria-label="fit"
+              >
+                ⤢
+              </button>
+              <span className={styles.floatSep} />
+              <button
+                className={styles.tbtn}
+                onClick={expandAll}
+                title={t.expandAll}
+                aria-label="expand all"
+              >
+                ⤤
+              </button>
+              <button
+                className={styles.tbtn}
+                onClick={collapseAll}
+                title={t.collapseAll}
+                aria-label="collapse all"
+              >
+                ⤡
+              </button>
+            </div>
             <svg
               ref={svgRef}
               className={styles.svg}
@@ -1311,12 +1838,16 @@ function MindMapInner() {
                     drag &&
                     (n.id === drag.id || n.id.startsWith(`${drag.id}-`));
                   const highlighted = drag?.targetId === n.id;
+                  const searched = query.trim().length > 0;
+                  const isMatch = matchedIds.has(n.id);
+                  const isActive =
+                    searched && matchedList[activeMatch]?.id === n.id;
                   return (
                     <g
                       key={n.id}
                       data-node
                       data-node-id={n.id}
-                      className={`${styles.node}${dragged ? ` ${styles.dragging}` : ''}${highlighted ? ` ${styles.highlight}` : ''}`}
+                      className={`${styles.node}${dragged ? ` ${styles.dragging}` : ''}${highlighted ? ` ${styles.highlight}` : ''}${searched && !isMatch ? ` ${styles.dim}` : ''}${isMatch ? ` ${styles.match}` : ''}${isActive ? ` ${styles.matchActive}` : ''}${selected === n.id ? ` ${styles.nodeSelected}` : ''}`}
                       transform={
                         dragged
                           ? `translate(${drag!.dx / transform.k}, ${drag!.dy / transform.k})`
@@ -1336,6 +1867,7 @@ function MindMapInner() {
                         });
                       }}
                     >
+                      {n.note && <title>{n.note}</title>}
                       <rect
                         x={n.x}
                         y={n.y}
@@ -1411,6 +1943,112 @@ function MindMapInner() {
                             </g>
                           );
                         })()}
+                      {n.note && (
+                        <g
+                          className={styles.noteBadge}
+                          onPointerDown={e => e.stopPropagation()}
+                          onClick={e => openNote(n, e)}
+                        >
+                          <circle
+                            cx={n.x + n.w - 9}
+                            cy={n.y + 9}
+                            r={7}
+                            fill={toggleBg}
+                            stroke={nodeStroke}
+                            strokeWidth={1}
+                          />
+                          <text
+                            x={n.x + n.w - 9}
+                            y={n.y + 9.5}
+                            textAnchor="middle"
+                            dominantBaseline="central"
+                            fontSize={9}
+                            fill={isDark ? '#cbd5e1' : '#475569'}
+                          >
+                            ✎
+                          </text>
+                        </g>
+                      )}
+                      <g
+                        className={styles.nodeTools}
+                        onPointerDown={e => e.stopPropagation()}
+                      >
+                        <g
+                          className={styles.toolBtn}
+                          onClick={e => {
+                            e.stopPropagation();
+                            addChildAndEdit(n.id);
+                          }}
+                        >
+                          <circle
+                            cx={n.x + n.w / 2 - 22}
+                            cy={n.y - 14}
+                            r={9}
+                            fill={toggleBg}
+                            stroke={nodeStroke}
+                          />
+                          <text
+                            x={n.x + n.w / 2 - 22}
+                            y={n.y - 13}
+                            textAnchor="middle"
+                            dominantBaseline="central"
+                            fontSize={13}
+                            fill={isDark ? '#cbd5e1' : '#475569'}
+                          >
+                            ＋
+                          </text>
+                        </g>
+                        <g
+                          className={styles.toolBtn}
+                          onClick={e => {
+                            e.stopPropagation();
+                            addSiblingAndEdit(n.id);
+                          }}
+                        >
+                          <circle
+                            cx={n.x + n.w / 2}
+                            cy={n.y - 14}
+                            r={9}
+                            fill={toggleBg}
+                            stroke={nodeStroke}
+                          />
+                          <text
+                            x={n.x + n.w / 2}
+                            y={n.y - 13}
+                            textAnchor="middle"
+                            dominantBaseline="central"
+                            fontSize={12}
+                            fill={isDark ? '#cbd5e1' : '#475569'}
+                          >
+                            ↵
+                          </text>
+                        </g>
+                        <g
+                          className={styles.toolBtn}
+                          onClick={e => {
+                            e.stopPropagation();
+                            removeNode(n.id);
+                          }}
+                        >
+                          <circle
+                            cx={n.x + n.w / 2 + 22}
+                            cy={n.y - 14}
+                            r={9}
+                            fill={toggleBg}
+                            stroke={nodeStroke}
+                          />
+                          <text
+                            x={n.x + n.w / 2 + 22}
+                            y={n.y - 13}
+                            textAnchor="middle"
+                            dominantBaseline="central"
+                            fontSize={13}
+                            fill={isDark ? '#cbd5e1' : '#475569'}
+                          >
+                            ×
+                          </text>
+                        </g>
+                      </g>
                     </g>
                   );
                 })}
@@ -1450,13 +2088,60 @@ function MindMapInner() {
                 value={editing.value}
                 autoFocus
                 spellCheck={false}
-                onChange={e => setEditing({...editing, value: e.target.value})}
+                onChange={e => setEditing({...editing!, value: e.target.value})}
+                onFocus={e => {
+                  if (editing?.selectAll) e.currentTarget.select();
+                }}
                 onKeyDown={e => {
-                  if (e.key === 'Enter') commitEdit();
-                  else if (e.key === 'Escape') setEditing(null);
+                  if (!editing) return;
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    applyAddSibling(editing.id, editing.value);
+                  } else if (e.key === 'Tab') {
+                    e.preventDefault();
+                    applyAddChild(editing.id, editing.value);
+                  } else if (e.key === 'Escape') {
+                    e.preventDefault();
+                    cancelEdit();
+                  } else if (e.key === 'Backspace' && editing.value === '') {
+                    e.preventDefault();
+                    const parent = findParent(parseMarkdown(md), editing.id);
+                    cancelEdit();
+                    setSelected(parent ? parent.id : '');
+                  }
                 }}
                 onBlur={commitEdit}
               />
+            )}
+            {noteView && (
+              <div
+                className={styles.noteCard}
+                style={{
+                  left: noteView.sx,
+                  top: noteView.sy + noteView.sh + 8,
+                  width: Math.max(noteView.sw, 220),
+                }}
+              >
+                <div className={styles.noteHead}>
+                  <span>{t.noteTitle}</span>
+                  <button
+                    className={styles.noteClose}
+                    onClick={() => setNoteView(null)}
+                    aria-label="close"
+                  >
+                    ×
+                  </button>
+                </div>
+                <textarea
+                  className={styles.noteArea}
+                  value={noteView.value}
+                  placeholder={t.notePlaceholder}
+                  spellCheck={false}
+                  autoFocus
+                  onChange={e => onNoteChange(e.target.value)}
+                />
+                <div className={styles.noteFoot}>{t.noteHint}</div>
+              </div>
             )}
           </div>
         </section>

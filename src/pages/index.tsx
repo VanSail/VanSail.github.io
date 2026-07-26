@@ -236,8 +236,8 @@ const webTools: CardItem[] = [
     to: '/mindmap',
     title: {zh: '思维导图', en: 'Mind Map'},
     desc: {
-      zh: '可缩放 · 可折叠 · 导出 SVG/PNG',
-      en: 'Zoomable · Collapsible · Export SVG/PNG',
+      zh: '模板 · 节点笔记 · 一键分享',
+      en: 'Templates · Notes · Share',
     },
     icon: mindmapIcon,
   },

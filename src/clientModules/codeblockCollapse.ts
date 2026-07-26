@@ -4,15 +4,10 @@ import type {ClientModule} from '@docusaurus/types';
  * 代码块折叠交互（替代原先阻塞渲染的 static/js/codeblock-toggle.js）。
  * 以 Docusaurus client module 形式注入：不作为 <head> 内的阻塞脚本，
  * 随主 bundle 异步执行，并在 SPA 路由切换后自动对新页面的代码块生效。
+ *
+ * 注意：代码块默认全部展开；折叠仅由用户点击标题或折叠按钮触发，
+ * 不在路由切换时自动折叠所有代码块，以免内容默认被隐藏。
  */
-
-function collapseAll(): void {
-  document.querySelectorAll('[class*="codeBlockContainer"]').forEach(block => {
-    if (!block.hasAttribute('data-collapsed')) {
-      block.setAttribute('data-collapsed', 'true');
-    }
-  });
-}
 
 function handleClick(e: MouseEvent): void {
   const target = e.target as HTMLElement | null;
@@ -39,8 +34,7 @@ if (typeof document !== 'undefined') {
 
 const clientModule: ClientModule = {
   onRouteDidUpdate() {
-    // 每次进入/切换页面后，折叠当前页新增的代码块并对图片启用懒加载
-    collapseAll();
+    // 每次进入/切换页面后，对图片启用懒加载
     lazyLoadImages();
   },
 };
