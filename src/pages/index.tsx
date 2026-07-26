@@ -96,26 +96,6 @@ const serialIcon = (
   </svg>
 );
 
-const calcIcon = (
-  <svg {...svgProps}>
-    <rect x="5" y="3" width="14" height="18" rx="2" />
-    <line x1="8" y1="7" x2="16" y2="7" />
-    <circle cx="9" cy="13" r="1" />
-    <circle cx="13" cy="13" r="1" />
-    <circle cx="15" cy="13" r="1" />
-    <circle cx="9" cy="16" r="1" />
-    <circle cx="13" cy="16" r="1" />
-    <circle cx="15" cy="16" r="1" />
-  </svg>
-);
-
-const baseIcon = (
-  <svg {...svgProps}>
-    <path d="M4 8h13l-3-3" />
-    <path d="M20 16H7l3 3" />
-  </svg>
-);
-
 const mindmapIcon = (
   <svg {...svgProps}>
     <circle cx="18" cy="5" r="3" />
@@ -123,6 +103,16 @@ const mindmapIcon = (
     <circle cx="18" cy="19" r="3" />
     <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
     <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+  </svg>
+);
+
+const tableIcon = (
+  <svg {...svgProps}>
+    <rect x="3" y="3" width="18" height="18" rx="2" />
+    <line x1="3" y1="9" x2="21" y2="9" />
+    <line x1="3" y1="15" x2="21" y2="15" />
+    <line x1="9" y1="3" x2="9" y2="21" />
+    <line x1="15" y1="3" x2="15" y2="21" />
   </svg>
 );
 
@@ -221,18 +211,6 @@ const webTools: CardItem[] = [
     icon: serialIcon,
   },
   {
-    to: '/calculator',
-    title: {zh: '计算器', en: 'Calculator'},
-    desc: {zh: '科学计算 · 实时计算', en: 'Scientific Calc · Live Results'},
-    icon: calcIcon,
-  },
-  {
-    to: '/base-converter',
-    title: {zh: '进制转换', en: 'Base Converter'},
-    desc: {zh: '二/八/十/十六进制互转', en: 'Binary/Octal/Dec/Hex Convert'},
-    icon: baseIcon,
-  },
-  {
     to: '/mindmap',
     title: {zh: '思维导图', en: 'Mind Map'},
     desc: {
@@ -240,6 +218,15 @@ const webTools: CardItem[] = [
       en: 'Templates · Notes · Share',
     },
     icon: mindmapIcon,
+  },
+  {
+    to: '/table-converter',
+    title: {zh: '格式转换', en: 'Format Converter'},
+    desc: {
+      zh: 'Markdown ⇄ Excel · 实时互转 · 双向编辑',
+      en: 'Markdown ⇄ Excel · Real-time · Two-way',
+    },
+    icon: tableIcon,
   },
 ];
 
