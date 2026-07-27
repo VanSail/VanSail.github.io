@@ -130,11 +130,13 @@ export default function Footer(): React.JSX.Element {
   const t = {
     repo: locale === 'en' ? 'Open Source Repository' : '开源仓库',
     guide: locale === 'en' ? 'Documentation Guide' : '文档语法',
-    compare: locale === 'en' ? 'Processor Compare' : '处理器对比',
+    compare: locale === 'en' ? 'Processor Parameters' : '处理器参数',
     serial: locale === 'en' ? 'Serial Monitor' : '串口监视器',
     table: locale === 'en' ? 'Table Converter' : '表格转换',
     mindmap: locale === 'en' ? 'Mind Map' : '思维导图',
     wechat: locale === 'en' ? 'WeChat Contact' : '微信联系',
+    contrib: locale === 'en' ? 'GitHub Contributions' : 'GitHub 贡献足迹',
+    contribAlt: locale === 'en' ? 'GitHub contribution graph' : 'GitHub 贡献图',
   };
 
   return (
@@ -222,7 +224,7 @@ export default function Footer(): React.JSX.Element {
             </ul>
           </div>
 
-          {/* 右列：微信联系 */}
+          {/* 右列：微信联系（与原来一致） */}
           <div className={styles.col}>
             <h3 className={styles.colTitle}>
               <WechatIcon className={styles.wechatIcon} />
@@ -236,6 +238,26 @@ export default function Footer(): React.JSX.Element {
               />
             </div>
           </div>
+        </div>
+
+        {/* 贡献图：最下一行，跨整行 */}
+        <div className={styles.contribRow}>
+          <h3 className={styles.colTitle}>
+            <GithubIcon className={styles.contribIcon} />
+            <span className={styles.colTitleText}>{t.contrib}</span>
+          </h3>
+          <a
+            className={styles.contribLink}
+            href="https://github.com/VanSail"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <img
+              className={styles.contribImg}
+              src="https://ghchart.rshah.org/f0a06c/VanSail"
+              alt={t.contribAlt}
+            />
+          </a>
         </div>
       </div>
     </footer>

@@ -69,7 +69,7 @@ function groupFields(fields: FieldDef[]): FieldDef[] {
 }
 
 const meta = {
-  title: {zh: '处理器对比', en: 'Processor Compare'},
+  title: {zh: '处理器参数', en: 'Processor Parameters'},
   desc: {zh: '处理器参数与对比工具', en: 'Processor specs and compare tool'},
 };
 
@@ -159,7 +159,7 @@ export default function ProcessorCompare(): ReactNode {
                 </svg>
               </span>
               <span className={styles.modeTitle}>
-                {locale === 'zh' ? '处理器对比' : 'Compare'}
+                {locale === 'zh' ? '对比' : 'Compare'}
               </span>
               <span className={styles.modeSub}>
                 {locale === 'zh'

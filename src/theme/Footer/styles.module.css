@@ -231,3 +231,28 @@
   display: block;
   filter: invert(1) opacity(0.92);
 }
+
+/* —— 贡献图：最下一行，跨整行居中，与上方卡片呼应 —— */
+.contribRow {
+  margin-top: 1.25rem;
+}
+
+.contribIcon {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  fill: var(--ifm-color-primary, #f0a06c);
+}
+
+.contribLink {
+  display: block;
+}
+
+.contribImg {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 10px;
+  border: 1px solid var(--ifm-hr-border-color);
+  background: #0d1117;
+}
