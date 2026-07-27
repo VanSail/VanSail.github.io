@@ -272,6 +272,9 @@ function Card({
           <span className={styles.cardTitle}>{item.title[locale]}</span>
           <span className={styles.cardDesc}>{item.desc[locale]}</span>
         </span>
+        <span className={styles.cardExt} aria-hidden="true">
+          ↗
+        </span>
       </a>
     );
   }
@@ -285,6 +288,36 @@ function Card({
         <span className={styles.cardDesc}>{item.desc[locale]}</span>
       </span>
     </Link>
+  );
+}
+
+function AnimatedSection({children}: {children: ReactNode}) {
+  const ref = useRef<HTMLElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      {threshold: 0.08},
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <section
+      ref={ref}
+      className={`${styles.section} ${visible ? styles.animVisible : styles.animHidden}`}
+    >
+      {children}
+    </section>
   );
 }
 
@@ -449,7 +482,7 @@ export default function Home(): ReactNode {
     >
       <Layout title={meta.title[locale]} description={meta.desc[locale]}>
         <main className={styles.page}>
-          <section className={styles.section}>
+          <AnimatedSection>
             <Hero3D />
             <h2 className={styles.sectionTitle}>{sections.ai[locale]}</h2>
             <div className={styles.grid}>
@@ -457,34 +490,34 @@ export default function Home(): ReactNode {
                 <Card key={item.to} item={item} locale={locale} />
               ))}
             </div>
-          </section>
+          </AnimatedSection>
 
-          <section className={styles.section}>
+          <AnimatedSection>
             <h2 className={styles.sectionTitle}>{sections.robots[locale]}</h2>
             <div className={styles.grid}>
               {robots.map(item => (
                 <Card key={item.to} item={item} locale={locale} />
               ))}
             </div>
-          </section>
+          </AnimatedSection>
 
-          <section className={styles.section}>
+          <AnimatedSection>
             <h2 className={styles.sectionTitle}>{sections.software[locale]}</h2>
             <div className={styles.grid}>
               {devResources.map(item => (
                 <Card key={item.to} item={item} locale={locale} />
               ))}
             </div>
-          </section>
+          </AnimatedSection>
 
-          <section className={styles.section}>
+          <AnimatedSection>
             <h2 className={styles.sectionTitle}>{sections.stm32[locale]}</h2>
             <div className={styles.grid}>
               {stm32Tools.map(item => (
                 <Card key={item.to} item={item} locale={locale} />
               ))}
             </div>
-          </section>
+          </AnimatedSection>
         </main>
       </Layout>
     </div>
