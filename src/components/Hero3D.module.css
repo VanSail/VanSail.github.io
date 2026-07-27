@@ -4,7 +4,7 @@
   height: 260px;
   margin-bottom: 4px;
   touch-action: none;
-  /* 顶部柔光，呼应科技氛围 */
+  /* 顶部柔光，呼应“扬帆”品牌橙 */
   border-radius: 16px;
   background: radial-gradient(
     120% 120% at 50% 0%,
@@ -36,29 +36,48 @@
   animation: brandFade 1s 0.2s ease both;
 }
 
-.brandName {
-  font-size: 22px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  line-height: 1;
-  background: linear-gradient(92deg, #ffffff 0%, #b8e986 58%, #9fd66e 100%);
+.brandSlogan {
+  display: block;
+  white-space: nowrap;
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  line-height: 1.35;
+  text-align: right;
+  background: linear-gradient(92deg, #ffffff 0%, #ffd0aa 58%, #f0a070 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: #ffffff;
-  filter: drop-shadow(0 1px 10px rgba(184, 233, 134, 0.28));
+  filter: drop-shadow(0 1px 10px rgba(240, 160, 112, 0.28));
+  /* 入场淡入上浮 + 持续的轻微浮动，让文案“活”起来 */
+  animation:
+    brandFade 1s 0.2s ease both,
+    sloganFloat 4s 1.3s ease-in-out infinite;
+}
+
+/* 窄屏：缩小字号，保证英文 slogan 单行不溢出裁切 */
+@media (max-width: 768px) {
+  .brandSlogan {
+    font-size: 13px;
+    letter-spacing: 0.5px;
+  }
 }
 
 .brandLine {
   height: 1px;
-  width: 72px;
+  /* 宽度跟随文案（brandMark 宽度 = 文案宽度），与文案等长 */
+  width: 100%;
   background: linear-gradient(
     90deg,
-    rgba(184, 233, 134, 0) 0%,
-    rgba(184, 233, 134, 0.95) 100%
+    rgba(240, 160, 112, 0) 0%,
+    rgba(240, 160, 112, 0.95) 100%
   );
   transform-origin: right center;
-  animation: brandDraw 1.1s 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  /* 入场自右向左绘制 + 持续的呼吸式明暗起伏 */
+  animation:
+    brandDraw 1.1s 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both,
+    linePulse 3s 1.6s ease-in-out infinite;
 }
 
 @keyframes brandFade {
@@ -79,6 +98,28 @@
   }
   to {
     transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+/* 文案持续轻微浮动 */
+@keyframes sloganFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+/* 横线持续呼吸式明暗 */
+@keyframes linePulse {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
     opacity: 1;
   }
 }

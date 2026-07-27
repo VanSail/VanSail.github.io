@@ -18,7 +18,7 @@
   width: auto;
   /* 总行程 = 容器宽度 - logo 宽度，即内容区 60% 的范围；随波浪轻微起伏/倾斜 */
   animation: sailCruise 9s ease-in-out infinite;
-  filter: drop-shadow(0 1px 6px rgba(184, 233, 134, 0.25));
+  filter: drop-shadow(0 1px 6px rgba(240, 160, 112, 0.25));
 }
 
 @keyframes sailCruise {

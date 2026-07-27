@@ -21,8 +21,8 @@
 }
 
 .back:hover {
-  border-color: rgba(184, 233, 134, 0.6);
-  color: rgba(184, 233, 134, 1);
+  border-color: rgba(240, 160, 112, 0.6);
+  color: rgba(240, 160, 112, 1);
 }
 
 /* 首页：两个模式卡片 */
@@ -52,7 +52,7 @@
 
 .modeCard:hover {
   transform: translateY(-3px);
-  border-color: rgba(184, 233, 134, 0.7);
+  border-color: rgba(240, 160, 112, 0.7);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
 }
 
@@ -63,8 +63,8 @@
   align-items: center;
   justify-content: center;
   border-radius: 12px;
-  background: rgba(184, 233, 134, 0.12);
-  color: rgba(184, 233, 134, 1);
+  background: rgba(240, 160, 112, 0.12);
+  color: rgba(240, 160, 112, 1);
 }
 
 .modeIcon svg {
@@ -108,7 +108,7 @@
 }
 
 .pickerBtn:hover {
-  border-color: rgba(184, 233, 134, 0.6);
+  border-color: rgba(240, 160, 112, 0.6);
 }
 
 .pickerVal {
@@ -155,7 +155,7 @@
 
 .pickerSearch:focus {
   outline: none;
-  border-color: rgba(184, 233, 134, 0.7);
+  border-color: rgba(240, 160, 112, 0.7);
 }
 
 .pickerList {
@@ -188,8 +188,8 @@
 }
 
 .pickerItemActive {
-  background: rgba(184, 233, 134, 0.16);
-  color: rgba(184, 233, 134, 1);
+  background: rgba(240, 160, 112, 0.16);
+  color: rgba(240, 160, 112, 1);
   font-weight: 600;
 }
 
@@ -322,7 +322,7 @@
 
 /* 两列取值不同的行高亮 */
 .diffRow > td {
-  background: rgba(184, 233, 134, 0.1);
+  background: rgba(240, 160, 112, 0.1);
 }
 
 /* 缺失值淡化 */
@@ -349,8 +349,8 @@
 .pdfBtn {
   display: inline-block;
   background: transparent;
-  border: 1px solid rgba(184, 233, 134, 0.5);
-  color: rgba(184, 233, 134, 0.9);
+  border: 1px solid rgba(240, 160, 112, 0.5);
+  color: rgba(240, 160, 112, 0.9);
   border-radius: 6px;
   padding: 0.2rem 0.5rem;
   font-size: 0.8rem;
@@ -360,8 +360,8 @@
 }
 
 .pdfBtn:hover {
-  border-color: rgba(184, 233, 134, 1);
-  color: rgba(184, 233, 134, 1);
+  border-color: rgba(240, 160, 112, 1);
+  color: rgba(240, 160, 112, 1);
 }
 
 .empty {
@@ -382,8 +382,8 @@
   width: 12px;
   height: 12px;
   border-radius: 3px;
-  background: rgba(184, 233, 134, 0.35);
-  border: 1px solid rgba(184, 233, 134, 0.7);
+  background: rgba(240, 160, 112, 0.35);
+  border: 1px solid rgba(240, 160, 112, 0.7);
 }
 
 /* PDF 预览弹窗 */

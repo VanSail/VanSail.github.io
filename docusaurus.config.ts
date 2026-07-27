@@ -6,7 +6,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
   title: 'VanSail',
-  tagline: 'With Sincere Mind, Build Tech Sail',
+  tagline: '扬帆起航，探索无界',
   favicon: 'img/favicon.ico',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
@@ -74,7 +74,7 @@ const config: Config = {
       },
       {
         name: 'description',
-        content: 'With Sincere Mind, Build Tech Sail',
+        content: '扬帆起航，探索无界',
       },
       {property: 'og:type', content: 'website'},
       {property: 'og:site_name', content: 'VanSail'},

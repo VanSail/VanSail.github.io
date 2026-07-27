@@ -11,7 +11,7 @@ export default function NavbarLogoCenter(): ReactNode {
       className={styles.sailWrap}
       role="img"
       aria-label="VanSail"
-      title="With Sincere Mind, Build Tech Sail"
+      title="扬帆起航，探索无界"
     >
       <img
         className={styles.sailImg}

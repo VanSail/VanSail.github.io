@@ -126,7 +126,7 @@ body {
     ),
     radial-gradient(
       45% 45% at 12% 85%,
-      rgba(184, 233, 134, 0.06),
+      rgba(240, 160, 112, 0.06),
       transparent 70%
     ),
     linear-gradient(rgba(237, 234, 229, 0.018) 1px, transparent 1px),
@@ -169,11 +169,11 @@ body {
   border-image: linear-gradient(
       90deg,
       transparent 0%,
-      rgba(184, 233, 134, 0.55) 50%,
+      rgba(240, 160, 112, 0.55) 50%,
       transparent 100%
     )
     1 !important;
-  box-shadow: 0 1px 24px rgba(184, 233, 134, 0.08) !important;
+  box-shadow: 0 1px 24px rgba(240, 160, 112, 0.08) !important;
 }
 
 /* 导航栏内容对齐网站主内容区（与首页 .page 的 --content-width 居中容器一致），
@@ -215,7 +215,7 @@ body {
   background: linear-gradient(
     92deg,
     #f0a070 0%,
-    #b8e986 35%,
+    #f0a070 35%,
     #8ab4f8 65%,
     #f0a070 100%
   );
@@ -225,7 +225,7 @@ body {
   -webkit-text-fill-color: transparent;
   color: transparent;
   animation: titleShine 5s linear infinite;
-  filter: drop-shadow(0 1px 8px rgba(184, 233, 134, 0.25));
+  filter: drop-shadow(0 1px 8px rgba(240, 160, 112, 0.25));
 }
 
 @keyframes titleShine {
@@ -245,24 +245,24 @@ body {
 }
 
 .navbar__link {
-  color: rgba(184, 233, 134, 0.8) !important;
+  color: rgba(240, 160, 112, 0.8) !important;
   font-size: 14px;
   font-weight: 500;
 }
 
 .navbar__link:hover {
-  color: rgba(184, 233, 134, 1) !important;
+  color: rgba(240, 160, 112, 1) !important;
 }
 
 .navbar__link--active {
-  color: rgba(184, 233, 134, 1) !important;
+  color: rgba(240, 160, 112, 1) !important;
 }
 
 .dropdown__menu {
   background: rgba(0, 0, 0, 0.7) !important;
   backdrop-filter: blur(8px) !important;
   -webkit-backdrop-filter: blur(8px) !important;
-  border: 1px solid rgba(184, 233, 134, 0.2) !important;
+  border: 1px solid rgba(240, 160, 112, 0.2) !important;
   box-shadow: none !important;
   border-radius: 8px;
   margin-top: 4px;
@@ -274,12 +274,12 @@ body {
 }
 
 .dropdown__link:hover {
-  color: rgba(184, 233, 134, 1) !important;
-  background: rgba(184, 233, 134, 0.1) !important;
+  color: rgba(240, 160, 112, 1) !important;
+  background: rgba(240, 160, 112, 0.1) !important;
 }
 
 .dropdown__link--active {
-  color: rgba(184, 233, 134, 1) !important;
+  color: rgba(240, 160, 112, 1) !important;
   font-weight: bold !important;
 }
 
@@ -296,7 +296,7 @@ body {
   height: 32px;
   padding: 0 !important;
   border-radius: 8px;
-  color: rgba(184, 233, 134, 0.8) !important;
+  color: rgba(240, 160, 112, 0.8) !important;
   transition:
     background 0.15s ease,
     color 0.15s ease;
@@ -305,8 +305,8 @@ body {
 }
 
 .header-icon-link:hover {
-  color: rgba(184, 233, 134, 1) !important;
-  background: rgba(184, 233, 134, 0.1);
+  color: rgba(240, 160, 112, 1) !important;
+  background: rgba(240, 160, 112, 0.1);
 }
 
 .header-icon-link::before {
@@ -717,7 +717,7 @@ main {
 
 /* —— 主按钮：品牌渐变 + 柔和辉光，呼应「扬帆」橙→绿 —— */
 .button--primary {
-  background: linear-gradient(135deg, #f0a070 0%, #b8e986 100%) !important;
+  background: linear-gradient(135deg, #f0a070 0%, #ffc89a 100%) !important;
   color: #1a1917 !important;
   border: none !important;
   font-weight: 600;
@@ -737,7 +737,7 @@ main {
 
 /* —— 键盘焦点：主题色辉光环，提升可访问性与精致感 —— */
 :focus-visible {
-  outline: 2px solid rgba(184, 233, 134, 0.6) !important;
+  outline: 2px solid rgba(240, 160, 112, 0.6) !important;
   outline-offset: 2px;
   border-radius: 4px;
 }
