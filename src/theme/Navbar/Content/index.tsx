@@ -13,8 +13,7 @@ import NavbarItem, {type Props as NavbarItemConfig} from '@theme/NavbarItem';
 import NavbarColorModeToggle from '@theme/Navbar/ColorModeToggle';
 import NavbarMobileSidebarToggle from '@theme/Navbar/MobileSidebar/Toggle';
 import NavbarLogo from '@theme/Navbar/Logo';
-import NavbarSearchBar from '@theme/Navbar/SearchBar';
-import WechatQrcode from '@site/src/components/WechatQrcode/WechatQrcode';
+import NavbarLogoCenter from '@theme/Navbar/LogoCenter';
 
 import styles from './styles.module.css';
 
@@ -105,13 +104,12 @@ export default function NavbarContent(): ReactNode {
           <NavbarItems items={leftItems} />
         </>
       }
-      center={<NavbarSearchBar />}
+      center={<NavbarLogoCenter />}
       right={
         // TODO stop hardcoding items?
         // Ask the user to add the respective navbar items => more flexible
         <>
           <NavbarItems items={otherRightItems} />
-          <WechatQrcode />
           <NavbarColorModeToggle className={styles.colorModeToggle} />
           <NavbarItems items={localeItems} />
         </>

@@ -108,7 +108,33 @@ div[class*='codeBlockContainer']:focus-within .codeBlockButtons {
 
 html,
 body {
-  background: var(--ifm-background-color) !important;
+  background-color: var(--ifm-background-color) !important;
+  /* 科技感环境光：多层径向辉光 + 极淡网格，营造纵深而不喧宾夺主 */
+  background-image:
+    radial-gradient(
+      60% 50% at 50% -10%,
+      rgba(240, 160, 112, 0.1),
+      transparent 70%
+    ),
+    radial-gradient(
+      45% 45% at 88% 15%,
+      rgba(138, 180, 248, 0.07),
+      transparent 70%
+    ),
+    radial-gradient(
+      45% 45% at 12% 85%,
+      rgba(184, 233, 134, 0.06),
+      transparent 70%
+    ),
+    linear-gradient(rgba(237, 234, 229, 0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(237, 234, 229, 0.018) 1px, transparent 1px);
+  background-size:
+    100% 100%,
+    100% 100%,
+    100% 100%,
+    32px 32px,
+    32px 32px;
+  background-attachment: fixed;
   margin: 0;
   padding: 0;
   min-height: 100vh;
@@ -120,7 +146,7 @@ body {
 }
 
 #root {
-  background: var(--ifm-background-color) !important;
+  background: transparent !important;
   min-height: 100vh;
 }
 
@@ -135,8 +161,16 @@ body {
   background: rgba(26, 25, 23, 0.85) !important;
   backdrop-filter: blur(8px) !important;
   -webkit-backdrop-filter: blur(8px) !important;
-  border-bottom: 1px solid rgba(184, 233, 134, 0.2) !important;
-  box-shadow: none !important;
+  border-bottom: 1px solid transparent !important;
+  /* 导航栏底部：居中渐变光带，呼应「扬帆」绿，并带柔和辉光 */
+  border-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(184, 233, 134, 0.55) 50%,
+      transparent 100%
+    )
+    1 !important;
+  box-shadow: 0 1px 24px rgba(184, 233, 134, 0.08) !important;
 }
 
 .navbar__inner {
@@ -159,12 +193,42 @@ body {
   height: 34px;
 }
 
+/* 站点名「VanSail」：动态渐变流光，呼应「扬帆」主题（与首页 hero 字标同款配色） */
 .navbar__title {
-  font-size: 11px;
-  font-weight: 600;
-  color: #ffffff;
-  letter-spacing: 0.8px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
   line-height: 1;
+  background: linear-gradient(
+    92deg,
+    #f0a070 0%,
+    #b8e986 35%,
+    #8ab4f8 65%,
+    #f0a070 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: titleShine 5s linear infinite;
+  filter: drop-shadow(0 1px 8px rgba(184, 233, 134, 0.25));
+}
+
+@keyframes titleShine {
+  0% {
+    background-position: 0% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .navbar__title {
+    animation: none;
+    background-position: 0% center;
+  }
 }
 
 .navbar__link {
@@ -270,11 +334,6 @@ body {
 
 main {
   background: transparent !important;
-}
-
-/* Only hide the site-level footer, keep the doc footer (Edit this page) visible */
-.footer {
-  display: none !important;
 }
 
 /* Tutorial/Documentation page text colors */
@@ -637,4 +696,41 @@ main {
 
 .pagination-nav__label {
   color: var(--ifm-heading-color) !important;
+}
+
+/* ============================================================
+ * 科技感 / 高级感 全局润色
+ * ============================================================ */
+
+/* —— 主按钮：品牌渐变 + 柔和辉光，呼应「扬帆」橙→绿 —— */
+.button--primary {
+  background: linear-gradient(135deg, #f0a070 0%, #b8e986 100%) !important;
+  color: #1a1917 !important;
+  border: none !important;
+  font-weight: 600;
+  box-shadow: 0 4px 16px rgba(240, 160, 112, 0.18);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    filter 0.15s ease;
+}
+
+.button--primary:hover {
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+  color: #1a1917 !important;
+  box-shadow: 0 6px 22px rgba(240, 160, 112, 0.3);
+}
+
+/* —— 键盘焦点：主题色辉光环，提升可访问性与精致感 —— */
+:focus-visible {
+  outline: 2px solid rgba(184, 233, 134, 0.6) !important;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* —— 选区高亮：品牌色低透明，统一调性 —— */
+::selection {
+  background: rgba(240, 160, 112, 0.28);
+  color: #fff;
 }

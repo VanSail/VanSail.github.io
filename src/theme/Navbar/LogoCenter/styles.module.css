@@ -1,0 +1,40 @@
+/* 运动容器：与首页地球动态效果同宽（内容列 60vw，居中）。
+   绝对定位，不挤压左右导航项；内部 logo 在 60vw 范围内从最左航行到最右。 */
+.sailWrap {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60vw;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.sailImg {
+  height: 28px;
+  width: auto;
+  /* 总行程 ≈ 60vw，与首页地球宽度一致；并随波浪轻微起伏/倾斜 */
+  animation: sailCruise 9s ease-in-out infinite;
+  filter: drop-shadow(0 1px 6px rgba(184, 233, 134, 0.25));
+}
+
+@keyframes sailCruise {
+  0% {
+    transform: translateX(0) translateY(0) rotate(-2deg);
+  }
+  50% {
+    transform: translateX(calc(60vw - 28px)) translateY(-3px) rotate(2deg);
+  }
+  100% {
+    transform: translateX(0) translateY(0) rotate(-2deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sailImg {
+    animation: none;
+  }
+}

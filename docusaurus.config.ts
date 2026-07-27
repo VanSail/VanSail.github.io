@@ -63,16 +63,6 @@ const config: Config = {
     ],
   ],
 
-  plugins: [
-    [
-      '@easyops-cn/docusaurus-search-local',
-      {
-        // The search index is built for docs only (no blog).
-        indexBlog: false,
-      },
-    ],
-  ],
-
   themeConfig: {
     // 默认社交分享卡片（1200×630），生成 og:image / twitter:image
     image: 'img/social-card.png',
@@ -80,11 +70,11 @@ const config: Config = {
       {name: 'twitter:card', content: 'summary_large_image'},
       {
         name: 'keywords',
-        content: 'VanSail, 教程, 文档, ROS, AI, 网页工具, Zsh, Git',
+        content: 'VanSail, 教程, 文档, ROS, AI, Zsh, Git',
       },
       {
         name: 'description',
-        content: '教程文档与网页工具 · With Sincere Mind, Build Tech Sail',
+        content: 'With Sincere Mind, Build Tech Sail',
       },
       {property: 'og:type', content: 'website'},
       {property: 'og:site_name', content: 'VanSail'},
@@ -95,36 +85,14 @@ const config: Config = {
       respectPrefersColorScheme: false,
     },
     navbar: {
-      logo: {
-        alt: 'VanSail',
-        src: 'img/logo.svg',
-      },
+      title: 'VanSail',
       items: [
-        {
-          to: '/processor-compare',
-          position: 'right',
-          className: 'header-icon-link header-chip-link',
-          'aria-label': 'Processor Compare',
-        },
-        {
-          href: 'https://github.com/VanSail/VanSail.github.io',
-          position: 'right',
-          className: 'header-icon-link header-github-link',
-          'aria-label': 'GitHub repository',
-        },
-        {
-          to: '/docs/guide/',
-          position: 'right',
-          className: 'header-icon-link header-guide-link',
-          'aria-label': '使用指南',
-        },
         {
           type: 'localeDropdown',
           position: 'right',
         },
       ],
     },
-    footer: undefined,
     prism: {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,

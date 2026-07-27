@@ -29,6 +29,7 @@ interface CardItem {
   icon: ReactNode;
   menu?: MenuOption[];
   numbered?: boolean;
+  wide?: boolean;
 }
 
 const svgProps = {
@@ -86,33 +87,6 @@ const rosIcon = (
     <path d="M12 9.4v5.2M9.4 12h5.2" />
     <path d="M5 8.5 3 7M5 15.5 3 17M19 8.5 21 7M19 15.5 21 17" />
     <path d="M12 21v2" />
-  </svg>
-);
-
-const serialIcon = (
-  <svg {...svgProps}>
-    <path d="M5 8.5 7 6h10l2 2.5v8a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1z" />
-    <path d="M8.5 11h7M8.5 13.5h7M8.5 16h7" />
-  </svg>
-);
-
-const mindmapIcon = (
-  <svg {...svgProps}>
-    <circle cx="18" cy="5" r="3" />
-    <circle cx="6" cy="12" r="3" />
-    <circle cx="18" cy="19" r="3" />
-    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
-    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
-  </svg>
-);
-
-const tableIcon = (
-  <svg {...svgProps}>
-    <rect x="3" y="3" width="18" height="18" rx="2" />
-    <line x1="3" y1="9" x2="21" y2="9" />
-    <line x1="3" y1="15" x2="21" y2="15" />
-    <line x1="9" y1="3" x2="9" y2="21" />
-    <line x1="15" y1="3" x2="15" y2="21" />
   </svg>
 );
 
@@ -202,34 +176,6 @@ const robots: CardItem[] = [
   },
 ];
 
-// 网页内运行的小工具
-const webTools: CardItem[] = [
-  {
-    to: '/serial-monitor',
-    title: {zh: '串口监视器', en: 'Serial Monitor'},
-    desc: {zh: '网页串口调试 · 免驱动', en: 'Web Serial Monitor · Driver-Free'},
-    icon: serialIcon,
-  },
-  {
-    to: '/mindmap',
-    title: {zh: '思维导图', en: 'Mind Map'},
-    desc: {
-      zh: '模板 · 节点笔记 · 一键分享',
-      en: 'Templates · Notes · Share',
-    },
-    icon: mindmapIcon,
-  },
-  {
-    to: '/table-converter',
-    title: {zh: '格式转换', en: 'Format Converter'},
-    desc: {
-      zh: 'Markdown ⇄ Excel · 实时互转 · 双向编辑',
-      en: 'Markdown ⇄ Excel · Real-time · Two-way',
-    },
-    icon: tableIcon,
-  },
-];
-
 // 外部开发资源 / 文档
 const devResources: CardItem[] = [
   {
@@ -279,22 +225,22 @@ const stm32Tools: CardItem[] = [
   {
     to: '/docs/stm32/dev-tools',
     title: {zh: '开发工具', en: 'Dev Tools'},
-    desc: {zh: '以 STM32F103C8T6 为例', en: 'Using STM32F103C8T6 as example'},
+    desc: {zh: '嵌入式开发 · 工具链', en: 'Embedded Dev · Toolchain'},
     icon: toolIcon,
+    wide: true,
   },
 ];
 
 const sections = {
   ai: {zh: 'AI 智能体', en: 'AI Agents'},
   robots: {zh: '机器人操作系统', en: 'Robot Operating System'},
-  web: {zh: '网页工具', en: 'Web Tools'},
   software: {zh: '软件工具', en: 'Software Tools'},
   stm32: {zh: 'STM32 开发', en: 'STM32 Development'},
 };
 
 const meta = {
   title: {zh: 'VanSail', en: 'VanSail'},
-  desc: {zh: '教程文档与网页工具', en: 'Tutorials & web tools'},
+  desc: {zh: '教程文档与开发工具', en: 'Tutorials & dev tools'},
 };
 
 function Card({
@@ -304,6 +250,9 @@ function Card({
   item: CardItem;
   locale: 'zh' | 'en';
 }): ReactNode {
+  const cardClass = item.wide
+    ? `${styles.card} ${styles.cardWide}`
+    : styles.card;
   if (item.menu) {
     return <MenuCard item={item} locale={locale} />;
   }
@@ -314,7 +263,7 @@ function Card({
         href={item.to}
         target="_blank"
         rel="noopener noreferrer"
-        className={styles.card}
+        className={cardClass}
       >
         <span className={styles.cardIcon} aria-hidden="true">
           {item.icon}
@@ -327,7 +276,7 @@ function Card({
     );
   }
   return (
-    <Link to={item.to} className={styles.card}>
+    <Link to={item.to} className={cardClass}>
       <span className={styles.cardIcon} aria-hidden="true">
         {item.icon}
       </span>
@@ -520,15 +469,7 @@ export default function Home(): ReactNode {
           </section>
 
           <section className={styles.section}>
-            <h2 className={styles.sectionTitle}>{sections.web[locale]}</h2>
-            <div className={styles.grid}>
-              {webTools.map(item => (
-                <Card key={item.to} item={item} locale={locale} />
-              ))}
-            </div>
-            <h2 className={`${styles.sectionTitle} ${styles.sectionGap}`}>
-              {sections.software[locale]}
-            </h2>
+            <h2 className={styles.sectionTitle}>{sections.software[locale]}</h2>
             <div className={styles.grid}>
               {devResources.map(item => (
                 <Card key={item.to} item={item} locale={locale} />

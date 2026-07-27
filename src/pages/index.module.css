@@ -26,10 +26,7 @@
   padding-left: 12px;
   border-left: 3px solid var(--ifm-color-primary);
   line-height: 1.2;
-}
-
-.sectionGap {
-  margin-top: 32px;
+  letter-spacing: 0.5px;
 }
 
 /* ---------------- Grid & Cards ---------------- */
@@ -46,24 +43,36 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 14px;
-  padding: 22px;
-  background: var(--ifm-background-surface-color);
+  padding: 24px;
+  /* 极淡顶部高光叠加表面色，营造克制的玻璃质感而不抢戏 */
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0)),
+    var(--ifm-background-surface-color);
   border: 1px solid var(--ifm-hr-border-color);
   border-radius: 16px;
   text-decoration: none;
   color: var(--ifm-color-base);
-  transition: border-color 0.15s ease, transform 0.15s ease,
-    box-shadow 0.15s ease;
+  /* 静止态极淡投影，避免平面呆板 */
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.22);
+  transition:
+    border-color 0.25s ease,
+    transform 0.25s cubic-bezier(0.2, 0.7, 0.3, 1),
+    box-shadow 0.25s ease;
 }
 
 .card:hover {
-  border-color: var(--ifm-color-primary);
-  transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+  border-color: rgba(240, 160, 112, 0.45);
+  transform: translateY(-4px);
+  /* 中性柔影 + 极淡描边光，高级而克制，避免喧闹橙光 */
+  box-shadow:
+    0 14px 34px rgba(0, 0, 0, 0.38),
+    0 0 0 1px rgba(240, 160, 112, 0.16),
+    0 6px 20px rgba(240, 160, 112, 0.07);
 }
 
 .card:hover .cardIcon {
-  background: rgba(240, 160, 112, 0.22);
+  background: rgba(240, 160, 112, 0.18);
+  transform: scale(1.06);
 }
 
 .cardIcon {
@@ -74,9 +83,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(240, 160, 112, 0.12);
+  background: rgba(240, 160, 112, 0.1);
   color: var(--ifm-color-primary);
-  transition: background 0.15s ease;
+  transition:
+    background 0.25s ease,
+    transform 0.25s cubic-bezier(0.2, 0.7, 0.3, 1);
 }
 
 .cardIcon svg {
@@ -92,6 +103,7 @@
 .cardTitle {
   font-size: 16px;
   font-weight: 600;
+  letter-spacing: 0.2px;
   color: var(--ifm-heading-color);
   margin-bottom: 6px;
 }
@@ -99,8 +111,23 @@
 .cardDesc {
   font-size: 13px;
   color: var(--ifm-font-color-base);
-  opacity: 0.7;
-  line-height: 1.55;
+  opacity: 0.68;
+  line-height: 1.6;
+}
+
+/* 单一卡片的区块（如 STM32 开发）横向铺满并居中，避免右侧大片留白 */
+.cardWide {
+  flex-basis: 100%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  text-align: center;
+  padding: 20px 28px;
+}
+
+.cardWide .cardBody {
+  align-items: center;
 }
 
 /* ---------------- Responsive ---------------- */
@@ -116,6 +143,15 @@
   }
   .card {
     flex-basis: 100%;
+  }
+  .cardWide {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    padding: 22px;
+  }
+  .cardWide .cardBody {
+    align-items: flex-start;
   }
 }
 
