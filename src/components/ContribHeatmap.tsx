@@ -75,13 +75,12 @@ function parseApiData(raw: ApiDay[][]): {
   grid: (Cell | null)[][];
   monthLabels: MonthLabel[];
   numWeeks: number;
-  totalContribs: number;
 } {
   // API returns weeks where each week is an array of days (Sun–Sat)
   // Some weeks may be shorter than 7 days (incomplete)
   const numWeeks = raw.length;
   if (!numWeeks) {
-    return {grid: [], monthLabels: [], numWeeks: 0, totalContribs: 0};
+    return {grid: [], monthLabels: [], numWeeks: 0};
   }
 
   // grid[dayOfWeek][week]  dayOfWeek: 0 = Sun … 6 = Sat
@@ -89,7 +88,6 @@ function parseApiData(raw: ApiDay[][]): {
     Array<Cell | null>(numWeeks).fill(null),
   );
 
-  let totalContribs = 0;
   let lastMonth = -1;
   const monthLabels: MonthLabel[] = [];
 
@@ -104,7 +102,6 @@ function parseApiData(raw: ApiDay[][]): {
 
       const level = LEVEL_MAP[d.contributionLevel] ?? 0;
       grid[dow][w] = {date: d.date, count: d.contributionCount, level};
-      totalContribs += d.contributionCount;
 
       // Track month at first occurrence in each week
       const m = date.getMonth();
@@ -115,7 +112,7 @@ function parseApiData(raw: ApiDay[][]): {
     }
   }
 
-  return {grid, monthLabels, numWeeks, totalContribs};
+  return {grid, monthLabels, numWeeks};
 }
 
 // ── Sub-components ─────────────────────────────────────
@@ -181,7 +178,6 @@ export default function ContribHeatmap(): React.JSX.Element {
   const [grid, setGrid] = useState<(Cell | null)[][]>([]);
   const [monthLabels, setMonthLabels] = useState<MonthLabel[]>([]);
   const [numWeeks, setNumWeeks] = useState(0);
-  const [totalContribs, setTotalContribs] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
@@ -197,7 +193,6 @@ export default function ContribHeatmap(): React.JSX.Element {
           setGrid(result.grid);
           setMonthLabels(result.monthLabels);
           setNumWeeks(result.numWeeks);
-          setTotalContribs(result.totalContribs);
           setLoading(false);
         }
       } catch {

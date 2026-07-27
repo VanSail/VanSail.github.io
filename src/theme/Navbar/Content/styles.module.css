@@ -1,18 +1,28 @@
 /*
-Hide color mode toggle in small viewports
- */
-@media (max-width: 996px) {
-  .colorModeToggle {
-    display: none;
-  }
-}
-
-/*
 Restore some Infima style that broke with CSS Cascade Layers
 See https://github.com/facebook/docusaurus/pull/11142
  */
 :global(.navbar__items--right) > :last-child {
   padding-right: 0;
+}
+
+/* GitHub icon link before locale switcher */
+.githubLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+  color: var(--ifm-font-color-base);
+  transition: color 0.2s ease;
+}
+
+.githubLink:hover {
+  color: var(--ifm-color-primary);
+}
+
+.githubIcon {
+  width: 22px;
+  height: 22px;
 }
 
 /*

@@ -106,17 +106,10 @@
 .legendRow {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   flex-wrap: wrap;
   gap: 0.6rem;
   padding: 0 2px;
-}
-
-.totalStat {
-  font-size: 0.78rem;
-  color: rgba(212, 207, 199, 0.55);
-  font-weight: 500;
-  letter-spacing: 0.2px;
 }
 
 .legend {
@@ -206,9 +199,5 @@
   .legendRow {
     flex-direction: column;
     align-items: flex-start;
-  }
-
-  .totalStat {
-    font-size: 0.74rem;
   }
 }

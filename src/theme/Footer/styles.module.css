@@ -19,7 +19,7 @@
   }
 }
 
-/* —— 三列对等卡片：等宽 / 等高 / 圆角细边 —— */
+/* —— 两列并排：微信 + GitHub 热力图 —— */
 .cols {
   display: flex;
   gap: 1.25rem;
@@ -29,11 +29,10 @@
 
 .col {
   flex: 1 1 0;
-  min-width: 200px;
+  min-width: 260px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 1.25rem;
+  gap: 1rem;
   padding: 1.5rem;
   background: var(--ifm-background-color);
   border: 1px solid var(--ifm-hr-border-color);
@@ -42,6 +41,15 @@
     transform 0.2s ease,
     box-shadow 0.2s ease,
     border-color 0.2s ease;
+}
+
+.wechatCol {
+  flex: 0 0 260px;
+  justify-content: center;
+}
+
+.heatmapCol {
+  flex: 1 1 400px;
 }
 
 /* 页脚卡片 hover：轻柔上浮 + 主题色描边与暖橙辉光 */
@@ -53,13 +61,14 @@
     0 6px 20px rgba(240, 160, 112, 0.1);
 }
 
-/* —— 右列标题：与导航栏站名同款动态渐变流光，呼应「扬帆」主题 —— */
+/* —— 列标题：居中，底部渐变边线 —— */
 .colTitle {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
   margin: 0;
-  padding-bottom: 1rem;
+  padding-bottom: 0.8rem;
   border-bottom: 1px solid var(--ifm-hr-border-color);
 }
 
@@ -106,69 +115,6 @@
   fill: #07c160;
 }
 
-/* —— 左列链接组：每行图标徽标 + 文字（图标在左） —— */
-.list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.link {
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-  padding: 0.55rem 0.7rem;
-  border-radius: 10px;
-  color: var(--ifm-font-color-base);
-  text-decoration: none;
-  font-size: 0.9rem;
-  transition:
-    background 0.18s ease,
-    transform 0.18s ease,
-    color 0.18s ease;
-}
-
-.link:hover {
-  background: rgba(240, 160, 112, 0.08);
-  transform: translateX(2px);
-  color: var(--ifm-color-primary);
-}
-
-/* 图标徽标：柔和圆角方块，hover 点亮 */
-.iconBadge {
-  flex: 0 0 auto;
-  display: grid;
-  place-items: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 9px;
-  background: rgba(237, 234, 229, 0.06);
-  color: var(--ifm-font-color-base);
-  opacity: 0.85;
-  transition:
-    background 0.18s ease,
-    color 0.18s ease,
-    opacity 0.18s ease;
-}
-
-.link:hover .iconBadge {
-  background: rgba(240, 160, 112, 0.16);
-  color: var(--ifm-color-primary);
-  opacity: 1;
-}
-
-.icon {
-  width: 18px;
-  height: 18px;
-}
-
-.linkLabel {
-  font-weight: 500;
-}
-
 /* —— 二维码扫码框：黑底内嵌面板 + 细边，invert 后居中 —— */
 .qrFrame {
   align-self: center;
@@ -187,21 +133,9 @@
   filter: invert(1) opacity(0.92);
 }
 
-/* —— 贡献图：最下一行，跨整行，上方卡片呼应 —— */
-.contribRow {
-  margin-top: 1.5rem;
-}
-
 .contribIcon {
   width: 18px;
   height: 18px;
   flex: 0 0 auto;
   fill: var(--ifm-color-primary, #f0a06c);
-}
-
-/* 贡献图标题与卡片标题一致，但底部间距缩小 + 图标居中对齐 */
-.contribRow .colTitle {
-  justify-content: center;
-  padding-bottom: 0.65rem;
-  margin-bottom: 0;
 }

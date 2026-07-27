@@ -73,43 +73,6 @@ function PawIcon({
   );
 }
 
-function GuideIcon({className}: {className?: string}) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-      <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
-    </svg>
-  );
-}
-
-function ChipIcon({className}: {className?: string}) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <rect x="5" y="5" width="14" height="14" rx="2" />
-      <path d="M9 5V3M15 5V3M9 19v2M15 19v2M5 9H3M5 15H3M19 9h2M19 15h2" />
-      <path d="M12 5V19" />
-    </svg>
-  );
-}
-
 function WechatIcon({className}: {className?: string}) {
   return (
     <svg
@@ -123,74 +86,12 @@ function WechatIcon({className}: {className?: string}) {
   );
 }
 
-function SerialIcon({className}: {className?: string}) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <rect x="3" y="4" width="18" height="16" rx="2" />
-      <path d="M7 9l3 3-3 3M13 15h4" />
-    </svg>
-  );
-}
-
-function TableIcon({className}: {className?: string}) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <rect x="3" y="4" width="18" height="16" rx="2" />
-      <path d="M3 10h18M3 15h18M9 4v16M15 4v16" />
-    </svg>
-  );
-}
-
-function MindmapIcon({className}: {className?: string}) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <rect x="9" y="3" width="6" height="5" rx="1.5" />
-      <rect x="3" y="16" width="6" height="5" rx="1.5" />
-      <rect x="15" y="16" width="6" height="5" rx="1.5" />
-      <path d="M12 8v4M12 12H6v4M12 12h6v4" />
-    </svg>
-  );
-}
-
 export default function Footer(): React.JSX.Element {
   const {
     i18n: {currentLocale},
   } = useDocusaurusContext();
   const locale: 'zh' | 'en' = currentLocale === 'en' ? 'en' : 'zh';
   const t = {
-    repo: locale === 'en' ? 'Open Source Repository' : '开源仓库',
-    guide: locale === 'en' ? 'Documentation Guide' : '文档语法',
-    compare: locale === 'en' ? 'Processor Parameters' : '处理器参数',
-    serial: locale === 'en' ? 'Serial Monitor' : '串口监视器',
-    table: locale === 'en' ? 'Table Converter' : '表格转换',
-    mindmap: locale === 'en' ? 'Mind Map' : '思维导图',
     wechat: locale === 'en' ? 'WeChat Contact' : '微信联系',
   };
 
@@ -198,79 +99,8 @@ export default function Footer(): React.JSX.Element {
     <footer className={styles.footer}>
       <div className={styles.inner}>
         <div className={styles.cols}>
-          {/* 左列：站点资源链接 */}
-          <div className={styles.col}>
-            <ul className={styles.list}>
-              <li>
-                <a
-                  className={styles.link}
-                  href="https://github.com/VanSail/VanSail.github.io"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <span className={styles.iconBadge}>
-                    <GithubIcon className={styles.icon} />
-                  </span>
-                  <span className={styles.linkLabel}>{t.repo}</span>
-                </a>
-              </li>
-              <li>
-                <a className={styles.link} href={useBaseUrl('/docs/guide/')}>
-                  <span className={styles.iconBadge}>
-                    <GuideIcon className={styles.icon} />
-                  </span>
-                  <span className={styles.linkLabel}>{t.guide}</span>
-                </a>
-              </li>
-              <li>
-                <a
-                  className={styles.link}
-                  href={useBaseUrl('/processor-compare')}
-                >
-                  <span className={styles.iconBadge}>
-                    <ChipIcon className={styles.icon} />
-                  </span>
-                  <span className={styles.linkLabel}>{t.compare}</span>
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* 中列：工具链接（与左列一致；串口监视器置于列底） */}
-          <div className={styles.col}>
-            <ul className={styles.list}>
-              <li>
-                <a
-                  className={styles.link}
-                  href={useBaseUrl('/table-converter')}
-                >
-                  <span className={styles.iconBadge}>
-                    <TableIcon className={styles.icon} />
-                  </span>
-                  <span className={styles.linkLabel}>{t.table}</span>
-                </a>
-              </li>
-              <li>
-                <a className={styles.link} href={useBaseUrl('/mindmap')}>
-                  <span className={styles.iconBadge}>
-                    <MindmapIcon className={styles.icon} />
-                  </span>
-                  <span className={styles.linkLabel}>{t.mindmap}</span>
-                </a>
-              </li>
-              <li>
-                <a className={styles.link} href={useBaseUrl('/serial-monitor')}>
-                  <span className={styles.iconBadge}>
-                    <SerialIcon className={styles.icon} />
-                  </span>
-                  <span className={styles.linkLabel}>{t.serial}</span>
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* 右列：微信联系（与原来一致） */}
-          <div className={styles.col}>
+          {/* 左：微信联系 */}
+          <div className={`${styles.col} ${styles.wechatCol}`}>
             <h3 className={styles.colTitle}>
               <WechatIcon className={styles.wechatIcon} />
               <span className={styles.colTitleText}>{t.wechat}</span>
@@ -283,18 +113,18 @@ export default function Footer(): React.JSX.Element {
               />
             </div>
           </div>
-        </div>
 
-        {/* 贡献图：最下一行，跨整行 */}
-        <div className={styles.contribRow}>
-          <h3 className={styles.colTitle}>
-            <GithubIcon className={styles.contribIcon} />
-            <PawIcon
-              className={styles.contribIcon}
-              style={{width: 24, height: 24}}
-            />
-          </h3>
-          <ContribHeatmap />
+          {/* 右：GitHub 足迹 */}
+          <div className={`${styles.col} ${styles.heatmapCol}`}>
+            <h3 className={styles.colTitle}>
+              <GithubIcon className={styles.contribIcon} />
+              <PawIcon
+                className={styles.contribIcon}
+                style={{width: 24, height: 24}}
+              />
+            </h3>
+            <ContribHeatmap />
+          </div>
         </div>
       </div>
     </footer>
