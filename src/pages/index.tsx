@@ -232,10 +232,10 @@ const stm32Tools: CardItem[] = [
 ];
 
 const sections = {
-  ai: {zh: 'AI 智能体', en: 'AI Agents'},
-  robots: {zh: '机器人操作系统', en: 'Robot Operating System'},
-  software: {zh: '软件工具', en: 'Software Tools'},
-  stm32: {zh: 'STM32 开发', en: 'STM32 Development'},
+  ai: {zh: '人工智能', en: 'Artificial Intelligence'},
+  robots: {zh: '机器人', en: 'Robotics'},
+  software: {zh: '软件', en: 'Software'},
+  stm32: {zh: '嵌入式', en: 'Embedded Systems'},
 };
 
 const meta = {
@@ -287,6 +287,11 @@ function Card({
         <span className={styles.cardTitle}>{item.title[locale]}</span>
         <span className={styles.cardDesc}>{item.desc[locale]}</span>
       </span>
+      {item.wide && (
+        <span className={styles.cardArrow} aria-hidden="true">
+          →
+        </span>
+      )}
     </Link>
   );
 }

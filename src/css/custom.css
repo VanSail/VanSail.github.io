@@ -22,6 +22,9 @@
   --ifm-color-primary-lighter: #f7c4a3;
   --ifm-color-primary-lightest: #fbd9c4;
 
+  /* 首页主内容区宽度：导航栏对齐与帆船运动范围都引用此变量，便于统一调整 */
+  --content-width: 72vw;
+
   /* 链接色：柔和蓝 */
   --ifm-link-color: #8ab4f8;
   --ifm-link-hover-color: #a8c5fa;
@@ -171,6 +174,16 @@ body {
     )
     1 !important;
   box-shadow: 0 1px 24px rgba(184, 233, 134, 0.08) !important;
+}
+
+/* 导航栏内容对齐网站主内容区（与首页 .page 的 --content-width 居中容器一致），
+   桌面端生效；移动端保持通栏，避免内容过窄 */
+@media (min-width: 768px) {
+  .navbar__inner {
+    max-width: var(--content-width);
+    margin: 0 auto;
+    padding: 0 20px;
+  }
 }
 
 .navbar__inner {
