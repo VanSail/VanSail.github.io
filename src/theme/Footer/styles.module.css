@@ -19,51 +19,6 @@
   }
 }
 
-/* —— 品牌签名：与顶部导航栏首尾呼应（非版权文字） —— */
-.brand {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-  margin-bottom: 1.75rem;
-  padding-bottom: 1.75rem;
-  border-bottom: 1px solid var(--ifm-hr-border-color);
-}
-
-.brandLogo {
-  height: 28px;
-  width: auto;
-  opacity: 0.95;
-}
-
-.brandName {
-  font-size: 1rem;
-  font-weight: 700;
-  letter-spacing: 1px;
-  line-height: 1;
-  background: linear-gradient(
-    92deg,
-    #f0a070 0%,
-    #b8e986 35%,
-    #8ab4f8 65%,
-    #f0a070 100%
-  );
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-  animation: titleShine 5s linear infinite;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .brandName {
-    animation: none;
-    background-position: 0% center;
-  }
-}
-
 /* —— 三列对等卡片：等宽 / 等高 / 圆角细边 —— */
 .cols {
   display: flex;
@@ -232,9 +187,9 @@
   filter: invert(1) opacity(0.92);
 }
 
-/* —— 贡献图：最下一行，跨整行居中，与上方卡片呼应 —— */
+/* —— 贡献图：最下一行，跨整行，上方卡片呼应 —— */
 .contribRow {
-  margin-top: 1.25rem;
+  margin-top: 1.5rem;
 }
 
 .contribIcon {
@@ -244,15 +199,9 @@
   fill: var(--ifm-color-primary, #f0a06c);
 }
 
-.contribLink {
-  display: block;
-}
-
-.contribImg {
-  width: 100%;
-  height: auto;
-  display: block;
-  border-radius: 10px;
-  border: 1px solid var(--ifm-hr-border-color);
-  background: #0d1117;
+/* 贡献图标题与卡片标题一致，但底部间距缩小 + 图标居中对齐 */
+.contribRow .colTitle {
+  justify-content: center;
+  padding-bottom: 0.65rem;
+  margin-bottom: 0;
 }

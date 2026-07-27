@@ -1,6 +1,7 @@
 import React from 'react';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
+import ContribHeatmap from '@site/src/components/ContribHeatmap';
 import styles from './styles.module.css';
 
 function GithubIcon({className}: {className?: string}) {
@@ -12,6 +13,62 @@ function GithubIcon({className}: {className?: string}) {
       aria-hidden="true"
     >
       <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+    </svg>
+  );
+}
+
+function PawIcon({
+  className,
+  style,
+}: {
+  className?: string;
+  style?: React.CSSProperties;
+}) {
+  return (
+    <svg
+      className={className}
+      style={style}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      {/* central metacarpal pad */}
+      <ellipse
+        cx="11.5"
+        cy="17"
+        rx="4.5"
+        ry="4"
+        transform="rotate(10 11.5 17)"
+      />
+      {/* four toe pads in an arc */}
+      <ellipse
+        cx="5.2"
+        cy="8"
+        rx="2.4"
+        ry="3.2"
+        transform="rotate(-22 5.2 8)"
+      />
+      <ellipse
+        cx="9.8"
+        cy="5.8"
+        rx="2.2"
+        ry="3"
+        transform="rotate(-6 9.8 5.8)"
+      />
+      <ellipse
+        cx="14.2"
+        cy="5.8"
+        rx="2.2"
+        ry="3"
+        transform="rotate(6 14.2 5.8)"
+      />
+      <ellipse
+        cx="18.8"
+        cy="8"
+        rx="2.4"
+        ry="3.2"
+        transform="rotate(22 18.8 8)"
+      />
     </svg>
   );
 }
@@ -135,23 +192,11 @@ export default function Footer(): React.JSX.Element {
     table: locale === 'en' ? 'Table Converter' : '表格转换',
     mindmap: locale === 'en' ? 'Mind Map' : '思维导图',
     wechat: locale === 'en' ? 'WeChat Contact' : '微信联系',
-    contrib: locale === 'en' ? 'GitHub Contributions' : 'GitHub 贡献足迹',
-    contribAlt: locale === 'en' ? 'GitHub contribution graph' : 'GitHub 贡献图',
   };
 
   return (
     <footer className={styles.footer}>
       <div className={styles.inner}>
-        {/* 品牌签名：与顶部导航栏首尾呼应 */}
-        <div className={styles.brand}>
-          <img
-            className={styles.brandLogo}
-            src={useBaseUrl('/img/logo.svg')}
-            alt="VanSail"
-          />
-          <span className={styles.brandName}>VanSail</span>
-        </div>
-
         <div className={styles.cols}>
           {/* 左列：站点资源链接 */}
           <div className={styles.col}>
@@ -244,20 +289,12 @@ export default function Footer(): React.JSX.Element {
         <div className={styles.contribRow}>
           <h3 className={styles.colTitle}>
             <GithubIcon className={styles.contribIcon} />
-            <span className={styles.colTitleText}>{t.contrib}</span>
-          </h3>
-          <a
-            className={styles.contribLink}
-            href="https://github.com/VanSail"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <img
-              className={styles.contribImg}
-              src="https://ghchart.rshah.org/f0a06c/VanSail"
-              alt={t.contribAlt}
+            <PawIcon
+              className={styles.contribIcon}
+              style={{width: 24, height: 24}}
             />
-          </a>
+          </h3>
+          <ContribHeatmap />
         </div>
       </div>
     </footer>

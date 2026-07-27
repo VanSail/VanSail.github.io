@@ -86,6 +86,10 @@ const config: Config = {
     },
     navbar: {
       title: 'VanSail',
+      logo: {
+        src: 'img/logo.svg',
+        alt: 'VanSail',
+      },
       items: [
         {
           type: 'localeDropdown',
