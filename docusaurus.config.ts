@@ -89,8 +89,28 @@ const config: Config = {
       logo: {
         src: 'img/logo.svg',
         alt: 'VanSail',
+        height: 22,
+        width: 22,
       },
       items: [
+        {
+          html: `<span class="nav-lang-zh">AI 智能体</span><span class="nav-lang-en">AI Agent</span>`,
+          to: '/ai',
+          position: 'right',
+          className: 'nav-bilingual',
+        },
+        {
+          html: `<span class="nav-lang-zh">机器人开发</span><span class="nav-lang-en">Robot Dev</span>`,
+          to: '/robots',
+          position: 'right',
+          className: 'nav-bilingual',
+        },
+        {
+          html: `<span class="nav-lang-zh">嵌入式开发</span><span class="nav-lang-en">Embedded Dev</span>`,
+          to: '/embedded',
+          position: 'right',
+          className: 'nav-bilingual',
+        },
         {
           type: 'localeDropdown',
           position: 'right',

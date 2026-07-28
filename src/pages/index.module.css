@@ -14,6 +14,7 @@
 
 /* ---------------- Section ---------------- */
 .section {
+  margin-top: 40px;
   margin-bottom: 48px;
 }
 
@@ -68,18 +69,19 @@
   display: flex;
   flex-wrap: wrap;
   gap: 18px;
+  justify-content: center;
 }
 
 .card {
   position: relative;
   overflow: hidden;
-  /* 固定 3 列：卡片不拉伸，单张也只占 1/3 宽度靠左，避免空旷 */
+  /* 固定 3 列：卡片不拉伸，单张也只占 1/3 宽度，靠居中排列避免空旷 */
   flex: 0 1 calc((100% - 36px) / 3);
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 14px;
-  padding: 24px;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 20px;
   /* 极淡顶部高光叠加表面色，营造克制的玻璃质感而不抢戏 */
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0)),
@@ -165,13 +167,13 @@
   position: relative;
   z-index: 1;
   flex: 0 0 auto;
-  width: 46px;
-  height: 46px;
+  width: 48px;
+  height: 48px;
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: transparent;
+  background: rgba(var(--brand-rgb), 0.1);
   color: var(--brand);
   box-shadow: inset 0 0 0 1px rgba(var(--brand-rgb), 0.22);
   transition:
@@ -181,8 +183,8 @@
 }
 
 .cardIcon svg {
-  width: 26px;
-  height: 26px;
+  width: 28px;
+  height: 28px;
   stroke-width: 1.5;
 }
 
@@ -191,6 +193,8 @@
   z-index: 1;
   display: flex;
   flex-direction: column;
+  flex: 1;
+  min-width: 0;
 }
 
 .cardTitle {
@@ -208,36 +212,7 @@
   line-height: 1.6;
 }
 
-/* 单一卡片的区块（如 STM32 开发）横向铺满并居中，避免右侧大片留白 */
-.cardWide {
-  flex-basis: 100%;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  text-align: center;
-  padding: 20px 28px;
-}
-
-.cardWide .cardBody {
-  align-items: center;
-}
-
-.cardWide .cardArrow {
-  margin-left: 6px;
-  font-size: 18px;
-  line-height: 1;
-  color: var(--brand);
-  opacity: 0.65;
-  transition:
-    transform 0.25s ease,
-    opacity 0.25s ease;
-}
-
-.cardWide:hover .cardArrow {
-  transform: translateX(4px);
-  opacity: 1;
-}
+/* 单张卡片：网格固定 3 列，单卡自动按 1/3 宽度居中，不铺满整行，各页统一 */
 
 /* ---------------- Responsive ---------------- */
 @media screen and (max-width: 860px) {
@@ -252,15 +227,6 @@
   }
   .card {
     flex-basis: 100%;
-  }
-  .cardWide {
-    flex-direction: column;
-    align-items: flex-start;
-    text-align: left;
-    padding: 22px;
-  }
-  .cardWide .cardBody {
-    align-items: flex-start;
   }
 }
 
@@ -386,6 +352,46 @@
 
 .card:hover .cardExt {
   opacity: 0.55;
+}
+
+/* ---------------- Homepage category nav ---------------- */
+.homeNav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.homeNavLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 120px;
+  padding: 14px 28px;
+  border-radius: 12px;
+  background: var(--ifm-background-surface-color);
+  border: 1px solid var(--ifm-hr-border-color);
+  color: var(--ifm-font-color-base);
+  font-size: 1.05rem;
+  font-weight: 600;
+  text-decoration: none;
+  letter-spacing: 1px;
+  transition:
+    border-color 0.25s ease,
+    transform 0.25s cubic-bezier(0.2, 0.7, 0.3, 1),
+    box-shadow 0.25s ease,
+    color 0.25s ease;
+}
+
+.homeNavLink:hover {
+  color: var(--brand);
+  border-color: rgba(240, 160, 112, 0.45);
+  transform: translateY(-2px);
+  box-shadow:
+    0 6px 20px rgba(0, 0, 0, 0.25),
+    0 2px 10px rgba(240, 160, 112, 0.12);
+  text-decoration: none;
 }
 
 /* ---------------- Entry animations ---------------- */

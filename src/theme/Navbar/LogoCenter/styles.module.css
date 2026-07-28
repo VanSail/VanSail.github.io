@@ -1,11 +1,11 @@
-/* 运动容器：宽度 = 内容区域（--content-width）的 60%，居中。
-   绝对定位，不挤压左右导航项；内部 logo 在该范围内从最左航行到最右。 */
+/* 小船在导航栏没有选项的中间空白区域左右移动。
+   容器宽度限制在 340px，确保不碰到左右两边的导航项。 */
 .sailWrap {
   position: absolute;
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: calc(var(--content-width) * 0.6);
+  width: 340px;
   height: 100%;
   display: flex;
   align-items: center;
@@ -16,7 +16,7 @@
 .sailImg {
   height: 28px;
   width: auto;
-  /* 总行程 = 容器宽度 - logo 宽度，即内容区 60% 的范围；随波浪轻微起伏/倾斜 */
+  /* 总行程 = 容器宽度 - logo 宽度，仅在中间空白区域航行 */
   animation: sailCruise 9s ease-in-out infinite;
   filter: drop-shadow(0 1px 6px rgba(240, 160, 112, 0.25));
 }
@@ -26,8 +26,7 @@
     transform: translateX(0) translateY(0) rotate(-2deg);
   }
   50% {
-    transform: translateX(calc(var(--content-width) * 0.6 - 28px))
-      translateY(-3px) rotate(2deg);
+    transform: translateX(calc(340px - 28px)) translateY(-3px) rotate(2deg);
   }
   100% {
     transform: translateX(0) translateY(0) rotate(-2deg);

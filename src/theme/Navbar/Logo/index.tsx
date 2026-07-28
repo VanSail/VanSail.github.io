@@ -6,7 +6,7 @@ import {useThemeConfig, type NavbarLogo} from '@docusaurus/theme-common';
 import ThemedImage from '@theme/ThemedImage';
 import styles from './styles.module.css';
 
-// 导航栏品牌：图标在左，右侧「凡赛」(中文) 在上、「VanSail」(英文) 在下堆叠，
+// 导航栏品牌：图标在左，右侧「凡塞」(中文) 在上、「VanSail」(英文) 在下堆叠，
 // 与 houmoai 等站点的 logo 排版一致，体现中文名 / 英文名 / 图标三者合一。
 export default function NavbarLogo(): ReactNode {
   const {
@@ -41,7 +41,7 @@ export default function NavbarLogo(): ReactNode {
         </div>
       )}
       <span className={styles.brandStack}>
-        <span className={styles.brandCn}>凡赛</span>
+        <span className={styles.brandCn}>凡塞</span>
         <span className={styles.brandEn}>{title}</span>
       </span>
     </Link>

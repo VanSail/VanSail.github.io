@@ -1,0 +1,706 @@
+/* ========== Hero 区域（与首页地球同宽） ========== */
+.heroArea {
+  width: var(--content-width);
+  max-width: 1600px;
+  height: 260px;
+  margin: 0 auto;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* ========== 角色容器 ========== */
+.character {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* 整体放大内部图形，使动态效果占 hero 区域的比例与首页地球一致 */
+  transform: scale(2.1);
+  animation: charFloat 4s ease-in-out infinite;
+}
+
+@keyframes charFloat {
+  0%,
+  100% {
+    transform: translateY(0) scale(2.1);
+  }
+  50% {
+    transform: translateY(-8px) scale(2.1);
+  }
+}
+
+/* ========== 共用人脸元素 ========== */
+.faceEyes {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+}
+
+.faceEye {
+  width: 14px;
+  height: 16px;
+  background: #0f172a;
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+  animation: eyeBlink 4s ease-in-out infinite;
+}
+
+.facePupil {
+  width: 5px;
+  height: 5px;
+  background: #fff;
+  border-radius: 50%;
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  animation: pupilShift 5s ease-in-out infinite;
+}
+
+.faceEye:nth-child(2) .facePupil {
+  animation-delay: 0.3s;
+}
+
+@keyframes eyeBlink {
+  0%,
+  45%,
+  55%,
+  100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(0.08);
+  }
+}
+
+@keyframes pupilShift {
+  0%,
+  60%,
+  100% {
+    transform: translate(0, 0);
+  }
+  10%,
+  25% {
+    transform: translate(1px, -1px);
+  }
+  35%,
+  50% {
+    transform: translate(-1px, 0);
+  }
+}
+
+.faceSmile {
+  width: 14px;
+  height: 7px;
+  margin: 4px auto 0;
+  border-bottom: 2px solid #0f172a;
+  border-radius: 0 0 8px 8px;
+  animation: smileShift 5s ease-in-out infinite;
+}
+
+@keyframes smileShift {
+  0%,
+  70% {
+    width: 14px;
+    border-radius: 0 0 8px 8px;
+  }
+  75%,
+  80% {
+    width: 10px;
+    border-radius: 50%;
+  }
+  85%,
+  100% {
+    width: 14px;
+    border-radius: 0 0 8px 8px;
+  }
+}
+
+/* ========== 1. 人工智能 —— 神经光球 ========== */
+.aiOrb {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #6366f1, #3730a3 70%, #1e1b4b);
+  position: relative;
+  box-shadow:
+    0 0 60px rgba(99, 102, 241, 0.25),
+    0 0 120px rgba(99, 102, 241, 0.1),
+    inset 0 -4px 12px rgba(0, 0, 0, 0.3);
+  animation: orbPulse 3s ease-in-out infinite;
+}
+
+@keyframes orbPulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 60px rgba(99, 102, 241, 0.25),
+      0 0 120px rgba(99, 102, 241, 0.1);
+  }
+  50% {
+    box-shadow:
+      0 0 80px rgba(99, 102, 241, 0.35),
+      0 0 160px rgba(99, 102, 241, 0.15);
+  }
+}
+
+.aiOrbInner {
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 30% 25%,
+    rgba(255, 255, 255, 0.15),
+    transparent 60%
+  );
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.aiOrbRing {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(129, 140, 248, 0.3);
+  animation: ringRotate 8s linear infinite;
+}
+
+.aiOrbRing2 {
+  position: absolute;
+  inset: -14px;
+  border-radius: 50%;
+  border: 1px dashed rgba(165, 180, 252, 0.2);
+  animation: ringRotate 12s linear infinite reverse;
+}
+
+@keyframes ringRotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.aiOrbDot {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: #a5b4fc;
+  border-radius: 50%;
+}
+
+.aiOrbDot:nth-child(1) {
+  top: -2px;
+  left: 30px;
+  animation: dotOrbit 3s ease-in-out infinite;
+}
+.aiOrbDot:nth-child(2) {
+  top: 40px;
+  right: -6px;
+  animation: dotOrbit 3s ease-in-out 0.8s infinite;
+}
+.aiOrbDot:nth-child(3) {
+  bottom: 10px;
+  left: 15px;
+  animation: dotOrbit 3s ease-in-out 1.6s infinite;
+}
+
+@keyframes dotOrbit {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.8);
+  }
+}
+
+/* ========== 2. 机器人 —— 经典方形机器人 Logo ========== */
+.roboBody {
+  width: 80px;
+  height: 76px;
+  background: linear-gradient(145deg, #a78bfa, #7c3aed);
+  border-radius: 14px;
+  position: relative;
+  box-shadow:
+    0 8px 40px rgba(124, 58, 237, 0.3),
+    inset 0 2px 0 rgba(255, 255, 255, 0.12);
+}
+
+/* 天线 */
+.roboAntenna {
+  position: absolute;
+  top: -26px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.roboAntennaStick {
+  width: 4px;
+  height: 16px;
+  background: #c4b5fd;
+  border-radius: 2px;
+  margin: 0 auto;
+}
+
+.roboAntennaBall {
+  width: 10px;
+  height: 10px;
+  background: #fbbf24;
+  border-radius: 50%;
+  margin: 0 auto;
+  box-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
+  animation: roboAntennaBlink 1.8s ease-in-out infinite;
+}
+
+@keyframes roboAntennaBlink {
+  0%,
+  100% {
+    box-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(251, 191, 36, 0.8);
+    transform: scale(1.2);
+  }
+}
+
+/* 耳朵面板 */
+.roboEar {
+  position: absolute;
+  top: 14px;
+  width: 8px;
+  height: 20px;
+  background: #6d28d9;
+  border-radius: 3px;
+}
+
+.roboEarLeft {
+  left: -12px;
+  transform-origin: right center;
+  animation: roboEarTilt 3s ease-in-out infinite;
+}
+
+.roboEarRight {
+  right: -12px;
+  transform-origin: left center;
+  animation: roboEarTilt 3s ease-in-out 0.4s infinite;
+}
+
+@keyframes roboEarTilt {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  20% {
+    transform: rotate(5deg);
+  }
+  40% {
+    transform: rotate(-3deg);
+  }
+  60% {
+    transform: rotate(0deg);
+  }
+}
+
+/* 面部面板 */
+.roboFace {
+  position: absolute;
+  top: 14px;
+  left: 12px;
+  right: 12px;
+  height: 42px;
+  background: #1e1b4b;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.roboEyes {
+  display: flex;
+  gap: 18px;
+}
+
+.roboEye {
+  width: 13px;
+  height: 13px;
+  background: #22d3ee;
+  border-radius: 50%;
+  box-shadow:
+    0 0 10px rgba(34, 211, 238, 0.6),
+    0 0 20px rgba(34, 211, 238, 0.3);
+  animation: roboEyeGlow 2.5s ease-in-out infinite;
+}
+
+.roboEye:nth-child(2) {
+  animation-delay: 0.5s;
+}
+
+@keyframes roboEyeGlow {
+  0%,
+  100% {
+    box-shadow:
+      0 0 10px rgba(34, 211, 238, 0.6),
+      0 0 20px rgba(34, 211, 238, 0.3);
+  }
+  50% {
+    box-shadow:
+      0 0 18px rgba(34, 211, 238, 0.9),
+      0 0 32px rgba(34, 211, 238, 0.5);
+  }
+}
+
+/* 嘴巴 - 经典横向线条 */
+.roboMouth {
+  width: 24px;
+  height: 2.5px;
+  background: rgba(34, 211, 238, 0.8);
+  border-radius: 2px;
+  margin-top: 8px;
+  animation: roboMouthMove 3s ease-in-out infinite;
+}
+
+@keyframes roboMouthMove {
+  0%,
+  40% {
+    width: 24px;
+    opacity: 0.8;
+  }
+  45%,
+  55% {
+    width: 14px;
+    opacity: 1;
+  }
+  60%,
+  100% {
+    width: 24px;
+    opacity: 0.8;
+  }
+}
+
+/* ========== 3. 软件 —— 悬浮 App 图标 ========== */
+.softIcon {
+  width: 90px;
+  height: 90px;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  border-radius: 22px;
+  position: relative;
+  box-shadow:
+    0 12px 48px rgba(37, 99, 235, 0.35),
+    inset 0 2px 0 rgba(255, 255, 255, 0.1);
+}
+
+.softInner {
+  position: absolute;
+  inset: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 17px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.softEyes {
+  display: flex;
+  gap: 12px;
+}
+
+.softEye {
+  width: 14px;
+  height: 18px;
+  background: #fff;
+  border-radius: 50%;
+  position: relative;
+  animation: softBlink 4s ease-in-out infinite;
+}
+
+.softPupil {
+  width: 6px;
+  height: 6px;
+  background: #1e3a5f;
+  border-radius: 50%;
+  position: absolute;
+  top: 5px;
+  left: 4px;
+  animation: softLook 5s ease-in-out infinite;
+}
+
+.softEye:nth-child(2) .softPupil {
+  animation-delay: 0.4s;
+}
+
+@keyframes softBlink {
+  0%,
+  44%,
+  54%,
+  100% {
+    transform: scaleY(1);
+  }
+  49% {
+    transform: scaleY(0.06);
+  }
+}
+
+@keyframes softLook {
+  0%,
+  55%,
+  100% {
+    transform: translate(0, 0);
+  }
+  10%,
+  25% {
+    transform: translate(1px, -2px);
+  }
+  35%,
+  45% {
+    transform: translate(-1px, 1px);
+  }
+}
+
+.softMouth {
+  width: 12px;
+  height: 6px;
+  margin-top: 6px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.8);
+  border-radius: 0 0 8px 8px;
+  animation: softSmile 4s ease-in-out infinite;
+}
+
+@keyframes softSmile {
+  0%,
+  65% {
+    width: 12px;
+    border-radius: 0 0 8px 8px;
+  }
+  70%,
+  75% {
+    width: 7px;
+    border-radius: 50%;
+  }
+  80%,
+  100% {
+    width: 12px;
+    border-radius: 0 0 8px 8px;
+  }
+}
+
+/* 底部光条 */
+.softGlowBar {
+  width: 50px;
+  height: 4px;
+  margin: 10px auto 0;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.softGlowBar::after {
+  content: '';
+  display: block;
+  width: 20px;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.35);
+  border-radius: 2px;
+  animation: softBarSweep 2.5s ease-in-out infinite;
+}
+
+@keyframes softBarSweep {
+  0%,
+  100% {
+    transform: translateX(-8px);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateX(38px);
+    opacity: 1;
+  }
+}
+
+/* ========== 4. 嵌入式 —— 智能芯片 ========== */
+.chipWrap {
+  position: relative;
+}
+
+.chipBody {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #1a1a2e, #0f0f1e);
+  border-radius: 4px;
+  position: relative;
+  box-shadow:
+    0 8px 40px rgba(6, 182, 212, 0.2),
+    0 0 0 1px rgba(6, 182, 212, 0.15);
+}
+
+/* 芯片中心晶圆 */
+.chipDie {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  background: linear-gradient(135deg, #162032, #0a1628);
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(6, 182, 212, 0.12);
+}
+
+.chipDie .faceEyes {
+  gap: 10px;
+}
+
+.chipDie .faceEye {
+  width: 10px;
+  height: 12px;
+  background: #06b6d4;
+  box-shadow: 0 0 8px rgba(6, 182, 212, 0.5);
+}
+
+.chipDie .faceSmile {
+  border-bottom-color: #06b6d4;
+  width: 10px;
+}
+
+/* 四周引脚 - 简洁有序 */
+.chipPinGroup {
+  position: absolute;
+  display: flex;
+  gap: 3px;
+}
+
+.chipPinGroupTop {
+  top: -8px;
+  left: 10px;
+  right: 10px;
+  justify-content: space-evenly;
+}
+
+.chipPinGroupBottom {
+  bottom: -8px;
+  left: 10px;
+  right: 10px;
+  justify-content: space-evenly;
+}
+
+.chipPinGroupLeft {
+  left: -8px;
+  top: 10px;
+  bottom: 10px;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.chipPinGroupRight {
+  right: -8px;
+  top: 10px;
+  bottom: 10px;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.chipPin {
+  background: #475569;
+  border-radius: 1px;
+  transition: background 0.6s ease;
+}
+
+.chipPinGroupTop .chipPin,
+.chipPinGroupBottom .chipPin {
+  width: 5px;
+  height: 7px;
+}
+
+.chipPinGroupLeft .chipPin,
+.chipPinGroupRight .chipPin {
+  width: 7px;
+  height: 5px;
+}
+
+.chipPin.lit {
+  background: #06b6d4;
+  box-shadow: 0 0 4px rgba(6, 182, 212, 0.6);
+}
+
+.chipPin:nth-child(1) {
+  animation: pinFlow 2s ease-in-out infinite;
+}
+.chipPin:nth-child(2) {
+  animation: pinFlow 2s ease-in-out 0.3s infinite;
+}
+.chipPin:nth-child(3) {
+  animation: pinFlow 2s ease-in-out 0.6s infinite;
+}
+.chipPin:nth-child(4) {
+  animation: pinFlow 2s ease-in-out 0.9s infinite;
+}
+.chipPin:nth-child(5) {
+  animation: pinFlow 2s ease-in-out 1.2s infinite;
+}
+.chipPin:nth-child(6) {
+  animation: pinFlow 2s ease-in-out 1.5s infinite;
+}
+
+@keyframes pinFlow {
+  0%,
+  30% {
+    background: #475569;
+    box-shadow: none;
+  }
+  45%,
+  65% {
+    background: #06b6d4;
+    box-shadow: 0 0 6px rgba(6, 182, 212, 0.5);
+  }
+  80%,
+  100% {
+    background: #475569;
+    box-shadow: none;
+  }
+}
+
+/* 芯片底下底座 */
+.chipBase {
+  width: 60px;
+  height: 8px;
+  margin: 4px auto 0;
+  background: linear-gradient(180deg, #334155, #1e293b);
+  border-radius: 0 0 4px 4px;
+}
+
+/* ========== 响应式 ========== */
+@media (max-width: 768px) {
+  .heroArea {
+    height: 200px;
+  }
+  .aiOrb {
+    width: 80px;
+    height: 80px;
+  }
+  .roboBody {
+    width: 64px;
+    height: 60px;
+  }
+  .softIcon {
+    width: 72px;
+    height: 72px;
+    border-radius: 18px;
+  }
+  .chipBody {
+    width: 64px;
+    height: 64px;
+  }
+}
