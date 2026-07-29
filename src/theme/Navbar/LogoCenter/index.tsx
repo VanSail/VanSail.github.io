@@ -5,7 +5,7 @@ import styles from './styles.module.css';
 // 居中 logo：在导航栏中央左右来回移动，
 // 运动范围 = 首页内容区域（--content-width）的 60%。
 export default function NavbarLogoCenter(): ReactNode {
-  const logo = useBaseUrl('img/logo.svg');
+  const logo = useBaseUrl('img/logo-icon.svg');
   return (
     <span
       className={styles.sailWrap}

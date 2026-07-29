@@ -2,16 +2,14 @@ import React, {useEffect, useMemo, useState} from 'react';
 import styles from './ContribHeatmap.module.css';
 
 // ── Types ──────────────────────────────────────────────
-// Raw API item — what github-contributions-api.deno.dev actually returns
-interface ApiDay {
-  date: string;
-  contributionCount: number;
-  contributionLevel: string; // 'NONE' | 'FIRST_QUARTILE' | ... | 'FOURTH_QUARTILE'
-  color: string;
+// 数据源为实时 API github-contributions-api.jogruber.de（返回扁平格式：
+// 按日期升序的每天贡献数据）。运行时直接拉取，保证贡献图实时更新。
+interface FlatDay {
+  date: string; // 'YYYY-MM-DD'
+  count: number;
+  level: 0 | 1 | 2 | 3 | 4;
 }
-
-// deno.dev API: { contributions: ApiDay[][] }  (nested weeks)
-type ApiResponse = {contributions: ApiDay[][]};
+type ApiResponse = {contributions: FlatDay[]};
 
 // Normalised cell for rendering
 interface Cell {
@@ -50,15 +48,6 @@ const MONTHS = [
   'Dec',
 ];
 
-// Level string → numeric level
-const LEVEL_MAP: Record<string, 0 | 1 | 2 | 3 | 4> = {
-  NONE: 0,
-  FIRST_QUARTILE: 1,
-  SECOND_QUARTILE: 2,
-  THIRD_QUARTILE: 3,
-  FOURTH_QUARTILE: 4,
-};
-
 // Warm gradient: near-black → brand orange
 const COLORS = [
   '#1a1714', // Level 0 — near-black
@@ -68,48 +57,55 @@ const COLORS = [
   '#f0a070', // Level 4 — brand warm orange
 ];
 
-const API_URL = 'https://github-contributions-api.deno.dev/VanSail.json';
-
 // ── Helpers ────────────────────────────────────────────
-function parseApiData(raw: ApiDay[][]): {
+// 将扁平的按日数据转换为网格：grid[dayOfWeek][week]，dayOfWeek 0=Sun…6=Sat
+function parseApiData(days: FlatDay[]): {
   grid: (Cell | null)[][];
   monthLabels: MonthLabel[];
   numWeeks: number;
 } {
-  // API returns weeks where each week is an array of days (Sun–Sat)
-  // Some weeks may be shorter than 7 days (incomplete)
-  const numWeeks = raw.length;
-  if (!numWeeks) {
-    return {grid: [], monthLabels: [], numWeeks: 0};
+  if (!days.length) return {grid: [], monthLabels: [], numWeeks: 0};
+
+  const first = new Date(days[0].date + 'T00:00:00');
+  if (isNaN(first.getTime())) return {grid: [], monthLabels: [], numWeeks: 0};
+
+  // 网格起点 = 第一天所在周的周日（让第一列从周日开始对齐）
+  const start = new Date(first);
+  start.setDate(start.getDate() - first.getDay());
+  start.setHours(0, 0, 0, 0);
+
+  const grid: (Cell | null)[][] = Array.from(
+    {length: 7},
+    () => [] as (Cell | null)[],
+  );
+  const monthLabels: MonthLabel[] = [];
+  let lastMonth = -1;
+  let maxCol = 0;
+
+  for (const d of days) {
+    const date = new Date(d.date + 'T00:00:00');
+    if (isNaN(date.getTime())) continue;
+
+    const dow = date.getDay(); // 0 = Sun
+    const diffDays = Math.round((date.getTime() - start.getTime()) / 86400000);
+    const col = Math.floor(diffDays / 7);
+    if (col > maxCol) maxCol = col;
+
+    // 保证该行列连续（中间不出现空洞）
+    while (grid[dow].length <= col) grid[dow].push(null);
+    grid[dow][col] = {date: d.date, count: d.count, level: d.level};
+
+    const m = date.getMonth();
+    if (m !== lastMonth) {
+      monthLabels.push({col, label: MONTHS[m]});
+      lastMonth = m;
+    }
   }
 
-  // grid[dayOfWeek][week]  dayOfWeek: 0 = Sun … 6 = Sat
-  const grid: (Cell | null)[][] = Array.from({length: 7}, () =>
-    Array<Cell | null>(numWeeks).fill(null),
-  );
-
-  let lastMonth = -1;
-  const monthLabels: MonthLabel[] = [];
-
-  for (let w = 0; w < numWeeks; w++) {
-    const week = raw[w];
-    for (const d of week) {
-      const date = new Date(d.date + 'T00:00:00');
-      if (isNaN(date.getTime())) continue;
-
-      const dow = date.getDay(); // 0 = Sun
-      if (dow < 0 || dow > 6) continue;
-
-      const level = LEVEL_MAP[d.contributionLevel] ?? 0;
-      grid[dow][w] = {date: d.date, count: d.contributionCount, level};
-
-      // Track month at first occurrence in each week
-      const m = date.getMonth();
-      if (m !== lastMonth) {
-        monthLabels.push({col: w, label: MONTHS[m]});
-        lastMonth = m;
-      }
-    }
+  // 每行补齐到相同周数，保证渲染列对齐
+  const numWeeks = maxCol + 1;
+  for (const row of grid) {
+    while (row.length < numWeeks) row.push(null);
   }
 
   return {grid, monthLabels, numWeeks};
@@ -175,6 +171,7 @@ function ErrorFallback() {
 
 // ── Main component ─────────────────────────────────────
 export default function ContribHeatmap(): React.JSX.Element {
+  const dataUrl = 'https://github-contributions-api.jogruber.de/v4/VanSail';
   const [grid, setGrid] = useState<(Cell | null)[][]>([]);
   const [monthLabels, setMonthLabels] = useState<MonthLabel[]>([]);
   const [numWeeks, setNumWeeks] = useState(0);
@@ -185,11 +182,11 @@ export default function ContribHeatmap(): React.JSX.Element {
     let cancelled = false;
     async function fetchData() {
       try {
-        const resp = await fetch(API_URL);
+        const resp = await fetch(dataUrl);
         if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
         const json: ApiResponse = await resp.json();
         if (!cancelled) {
-          const result = parseApiData(json.contributions);
+          const result = parseApiData(json.contributions ?? []);
           setGrid(result.grid);
           setMonthLabels(result.monthLabels);
           setNumWeeks(result.numWeeks);
@@ -206,7 +203,7 @@ export default function ContribHeatmap(): React.JSX.Element {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [dataUrl]);
 
   if (loading) return <Skeleton />;
   if (error) return <ErrorFallback />;

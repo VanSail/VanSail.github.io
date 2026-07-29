@@ -87,10 +87,9 @@ const config: Config = {
     navbar: {
       title: 'VanSail',
       logo: {
-        src: 'img/logo.svg',
+        src: 'img/logo-text.webp',
         alt: 'VanSail',
         height: 22,
-        width: 22,
       },
       items: [
         {
