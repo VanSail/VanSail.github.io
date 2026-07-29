@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://vansail.github.io/sitemap.xml
+Sitemap: https://www.vansail.cn/sitemap.xml
