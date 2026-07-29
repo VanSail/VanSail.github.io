@@ -64,6 +64,29 @@
   );
 }
 
+/* ---------------- CTA ---------------- */
+.cta {
+  margin-top: 36px;
+  text-align: center;
+}
+
+.ctaLink {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-weight: 600;
+  color: var(--brand);
+  background: rgba(var(--brand-rgb), 0.1);
+  border: 1px solid rgba(var(--brand-rgb), 0.3);
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+.ctaLink:hover {
+  background: rgba(var(--brand-rgb), 0.2);
+  text-decoration: none;
+}
+
 /* ---------------- Grid & Cards ---------------- */
 .grid {
   display: flex;

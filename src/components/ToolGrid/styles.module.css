@@ -1,0 +1,180 @@
+.section {
+  --brand: #f0a070;
+  --brand-rgb: 240, 160, 112;
+  width: var(--content-width, 72vw);
+  max-width: 100%;
+  margin: 56px auto 0;
+  padding: 0 20px;
+}
+
+/* 用例卡片网格 */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 18px;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 22px;
+  text-decoration: none;
+  color: var(--ifm-color-base);
+  background: var(--ifm-background-surface-color);
+  border: 1px solid var(--ifm-hr-border-color);
+  border-radius: 16px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.22);
+  transition:
+    border-color 0.25s ease,
+    transform 0.25s cubic-bezier(0.2, 0.7, 0.3, 1),
+    box-shadow 0.25s ease;
+  animation: fadeUp 0.5s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+
+.card:nth-child(1) {
+  animation-delay: 60ms;
+}
+.card:nth-child(2) {
+  animation-delay: 140ms;
+}
+.card:nth-child(3) {
+  animation-delay: 220ms;
+}
+.card:nth-child(4) {
+  animation-delay: 300ms;
+}
+
+.card:hover,
+.card:focus-visible {
+  outline: none;
+  border-color: rgba(var(--brand-rgb), 0.45);
+  transform: translateY(-4px);
+  box-shadow:
+    0 16px 38px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(var(--brand-rgb), 0.18),
+    0 8px 24px rgba(var(--brand-rgb), 0.08);
+}
+
+/* 顶部 logo 小窗口 */
+.media {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    160deg,
+    rgba(var(--brand-rgb), 0.16),
+    rgba(var(--brand-rgb), 0.05)
+  );
+  border: 1px solid rgba(var(--brand-rgb), 0.25);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.06);
+}
+
+.logo {
+  color: var(--brand);
+  display: flex;
+  transition: transform 0.25s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+.logo svg {
+  width: 28px;
+  height: 28px;
+  stroke-width: 1.6;
+}
+
+.card:hover .logo {
+  transform: scale(1.08);
+}
+
+.name {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  line-height: 1.3;
+  color: var(--ifm-heading-color);
+  transition: color 0.2s ease;
+}
+
+.card:hover .name {
+  color: var(--brand);
+}
+
+.desc {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ifm-font-color-base);
+  opacity: 0.8;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.tag {
+  font-size: 12px;
+  letter-spacing: 0.3px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  color: var(--brand);
+  background: rgba(var(--brand-rgb), 0.1);
+  border: 1px solid rgba(var(--brand-rgb), 0.22);
+}
+
+/* 悬停浮现的进入箭头 */
+.go {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  font-size: 18px;
+  line-height: 1;
+  color: var(--brand);
+  opacity: 0;
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+}
+
+.card:hover .go {
+  opacity: 0.9;
+  transform: translate(3px, 0);
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media screen and (max-width: 560px) {
+  .section {
+    padding: 0 16px;
+    margin-top: 40px;
+  }
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    animation: none;
+  }
+  .card,
+  .logo,
+  .go {
+    transition: none;
+  }
+}

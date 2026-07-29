@@ -1,0 +1,133 @@
+.join {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.title {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ifm-heading-color);
+  margin: 0 0 8px;
+  padding-left: 16px;
+  line-height: 1.2;
+  letter-spacing: 0.6px;
+}
+
+/* 渐变左边线，呼应导航栏与地球主色 */
+.title::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 18px;
+  border-radius: 4px;
+  background: linear-gradient(
+    180deg,
+    var(--brand),
+    rgba(var(--brand-rgb), 0.3)
+  );
+}
+
+.intro {
+  margin: 0 0 28px;
+  padding-left: 16px;
+  color: var(--ifm-color-content-secondary);
+  font-size: 0.95rem;
+}
+
+.steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.step {
+  position: relative;
+  display: flex;
+  gap: 18px;
+  padding-bottom: 26px;
+}
+
+.step:last-child {
+  padding-bottom: 0;
+}
+
+.marker {
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  color: #fff;
+  background: var(--brand);
+  box-shadow: 0 4px 14px rgba(var(--brand-rgb), 0.4);
+  z-index: 1;
+}
+
+/* 步骤之间的连接线 */
+.line {
+  position: absolute;
+  left: 19px;
+  top: 40px;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(var(--brand), rgba(var(--brand-rgb), 0.15));
+}
+
+.body {
+  padding-top: 4px;
+  min-width: 0;
+}
+
+.stepTitle {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 0 0 4px;
+  color: var(--ifm-heading-color);
+}
+
+.desc {
+  margin: 0;
+  color: var(--ifm-color-content-secondary);
+  line-height: 1.65;
+}
+
+.code {
+  margin: 10px 0 0;
+  display: inline-block;
+  max-width: 100%;
+  overflow-x: auto;
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  background: rgba(var(--brand-rgb), 0.08);
+  border: 1px solid rgba(var(--brand-rgb), 0.22);
+  border-radius: 8px;
+  padding: 8px 12px;
+  color: var(--ifm-color-content);
+}
+
+@media (max-width: 576px) {
+  .marker {
+    width: 34px;
+    height: 34px;
+  }
+  .line {
+    left: 16px;
+    top: 34px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marker {
+    box-shadow: none;
+  }
+}
