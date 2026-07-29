@@ -3,7 +3,6 @@ import Layout from '@theme/Layout';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Hero3D from '@site/src/components/Hero3D';
 import ToolGrid from '@site/src/components/ToolGrid';
-import FloatingJoinLogo from '@site/src/components/FloatingJoinLogo';
 
 const meta = {
   title: {zh: 'VanSail', en: 'VanSail'},
@@ -26,8 +25,6 @@ export default function Home(): ReactNode {
         <Hero3D />
         {/* 首页实用工具：平铺网格卡片，点击进入对应工具 */}
         <ToolGrid />
-        {/* 首页悬浮“加入我们”logo，点击进入 /join 页面 */}
-        <FloatingJoinLogo />
       </main>
     </Layout>
   );
