@@ -4,23 +4,6 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import styles from './styles.module.css';
 
 /* ---------- 图标 ---------- */
-function GuideIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-      <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
-    </svg>
-  );
-}
-
 function MindmapIcon() {
   return (
     <svg
@@ -67,19 +50,6 @@ interface Tool {
 }
 
 const TOOLS: Tool[] = [
-  {
-    to: l => (l === 'en' ? '/en/docs/guide/' : '/docs/guide/'),
-    icon: <GuideIcon />,
-    name: {zh: '文档语法', en: 'Docs & Syntax'},
-    desc: {
-      zh: '从零搭建环境，系统学习语法',
-      en: 'Set up the env, learn the syntax',
-    },
-    tags: {
-      zh: ['教程', '环境搭建', '语法参考'],
-      en: ['Tutorials', 'Setup', 'Syntax'],
-    },
-  },
   {
     to: l => (l === 'en' ? '/en/mindmap' : '/mindmap'),
     icon: <MindmapIcon />,
