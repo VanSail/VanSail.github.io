@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useRef} from 'react';
+import {useHistory} from 'react-router-dom';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import ContribHeatmap from '@site/src/components/ContribHeatmap';
@@ -95,12 +96,42 @@ export default function Footer(): React.JSX.Element {
     wechat: locale === 'en' ? 'WeChat Contact' : '微信联系',
   };
 
+  // 微信联系区：连点 3 次（1.5s 内）跳转到“芯片参数”工具（隐藏入口）
+  const history = useHistory();
+  const clickCount = useRef(0);
+  const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const handleWechatClick = () => {
+    clickCount.current += 1;
+    if (resetTimer.current) clearTimeout(resetTimer.current);
+    resetTimer.current = setTimeout(() => {
+      clickCount.current = 0;
+    }, 1500);
+    if (clickCount.current >= 3) {
+      clickCount.current = 0;
+      if (resetTimer.current) clearTimeout(resetTimer.current);
+      history.push(
+        locale === 'en' ? '/en/processor-compare' : '/processor-compare',
+      );
+    }
+  };
+
   return (
     <footer className={styles.footer}>
       <div className={styles.inner}>
         <div className={styles.cols}>
-          {/* 左：微信联系 */}
-          <div className={`${styles.col} ${styles.wechatCol}`}>
+          {/* 左：微信联系（连点 3 次进入“芯片参数”） */}
+          <div
+            className={`${styles.col} ${styles.wechatCol}`}
+            onClick={handleWechatClick}
+            role="button"
+            tabIndex={0}
+            onKeyDown={e => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                handleWechatClick();
+              }
+            }}
+          >
             <h3 className={styles.colTitle}>
               <WechatIcon className={styles.wechatIcon} />
               <span className={styles.colTitleText}>{t.wechat}</span>
