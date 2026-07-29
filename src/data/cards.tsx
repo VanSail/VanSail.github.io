@@ -92,29 +92,6 @@ const rosIcon = (
   </svg>
 );
 
-const zshIcon = (
-  <svg {...svgProps}>
-    <path d="M6 5h12" />
-    <path d="M17 5 7 19" />
-    <path d="M6 19h12" />
-    <circle cx="17" cy="5" r="1.5" />
-    <circle cx="7" cy="19" r="1.5" />
-  </svg>
-);
-
-const nodeIcon = (
-  <svg {...svgProps}>
-    <path d="M12 2.5 21 7.5v9L12 21.5 3 16.5v-9z" />
-    <path d="M9.5 14c0 1.2 1 1.8 2.4 1.8 1.6 0 2.6-.7 2.6-2.1V9.5h-1.7v3.7c0 .7-.4 1-1.1 1-.6 0-1-.3-1-1V9.5H9.5z" />
-  </svg>
-);
-
-const gitIcon = (
-  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-    <path d="M12 1.27a11 11 0 0 0-3.48 21.45c.55.1.75-.24.75-.53v-1.85c-3.06.67-3.71-1.47-3.71-1.47-.5-1.27-1.22-1.6-1.22-1.6-1-.68.07-.67.07-.67 1.1.08 1.69 1.14 1.69 1.14.98 1.68 2.58 1.19 3.21.91.1-.71.38-1.19.7-1.46-2.45-.28-5.02-1.22-5.02-5.44 0-1.2.43-2.18 1.13-2.95-.11-.28-.49-1.4.11-2.92 0 0 .92-.3 3.02 1.13a10.5 10.5 0 0 1 5.5 0c2.1-1.43 3.02-1.13 3.02-1.13.6 1.52.22 2.64.11 2.92.7.77 1.13 1.75 1.13 2.95 0 4.23-2.58 5.16-5.03 5.43.4.34.75 1.01.75 2.04v3.03c0 .3.2.64.76.53A11 11 0 0 0 12 1.27Z" />
-  </svg>
-);
-
 const toolIcon = (
   <svg {...svgProps}>
     <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
@@ -203,48 +180,7 @@ export const robots: CardItem[] = [
   },
 ];
 
-export const devResources: CardItem[] = [
-  {
-    to: '/docs/zsh',
-    title: {zh: 'Z Shell', en: 'Z Shell'},
-    desc: {zh: '现代终端 · 插件化增强', en: 'Modern Shell · Plugin Enhanced'},
-    numbered: true,
-    menu: [
-      {label: {zh: '安装 Zsh', en: 'Install Zsh'}},
-      {
-        label: {zh: '安装 Oh My Zsh', en: 'Install Oh My Zsh'},
-        to: 'https://ohmyz.sh/',
-      },
-      {
-        label: {zh: '安装终端建议插件', en: 'Install Autosuggestions Plugin'},
-        to: 'https://github.com/zsh-users/zsh-autosuggestions',
-      },
-    ],
-    icon: zshIcon,
-  },
-  {
-    to: 'https://nodejs.org/',
-    title: {zh: 'Node.js', en: 'Node.js'},
-    desc: {zh: 'JavaScript 运行时', en: 'JavaScript Runtime'},
-    icon: nodeIcon,
-  },
-  {
-    to: 'https://git-scm.com/',
-    title: {zh: 'Git', en: 'Git'},
-    desc: {zh: '分布式版本控制系统', en: 'Distributed Version Control'},
-    icon: gitIcon,
-    menu: [
-      {label: {zh: 'Git 官网', en: 'Git Website'}, to: 'https://git-scm.com/'},
-      {
-        label: {zh: 'Git 文档', en: 'Git Docs'},
-        to: {
-          zh: 'https://git-scm.com/book/zh/v2',
-          en: 'https://git-scm.com/book/en/v2',
-        },
-      },
-    ],
-  },
-];
+export const devResources: CardItem[] = [];
 
 export const stm32Tools: CardItem[] = [
   {
