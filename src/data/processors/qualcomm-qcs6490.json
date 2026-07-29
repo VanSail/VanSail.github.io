@@ -1,27 +1,93 @@
 {
-  "name": "高通跃龙 QCS6490",
+  "name": {
+    "zh": "高通跃龙 QCS6490",
+    "en": "Qualcomm QCS6490"
+  },
   "category": "soc",
-  "process": "6nm",
-  "arch": "8 核 Kryo 670\n- 1x Kryo Gold Prime (Cortex-A78)，最高 2.7GHz\n- 3x Kryo Gold (Cortex-A78)，最高 2.4GHz\n- 4x Kryo Silver (Cortex-A55)，最高 1.9GHz",
-  "isa": "Armv8-A",
-  "gpu": "Qualcomm Adreno 643\n- OpenGL ES 3.2\n- Vulkan 1.x",
-  "mcu": "Cortex-M3",
-  "tops": "12 TOPS",
-  "memory": "32 位 LPDDR4X/LPDDR5\n- 2 通道，每通道 16 位\n- 最大寻址空间 16GB",
-  "storage": "eMMC 5.1\nSD 3.0\nUFS 2.x/3.1",
-  "codec": "H.264/H.265/VP9 最高解码 4K@60fps\nH.264/H.265 最高编码 4K@30fps",
-  "videoIn": "5x 4 通道 MIPI CSI-2",
-  "display": "1x DisplayPort 1.4\n- 最高 4K@60Hz\n- 支持 USB-C DP Alt 模式\n1x 4 通道 MIPI DSI",
-  "audio": "TDM/I2S/PCM/SoundWire/SLIMbus",
-  "pcie": "1x PCIe 3.0 x1 + 1x PCIe 3.0 x2",
-  "usb": "1x USB 3.1 Gen 1\n1x USB 2.0",
-  "network": "无",
-  "other": "SPI/UART/I2C/I3C",
-  "pkg": "PSP1287",
-  "size": "14 × 12 mm",
-  "system": "Android / Linux / Ubuntu / Windows 11",
-  "temp": "-30 - 105 °C",
-  "lifecycle": "2036",
+  "process": {
+    "zh": "6nm",
+    "en": "6nm"
+  },
+  "arch": {
+    "zh": "8 核 Kryo 670\n- 1x Kryo Gold Prime (Cortex-A78)，最高 2.7GHz\n- 3x Kryo Gold (Cortex-A78)，最高 2.4GHz\n- 4x Kryo Silver (Cortex-A55)，最高 1.9GHz",
+    "en": "8-core Kryo 670\n- 1x Kryo Gold Prime (Cortex-A78), up to 2.7GHz\n- 3x Kryo Gold (Cortex-A78), up to 2.4GHz\n- 4x Kryo Silver (Cortex-A55), up to 1.9GHz"
+  },
+  "isa": {
+    "zh": "Armv8-A",
+    "en": "Armv8-A"
+  },
+  "gpu": {
+    "zh": "Qualcomm Adreno 643\n- OpenGL ES 3.2\n- Vulkan 1.x",
+    "en": "Qualcomm Adreno 643\n- OpenGL ES 3.2\n- Vulkan 1.x"
+  },
+  "mcu": {
+    "zh": "Cortex-M3",
+    "en": "Cortex-M3"
+  },
+  "tops": {
+    "zh": "12 TOPS",
+    "en": "12 TOPS"
+  },
+  "memory": {
+    "zh": "32 位 LPDDR4X/LPDDR5\n- 2 通道，每通道 16 位\n- 最大寻址空间 16GB",
+    "en": "32-bit LPDDR4X/LPDDR5\n- 2 channels, 16 bits each\n- Up to 16GB addressable"
+  },
+  "storage": {
+    "zh": "eMMC 5.1\nSD 3.0\nUFS 2.x/3.1",
+    "en": "eMMC 5.1\nSD 3.0\nUFS 2.x/3.1"
+  },
+  "codec": {
+    "zh": "H.264/H.265/VP9 最高解码 4K@60fps\nH.264/H.265 最高编码 4K@30fps",
+    "en": "H.264/H.265/VP9 decode up to 4K@60fps\nH.264/H.265 encode up to 4K@30fps"
+  },
+  "videoIn": {
+    "zh": "5x 4 通道 MIPI CSI-2",
+    "en": "5x 4-lane MIPI CSI-2"
+  },
+  "display": {
+    "zh": "1x DisplayPort 1.4\n- 最高 4K@60Hz\n- 支持 USB-C DP Alt 模式\n1x 4 通道 MIPI DSI",
+    "en": "1x DisplayPort 1.4\n- up to 4K@60Hz\n- supports USB-C DP Alt Mode\n1x 4-lane MIPI DSI"
+  },
+  "audio": {
+    "zh": "TDM/I2S/PCM/SoundWire/SLIMbus",
+    "en": "TDM/I2S/PCM/SoundWire/SLIMbus"
+  },
+  "pcie": {
+    "zh": "1x PCIe 3.0 x1 + 1x PCIe 3.0 x2",
+    "en": "1x PCIe 3.0 x1 + 1x PCIe 3.0 x2"
+  },
+  "usb": {
+    "zh": "1x USB 3.1 Gen 1\n1x USB 2.0",
+    "en": "1x USB 3.1 Gen 1\n1x USB 2.0"
+  },
+  "network": {
+    "zh": "无",
+    "en": "None"
+  },
+  "other": {
+    "zh": "SPI/UART/I2C/I3C",
+    "en": "SPI/UART/I2C/I3C"
+  },
+  "pkg": {
+    "zh": "PSP1287",
+    "en": "PSP1287"
+  },
+  "size": {
+    "zh": "14 × 12 mm",
+    "en": "14 × 12 mm"
+  },
+  "system": {
+    "zh": "Android / Linux / Ubuntu / Windows 11",
+    "en": "Android / Linux / Ubuntu / Windows 11"
+  },
+  "temp": {
+    "zh": "-30 - 105 °C",
+    "en": "-30 - 105 °C"
+  },
+  "lifecycle": {
+    "zh": "2036",
+    "en": "2036"
+  },
   "page": "https://www.qualcomm.com/internet-of-things/products/q6-series/qcs6490",
   "brief": "https://docs.qualcomm.com/doc/87-28733-1/87-28733-1_REV_F_QUALCOMM_QCS6490_QCM6490_Processors_Product_Brief.pdf",
   "datasheet": "https://docs.qualcomm.com/doc/80-23889-1/topic/device-description.html"

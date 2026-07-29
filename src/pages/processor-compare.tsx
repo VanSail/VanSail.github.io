@@ -3,7 +3,7 @@ import Layout from '@theme/Layout';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
 import styles from './processor-compare.module.css';
-import {PROCESSORS, type Processor} from '../data/processors';
+import {PROCESSORS, type LText, type Processor} from '../data/processors';
 
 interface LText {
   zh: string;
@@ -87,7 +87,7 @@ export default function ProcessorCompare(): ReactNode {
   return (
     <Layout title={meta.title[locale]} description={meta.desc[locale]}>
       <main className={styles.page}>
-        <div className={styles.toolbar}>
+        <div className={styles.hero}>
           <ProcessorMultiPicker
             locale={locale}
             processors={PROCESSORS}
@@ -100,7 +100,7 @@ export default function ProcessorCompare(): ReactNode {
             <div className={styles.chips}>
               {selectedProcs.map(p => (
                 <span key={p.id} className={styles.chip}>
-                  {p.name}
+                  {p.name[locale]}
                   <button
                     type="button"
                     className={styles.chipX}
@@ -116,11 +116,29 @@ export default function ProcessorCompare(): ReactNode {
         </div>
 
         {selectedProcs.length === 0 ? (
-          <p className={styles.empty}>
-            {locale === 'zh'
-              ? '在上方选择处理器查看参数；最多可选 3 个进行并排对比。'
-              : 'Select a processor above to view its specs; pick up to 3 to compare side by side.'}
-          </p>
+          <div className={styles.empty}>
+            <span className={styles.emptyIcon} aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                width="40"
+                height="40"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <rect x="6" y="6" width="12" height="12" rx="2" />
+                <path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3" />
+                <rect x="9.5" y="9.5" width="5" height="5" rx="1" />
+              </svg>
+            </span>
+            <p className={styles.emptyText}>
+              {locale === 'zh'
+                ? '从上方选择处理器，查看并对比规格参数'
+                : 'Pick a processor above to view and compare specs'}
+            </p>
+          </div>
         ) : selectedProcs.length === 1 ? (
           <SingleView
             proc={selectedProcs[0]}
@@ -212,7 +230,7 @@ function ProcessorMultiPicker({
   }, []);
 
   const list = processors.filter(p =>
-    p.name.toLowerCase().includes(query.trim().toLowerCase()),
+    p.name[locale].toLowerCase().includes(query.trim().toLowerCase()),
   );
 
   return (
@@ -223,9 +241,7 @@ function ProcessorMultiPicker({
         onClick={() => setOpen(o => !o)}
       >
         <span className={styles.pickerPlaceholder}>
-          {locale === 'zh'
-            ? '选择处理器…（最多 3 个）'
-            : 'Select processor… (max 3)'}
+          {locale === 'zh' ? '选择处理器…' : 'Select processor…'}
         </span>
         <span className={styles.caret}>▾</span>
       </button>
@@ -261,7 +277,7 @@ function ProcessorMultiPicker({
                     <span className={styles.pickCheck}>
                       {active ? '✓' : ''}
                     </span>
-                    {p.name}
+                    {p.name[locale]}
                   </button>
                 );
               })
@@ -325,7 +341,7 @@ function SingleView({proc, locale, onPreview}: SingleProps) {
       <div className={styles.specCard}>
         <div className={styles.specHead}>
           <div>
-            <h2>{proc.name}</h2>
+            <h2>{proc.name[locale]}</h2>
           </div>
           <div className={styles.procActions}>
             <ProcLinks proc={proc} locale={locale} onPreview={onPreview} />
@@ -333,11 +349,13 @@ function SingleView({proc, locale, onPreview}: SingleProps) {
         </div>
         <dl className={styles.specList}>
           {FIELDS.map(f => {
-            const v = proc[f.key] as string | undefined;
+            const v = proc[f.key] as LText | undefined;
             return (
               <div className={styles.specRow} key={String(f.key)}>
                 <dt>{f.label[locale]}</dt>
-                <dd className={v ? undefined : styles.muted}>{v || '—'}</dd>
+                <dd className={v ? undefined : styles.muted}>
+                  {v ? v[locale] : '—'}
+                </dd>
               </div>
             );
           })}
@@ -365,7 +383,7 @@ function CompareView({locale, procs, onPreview}: CompareProps) {
               </th>
               {procs.map(p => (
                 <th key={p.id} className={styles.procCol}>
-                  <div className={styles.procHead}>{p.name}</div>
+                  <div className={styles.procHead}>{p.name[locale]}</div>
                   <div className={styles.procActions}>
                     <ProcLinks proc={p} locale={locale} onPreview={onPreview} />
                   </div>
@@ -375,7 +393,10 @@ function CompareView({locale, procs, onPreview}: CompareProps) {
           </thead>
           <tbody>
             {FIELDS.map(f => {
-              const vals = procs.map(p => (p[f.key] as string) || '—');
+              const vals = procs.map(p => {
+                const v = p[f.key] as LText | undefined;
+                return v ? v[locale] : '—';
+              });
               const differs = new Set(vals).size > 1;
               return (
                 <tr
@@ -386,13 +407,14 @@ function CompareView({locale, procs, onPreview}: CompareProps) {
                     {f.label[locale]}
                   </th>
                   {procs.map(p => {
-                    const v = (p[f.key] as string) || '—';
+                    const v = p[f.key] as LText | undefined;
+                    const text = v ? v[locale] : '—';
                     return (
                       <td
                         key={p.id}
-                        className={v === '—' ? styles.muted : undefined}
+                        className={text === '—' ? styles.muted : undefined}
                       >
-                        {v}
+                        {text}
                       </td>
                     );
                   })}

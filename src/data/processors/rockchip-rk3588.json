@@ -1,27 +1,93 @@
 {
-  "name": "瑞芯微 RK3588",
+  "name": {
+    "zh": "瑞芯微 RK3588",
+    "en": "Rockchip RK3588"
+  },
   "category": "soc",
-  "process": "8nm",
-  "arch": "8 核处理器\n- 4x Cortex-A76，最高 2.4GHz\n- 4x Cortex-A55，最高 1.8GHz",
-  "isa": "ARMv8‑A",
-  "gpu": "ARM Mali-G610 MP4\n- OpenGL ES 1.1/2.0/3.2\n- OpenCL 2.2\n- Vulkan 1.2",
-  "mcu": "3x Cortex-M0",
-  "tops": "6 TOPS",
-  "memory": "64 位 LPDDR4/LPDDR4X/LPDDR5/LPDDR5X\n- 4 通道，每通道 16 位\n- 最大寻址空间 32GB",
-  "storage": "eMMC 5.1\nSD/SDIO 3.0\nFSPI",
-  "codec": "H.265/VP9/AVS2 最高解码 8K@60fps\nH.264 最高解码 8K@30fps\nAV1 最高解码 4K@60fps\nH.264/H.265 最高编码 8K@30fps",
-  "videoIn": "最多 6 路MIPI CSI-2\n- 2x 4 通道 D-PHY 或 3-Trio C-PHY\n- 4x 2 通道 D-PHY，可两两组合为 4 通道\n1x 8/10/12/16 位 DVP 输入\n1x HDMI 2.0 输入，最高 4K@60Hz",
-  "display": "2x HDMI 2.1/eDP 1.3 复用\n- HDMI 最高 8K@60Hz\n- eDP 最高 4K@60Hz\n2x DisplayPort 1.4\n- 最高 8K@30Hz\n- 支持 USB-C DP Alt 模式\n2x 4 通道 MIPI DSI",
-  "audio": "I2S/PCM/TDM/SPDIF/PDM/DAC",
-  "pcie": "1x PCIe 3.0 x4 + 3x PCIe 2.1 x1",
-  "usb": "3x USB 3.1 Gen 1\n2x USB 2.0",
-  "network": "2x 10/100/1000Mbps GMAC",
-  "other": "SPI/UART/I2C/PWM/GPIO",
-  "pkg": "FCBGA1088L",
-  "size": "23 × 23 mm",
-  "system": "Android / Linux",
-  "temp": "消费级：0 - 80 °C\n工业级：-40 - 85 °C",
-  "lifecycle": "2032",
+  "process": {
+    "zh": "8nm",
+    "en": "8nm"
+  },
+  "arch": {
+    "zh": "8 核处理器\n- 4x Cortex-A76，最高 2.4GHz\n- 4x Cortex-A55，最高 1.8GHz",
+    "en": "8-core CPU\n- 4x Cortex-A76, up to 2.4GHz\n- 4x Cortex-A55, up to 1.8GHz"
+  },
+  "isa": {
+    "zh": "ARMv8‑A",
+    "en": "ARMv8-A"
+  },
+  "gpu": {
+    "zh": "ARM Mali-G610 MP4\n- OpenGL ES 1.1/2.0/3.2\n- OpenCL 2.2\n- Vulkan 1.2",
+    "en": "ARM Mali-G610 MP4\n- OpenGL ES 1.1/2.0/3.2\n- OpenCL 2.2\n- Vulkan 1.2"
+  },
+  "mcu": {
+    "zh": "3x Cortex-M0",
+    "en": "3x Cortex-M0"
+  },
+  "tops": {
+    "zh": "6 TOPS",
+    "en": "6 TOPS"
+  },
+  "memory": {
+    "zh": "64 位 LPDDR4/LPDDR4X/LPDDR5/LPDDR5X\n- 4 通道，每通道 16 位\n- 最大寻址空间 32GB",
+    "en": "64-bit LPDDR4/LPDDR4X/LPDDR5/LPDDR5X\n- 4 channels, 16 bits each\n- Up to 32GB addressable"
+  },
+  "storage": {
+    "zh": "eMMC 5.1\nSD/SDIO 3.0\nFSPI",
+    "en": "eMMC 5.1\nSD/SDIO 3.0\nFSPI"
+  },
+  "codec": {
+    "zh": "H.265/VP9/AVS2 最高解码 8K@60fps\nH.264 最高解码 8K@30fps\nAV1 最高解码 4K@60fps\nH.264/H.265 最高编码 8K@30fps",
+    "en": "H.265/VP9/AVS2 decode up to 8K@60fps\nH.264 decode up to 8K@30fps\nAV1 decode up to 4K@60fps\nH.264/H.265 encode up to 8K@30fps"
+  },
+  "videoIn": {
+    "zh": "最多 6 路MIPI CSI-2\n- 2x 4 通道 D-PHY 或 3-Trio C-PHY\n- 4x 2 通道 D-PHY，可两两组合为 4 通道\n1x 8/10/12/16 位 DVP 输入\n1x HDMI 2.0 输入，最高 4K@60Hz",
+    "en": "Up to 6x MIPI CSI-2\n- 2x 4-lane D-PHY or 3-Trio C-PHY\n- 4x 2-lane D-PHY, combinable into 4-lane\n1x 8/10/12/16-bit DVP input\n1x HDMI 2.0 input, up to 4K@60Hz"
+  },
+  "display": {
+    "zh": "2x HDMI 2.1/eDP 1.3 复用\n- HDMI 最高 8K@60Hz\n- eDP 最高 4K@60Hz\n2x DisplayPort 1.4\n- 最高 8K@30Hz\n- 支持 USB-C DP Alt 模式\n2x 4 通道 MIPI DSI",
+    "en": "2x HDMI 2.1/eDP 1.3 multiplexed\n- HDMI up to 8K@60Hz\n- eDP up to 4K@60Hz\n2x DisplayPort 1.4\n- up to 8K@30Hz\n- supports USB-C DP Alt Mode\n2x 4-lane MIPI DSI"
+  },
+  "audio": {
+    "zh": "I2S/PCM/TDM/SPDIF/PDM/DAC",
+    "en": "I2S/PCM/TDM/SPDIF/PDM/DAC"
+  },
+  "pcie": {
+    "zh": "1x PCIe 3.0 x4 + 3x PCIe 2.1 x1",
+    "en": "1x PCIe 3.0 x4 + 3x PCIe 2.1 x1"
+  },
+  "usb": {
+    "zh": "3x USB 3.1 Gen 1\n2x USB 2.0",
+    "en": "3x USB 3.1 Gen 1\n2x USB 2.0"
+  },
+  "network": {
+    "zh": "2x 10/100/1000Mbps GMAC",
+    "en": "2x 10/100/1000Mbps GMAC"
+  },
+  "other": {
+    "zh": "SPI/UART/I2C/PWM/GPIO",
+    "en": "SPI/UART/I2C/PWM/GPIO"
+  },
+  "pkg": {
+    "zh": "FCBGA1088L",
+    "en": "FCBGA1088L"
+  },
+  "size": {
+    "zh": "23 × 23 mm",
+    "en": "23 × 23 mm"
+  },
+  "system": {
+    "zh": "Android / Linux",
+    "en": "Android / Linux"
+  },
+  "temp": {
+    "zh": "消费级：0 - 80 °C\n工业级：-40 - 85 °C",
+    "en": "Consumer: 0 - 80 °C\nIndustrial: -40 - 85 °C"
+  },
+  "lifecycle": {
+    "zh": "2032",
+    "en": "2032"
+  },
   "page": "https://www.rock-chips.com/a/cn/product/RK35xilie/2022/0926/1656.html",
   "brief": "https://www.rock-chips.com/uploads/pdf/2022.8.26/191/RK3588%20Brief%20Datasheet.pdf",
   "datasheet": "https://rockchip.fr/RK3588%20datasheet%20V2.2.pdf"

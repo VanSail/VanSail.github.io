@@ -1,30 +1,36 @@
 export type CategoryId = 'ai' | 'soc';
 
+/** 双语文本：zh 中文 / en 英文 */
+export interface LText {
+  zh: string;
+  en: string;
+}
+
 export interface Processor {
   id: string;
-  name: string;
+  name: LText;
   category: CategoryId;
-  process?: string; // 工艺制程
-  arch?: string; // 中央处理器（核心簇 + 最高主频）
-  isa?: string; // 指令集架构
-  gpu?: string; // 图形处理器
-  mcu?: string; // 微处理器
-  tops?: string; // AI 算力
-  memory?: string; // 内存
-  storage?: string; // 存储
-  codec?: string; // 编解码
-  videoIn?: string; // 视频输入（MIPI CSI / 摄像头）
-  display?: string; // 显示输出
-  audio?: string; // 音频
-  pcie?: string; // PCIe
-  usb?: string; // USB
-  network?: string; // 网络
-  other?: string; // GPIO / 通用外设接口
-  pkg?: string; // 封装
-  size?: string; // 尺寸
-  system?: string; // 操作系统
-  temp?: string; // 工作温度
-  lifecycle?: string; // 生命周期（预计停产年份）
+  process?: LText; // 工艺制程
+  arch?: LText; // 中央处理器（核心簇 + 最高主频）
+  isa?: LText; // 指令集架构
+  gpu?: LText; // 图形处理器
+  mcu?: LText; // 微处理器
+  tops?: LText; // AI 算力
+  memory?: LText; // 内存
+  storage?: LText; // 存储
+  codec?: LText; // 编解码
+  videoIn?: LText; // 视频输入（MIPI CSI / 摄像头）
+  display?: LText; // 显示输出
+  audio?: LText; // 音频
+  pcie?: LText; // PCIe
+  usb?: LText; // USB
+  network?: LText; // 网络
+  other?: LText; // GPIO / 通用外设接口
+  pkg?: LText; // 封装
+  size?: LText; // 尺寸
+  system?: LText; // 操作系统
+  temp?: LText; // 工作温度
+  lifecycle?: LText; // 生命周期（预计停产年份）
   page?: string; // 官方页面
   brief?: string; // 规格书
   datasheet?: string; // 数据手册
@@ -47,8 +53,8 @@ function loadProcessors(): Processor[] {
       const data = (mod.default ?? mod) as Record<string, unknown>;
       return {id, ...data} as Processor;
     })
-    .filter(p => p.name)
-    .sort((a, b) => a.name.localeCompare(b.name));
+    .filter(p => p.name && p.name.zh)
+    .sort((a, b) => a.name.zh.localeCompare(b.name.zh));
 }
 
 export const PROCESSORS: Processor[] = loadProcessors();
