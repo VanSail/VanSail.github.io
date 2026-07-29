@@ -14,7 +14,7 @@ const meta = {
 };
 
 const cta = {
-  zh: '继续阅读：文档语法教程',
+  zh: '继续阅读：文档指南',
   en: 'Read the docs guide',
 };
 

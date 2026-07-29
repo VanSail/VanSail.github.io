@@ -3,7 +3,7 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import styles from './styles.module.css';
 
 /* “加入”图标：人物 + 加号（邀请/加入 crew 的通用语义） */
-function JoinIcon() {
+export function JoinIcon() {
   return (
     <svg
       viewBox="0 0 24 24"
