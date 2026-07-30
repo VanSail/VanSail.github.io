@@ -1,0 +1,102 @@
+.carousel {
+  --cols: 3;
+  --gap: 18px;
+  --carousel-w: var(--content-width, 72vw);
+  --slide-w: calc(
+    (var(--carousel-w) - var(--gap) * (var(--cols) - 1)) / var(--cols)
+  );
+  --duration: 40s;
+  position: relative;
+  width: var(--carousel-w);
+  max-width: 100%;
+  margin: 0 auto;
+  /* 左右边缘柔和淡出，强化滚动的流动感 */
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 5%,
+    #000 95%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 5%,
+    #000 95%,
+    transparent 100%
+  );
+}
+
+.viewport {
+  overflow: hidden;
+  /* 上下留白，容纳卡片 hover 上浮与投影 */
+  padding: 16px 0 18px;
+}
+
+.track {
+  display: flex;
+  align-items: stretch;
+  width: max-content;
+  will-change: transform;
+  animation: cardScroll var(--duration) linear infinite;
+}
+
+/* 悬停或键盘聚焦时暂停，便于点击任意卡片 */
+.carousel:hover .track,
+.carousel:focus-within .track {
+  animation-play-state: paused;
+}
+
+.slide {
+  flex: 0 0 var(--slide-w);
+  width: var(--slide-w);
+  /* 用左右 padding 充当间距，保证复制边界对称，平移 -50% 无缝衔接 */
+  padding: 0 calc(var(--gap) / 2);
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+/* 让内部卡片（a / Link）填满 slide 宽度与高度，视觉统一 */
+.slide > * {
+  flex: 1 1 100% !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+@keyframes cardScroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 860px) {
+  .carousel {
+    --cols: 2;
+    --duration: 34s;
+  }
+}
+
+@media (max-width: 560px) {
+  .carousel {
+    --cols: 1;
+    --duration: 28s;
+  }
+}
+
+/* 尊重无障碍偏好：关闭自动滚动，改为可手动横向浏览 */
+@media (prefers-reduced-motion: reduce) {
+  .track {
+    animation: none;
+  }
+  .viewport {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+  .slide {
+    scroll-snap-align: center;
+  }
+}

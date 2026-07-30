@@ -2,7 +2,9 @@ import type {ReactNode} from 'react';
 import Layout from '@theme/Layout';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Hero3D from '@site/src/components/Hero3D';
-import ToolGrid from '@site/src/components/ToolGrid';
+import Divider from '@site/src/components/Divider';
+import CardCarousel from '@site/src/components/CardCarousel';
+import {homeTools, aiAgents, robots, stm32Tools} from '@site/src/data/cards';
 
 const meta = {
   title: {zh: 'VanSail', en: 'VanSail'},
@@ -23,8 +25,11 @@ export default function Home(): ReactNode {
         }}
       >
         <Hero3D />
-        {/* 首页实用工具：平铺网格卡片，点击进入对应工具 */}
-        <ToolGrid />
+        <Divider />
+        {/* 首页卡片导航：思维导图/串口助手 + 导航分类卡片，自动横向滚动展示 */}
+        <CardCarousel
+          items={[...homeTools, ...aiAgents, ...robots, ...stm32Tools]}
+        />
       </main>
     </Layout>
   );

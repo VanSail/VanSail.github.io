@@ -72,13 +72,6 @@ const aiIcon = {
       <path d="M8 13c2-1 4-1 5 0" />
     </svg>
   ),
-  openhuman: (
-    <svg {...svgProps}>
-      <circle cx="12" cy="8" r="4" />
-      <path d="M5 21c0-3.9 3.1-7 7-7s7 3.1 7 7" />
-      <path d="M16.5 0.5 17.2 2.8 19.5 3.5 17.2 4.2 16.5 6.5 15.8 4.2 13.5 3.5 15.8 2.8Z" />
-    </svg>
-  ),
 };
 
 const rosIcon = (
@@ -95,6 +88,24 @@ const rosIcon = (
 const toolIcon = (
   <svg {...svgProps}>
     <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+  </svg>
+);
+
+const mindmapIcon = (
+  <svg {...svgProps}>
+    <circle cx="6" cy="6" r="2.2" />
+    <circle cx="6" cy="18" r="2.2" />
+    <circle cx="18" cy="12" r="2.6" />
+    <path d="M8.2 6.8 15.4 11M8.2 17.2 15.4 13" />
+  </svg>
+);
+
+const serialIcon = (
+  <svg {...svgProps}>
+    <rect x="3" y="5.5" width="18" height="13" rx="2" />
+    <path d="M6.5 10h2M6.5 13.5h2M11 11.5h6.5" />
+    <path d="M7.2 15.5h3.6" />
+    <path d="M16.5 9v6" stroke-opacity=".5" />
   </svg>
 );
 
@@ -143,12 +154,6 @@ export const aiAgents: CardItem[] = [
     desc: {zh: '跨平台 AI 代理', en: 'Cross-Platform AI Agent'},
     icon: aiIcon.hermes,
   },
-  {
-    to: 'https://tinyhumans.ai/openhuman',
-    title: {zh: 'OpenHuman', en: 'OpenHuman'},
-    desc: {zh: '个人 AI 超级智能', en: 'Personal AI Super Intelligence'},
-    icon: aiIcon.openhuman,
-  },
 ];
 
 export const robots: CardItem[] = [
@@ -186,6 +191,22 @@ export const stm32Tools: CardItem[] = [
     title: {zh: '开发工具', en: 'Dev Tools'},
     desc: {zh: '嵌入式开发 · 工具链', en: 'Embedded Dev · Toolchain'},
     icon: toolIcon,
+  },
+];
+
+/* 首页工具：思维导图、串口助手 —— 与导航分类卡片统一以 Card 渲染 */
+export const homeTools: CardItem[] = [
+  {
+    to: '/mindmap',
+    title: {zh: '思维导图', en: 'Mind Map'},
+    desc: {zh: '可视化梳理思路与知识', en: 'Visualize ideas and knowledge'},
+    icon: mindmapIcon,
+  },
+  {
+    to: '/serial-monitor',
+    title: {zh: '串口助手', en: 'Serial Monitor'},
+    desc: {zh: '串口调试与数据监控', en: 'Serial debugging & data monitor'},
+    icon: serialIcon,
   },
 ];
 

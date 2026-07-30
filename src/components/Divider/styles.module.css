@@ -1,0 +1,65 @@
+.divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  width: var(--content-width, 72vw);
+  max-width: 680px;
+  margin: 6px auto 0;
+  padding: 10px 0;
+  opacity: 0;
+  animation: dividerIn 0.8s 0.3s ease both;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1 1 auto;
+  height: 1px;
+  min-width: 20px;
+}
+
+.divider::before {
+  background: linear-gradient(
+    90deg,
+    rgba(240, 160, 112, 0) 0%,
+    rgba(240, 160, 112, 0.55) 100%
+  );
+}
+
+.divider::after {
+  background: linear-gradient(
+    90deg,
+    rgba(240, 160, 112, 0.55) 0%,
+    rgba(240, 160, 112, 0) 100%
+  );
+}
+
+.dot {
+  flex: 0 0 auto;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #f0a070;
+  box-shadow:
+    0 0 0 4px rgba(240, 160, 112, 0.12),
+    0 0 10px rgba(240, 160, 112, 0.55);
+}
+
+@keyframes dividerIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .divider {
+    animation: none;
+    opacity: 1;
+  }
+}

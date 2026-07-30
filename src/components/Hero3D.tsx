@@ -2,7 +2,6 @@ import {useEffect, useRef} from 'react';
 import type {ReactElement} from 'react';
 import type {BufferGeometry, Vector3} from 'three';
 import useBaseUrl from '@docusaurus/useBaseUrl';
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import styles from './Hero3D.module.css';
 
 /**
@@ -16,14 +15,6 @@ import styles from './Hero3D.module.css';
 export default function Hero3D(): ReactElement {
   const mountRef = useRef<HTMLDivElement>(null);
   const maskUrl = useBaseUrl('/img/earth-mask.jpg');
-  const {
-    i18n: {currentLocale},
-  } = useDocusaurusContext();
-  const locale: 'zh' | 'en' = currentLocale === 'en' ? 'en' : 'zh';
-  const slogan = {
-    zh: '扬帆起航，探索无界',
-    en: 'Set sail, explore without bounds',
-  };
 
   useEffect(() => {
     let cleanup = () => {};
@@ -344,10 +335,6 @@ export default function Hero3D(): ReactElement {
   return (
     <div className={styles.hero3d}>
       <div ref={mountRef} className={styles.canvas} aria-hidden="true" />
-      <div className={styles.brandMark}>
-        <span className={styles.brandSlogan}>{slogan[locale]}</span>
-        <span className={styles.brandLine} />
-      </div>
     </div>
   );
 }
