@@ -95,7 +95,9 @@ const steps: Step[] = [
           >
             Node.js 官网下载页
           </a>
-          ，选择你的操作系统与版本，下载安装包后运行即可。
+          ，选择你的操作系统与版本，按照命令或者下载安装包进行安装。
+          <br />
+          推荐使用 Yarn 进行包管理。
         </>
       ),
       en: (
@@ -110,6 +112,8 @@ const steps: Step[] = [
             Node.js download page
           </a>
           , pick your OS and version, then run the installer.
+          <br />
+          We recommend Yarn for package management.
         </>
       ),
     },
@@ -127,7 +131,20 @@ const steps: Step[] = [
   {
     title: {zh: 'Fork 仓库', en: 'Fork the repository'},
     desc: {
-      zh: '在 GitHub 上点击 Fork，将本项目复制到你的个人账号下。',
+      zh: (
+        <>
+          点击{' '}
+          <a
+            className={styles.descLink}
+            href="https://github.com/VanSail/VanSail.github.io"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            VanSail 项目主页
+          </a>
+          ，将本项目 Fork 到你的个人账号下。
+        </>
+      ),
       en: 'Click Fork on GitHub to copy this project under your personal account.',
     },
   },
@@ -145,15 +162,31 @@ const steps: Step[] = [
       zh: '进入项目目录，安装所需依赖：',
       en: 'Enter the project directory and install dependencies:',
     },
-    code: 'yarn install',
+    code: 'cd VanSail.github.io\nyarn install',
   },
   {
-    title: {zh: '启动与构建', en: 'Run & build'},
+    title: {zh: '启动开发预览', en: 'Start dev server'},
     desc: {
-      zh: '本地预览用 yarn start，生成静态产物用 yarn build。',
-      en: 'Use yarn start for local preview, yarn build to produce the static site.',
+      zh: '启动本地开发服务器，实时热更新，用于边改边看效果：',
+      en: 'Launch the local dev server with live reload to preview changes as you edit:',
     },
-    code: 'yarn start   # 开发预览\nyarn build    # 编译产物',
+    code: 'yarn start',
+  },
+  {
+    title: {zh: '编译产物', en: 'Build the site'},
+    desc: {
+      zh: '将源码编译为静态站点，产物输出到 build 目录：',
+      en: 'Compile the source into a static site, output to the build directory:',
+    },
+    code: 'yarn build',
+  },
+  {
+    title: {zh: '预览编译产物', en: 'Serve the build'},
+    desc: {
+      zh: '本地启动已编译的静态站点，用于正式发布前检查最终效果：',
+      en: 'Serve the compiled static site locally to verify the final result before publishing:',
+    },
+    code: 'yarn serve',
   },
   {
     title: {zh: '修改并发起 PR', en: 'Edit & open a PR'},
