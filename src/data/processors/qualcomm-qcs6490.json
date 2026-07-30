@@ -1,7 +1,7 @@
 {
   "name": {
     "zh": "高通跃龙 QCS6490",
-    "en": "Qualcomm QCS6490"
+    "en": "Qualcomm Dragonwing QCS6490"
   },
   "category": "soc",
   "process": {
@@ -13,8 +13,8 @@
     "en": "8-core Kryo 670\n- 1x Kryo Gold Prime (Cortex-A78), up to 2.7GHz\n- 3x Kryo Gold (Cortex-A78), up to 2.4GHz\n- 4x Kryo Silver (Cortex-A55), up to 1.9GHz"
   },
   "isa": {
-    "zh": "Armv8-A",
-    "en": "Armv8-A"
+    "zh": "ARMv8-A",
+    "en": "ARMv8-A"
   },
   "gpu": {
     "zh": "Qualcomm Adreno 643\n- OpenGL ES 3.2\n- Vulkan 1.x",
@@ -22,7 +22,7 @@
   },
   "mcu": {
     "zh": "Cortex-M3",
-    "en": "Cortex-M3"
+    "en": "1x Cortex-M3"
   },
   "tops": {
     "zh": "12 TOPS",
@@ -82,7 +82,7 @@
   },
   "temp": {
     "zh": "-30 - 105 °C",
-    "en": "-30 - 105 °C"
+    "en": "-30 to +105 °C"
   },
   "lifecycle": {
     "zh": "2036",

@@ -1,0 +1,94 @@
+{
+  "name": {
+    "zh": "全志 A733",
+    "en": "Allwinner A733"
+  },
+  "category": "soc",
+  "process": {
+    "zh": "12nm",
+    "en": "12nm"
+  },
+  "arch": {
+    "zh": "8 核处理器\n- 2x Cortex-A76，最高 2.0GHz\n- 6x Cortex-A55，最高 1.8GHz",
+    "en": "8-core CPU\n- 2x Cortex-A76, up to 2.0GHz\n- 6x Cortex-A55, up to 1.8GHz"
+  },
+  "isa": {
+    "zh": "ARMv8-A",
+    "en": "ARMv8-A"
+  },
+  "gpu": {
+    "zh": "IMG BXM-4-64 MC1\n- OpenGL ES 1.1/2.0/3.2\n- OpenCL 3.0\n- Vulkan 1.3",
+    "en": "IMG BXM-4-64 MC1\n- OpenGL ES 1.1/2.0/3.2\n- OpenCL 3.0\n- Vulkan 1.3"
+  },
+  "mcu": {
+    "zh": "1x RISC-V E902",
+    "en": "1x RISC-V E902"
+  },
+  "tops": {
+    "zh": "3 TOPS",
+    "en": "3 TOPS"
+  },
+  "memory": {
+    "zh": "32 位 LPDDR4/LPDDR4X/LPDDR5\n- 最大寻址空间 16GB",
+    "en": "32-bit LPDDR4/LPDDR4X/LPDDR5\n- Up to 16GB addressable"
+  },
+  "storage": {
+    "zh": "eMMC 5.0/5.1\nSD 2.0/3.0\nUFS 3.0\n8 位 RAW NAND Flash\nSPI NOR/SPI NAND Flash",
+    "en": "eMMC 5.0/5.1\nSD 2.0/3.0\nUFS 3.0\n8-bit RAW NAND Flash\nSPI NOR/SPI NAND Flash"
+  },
+  "codec": {
+    "zh": "H.265/VP9/AVS2 最高解码 8K@24fps\nH.264 最高解码 4K@30fps\nH.265/H.264 最高编码 4K@30fps\nMJPEG/JPEG 最高编码 4K@15fps",
+    "en": "H.265/VP9/AVS2 decode up to 8K@24fps\nH.264 decode up to 4K@30fps\nH.265/H.264 encode up to 4K@30fps\nMJPEG/JPEG encode up to 4K@15fps"
+  },
+  "videoIn": {
+    "zh": "2× 4 通道 MIPI CSI-2\n1x 2 通道  MIPI CSI-2",
+    "en": "2x 4-lane MIPI CSI-2\n1x 2-lane MIPI CSI-2"
+  },
+  "display": {
+    "zh": "1× HDMI 2.0\n- 最高 4K@60Hz\n1× eDP 1.4b/DP 1.4\n- 最高 4K@60Hz\n2× 4 通道 MIPI DSI\n1× Dual-link LVDS\n1× RGB",
+    "en": "1x HDMI 2.0\n- up to 4K@60Hz\n1x eDP 1.4b/DP 1.4\n- up to 4K@60Hz\n2x 4-lane MIPI DSI\n1x Dual-link LVDS\n1x RGB"
+  },
+  "audio": {
+    "zh": "I2S/PCM/TDM/DMIC/OWA",
+    "en": "I2S/PCM/TDM/DMIC/OWA"
+  },
+  "pcie": {
+    "zh": "1× PCIe 3.0 x1",
+    "en": "1x PCIe 3.0 x1"
+  },
+  "usb": {
+    "zh": "1× USB 3.1 Gen 2\n2× USB 2.0",
+    "en": "1x USB 3.1 Gen 2\n2x USB 2.0"
+  },
+  "network": {
+    "zh": "1× 10/100/1000 Mbps GMAC",
+    "en": "1x 10/100/1000Mbps GMAC"
+  },
+  "other": {
+    "zh": "SPI/UART/TWI（I²C）/PWM/IR/LEDC/GPIO",
+    "en": "SPI/UART/TWI (I2C)/PWM/IR/LEDC/GPIO"
+  },
+  "pkg": {
+    "zh": "ED-FCCSP570",
+    "en": "ED-FCCSP570"
+  },
+  "size": {
+    "zh": "15 × 15 mm",
+    "en": "15 × 15 mm"
+  },
+  "system": {
+    "zh": "Android / Linux",
+    "en": "Android / Linux"
+  },
+  "temp": {
+    "zh": "-25～75℃",
+    "en": "−25°C to +75°C"
+  },
+  "lifecycle": {
+    "zh": "未公布",
+    "en": "Not specified"
+  },
+  "page": "https://www.allwinnertech.com/index.php?c=product&a=index&id=139",
+  "brief": "",
+  "datasheet": "https://gitlab.com/tina5.0_aiot/product/docs/"
+}

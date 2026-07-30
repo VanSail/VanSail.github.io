@@ -30,7 +30,7 @@
   },
   "memory": {
     "zh": "32 或 64 位 DDR3/DDR3L/LPDDR3/LPDDR4\n- 2 通道，每通道 16 或 32 位\n- 最大寻址空间 4GB",
-    "en": "32 or 64-bit DDR3/DDR3L/LPDDR3/LPDDR4\n- 2 channels, 16 or 32 bits each\n- Up to 4GB addressable"
+    "en": "32-bit or 64-bit DDR3/DDR3L/LPDDR3/LPDDR4\n- 2 channels, 16-bit or 32-bit per channel\n- Maximum addressable memory: 4 GB"
   },
   "storage": {
     "zh": "eMMC 5.1\nSD/SDIO 3.0\nSPI Flash",
@@ -82,7 +82,7 @@
   },
   "temp": {
     "zh": "消费级：0 - 80 °C\n商业级：-20 - 85 °C",
-    "en": "Consumer: 0 - 80 °C\nCommercial: -20 - 85 °C"
+    "en": "Consumer Grade: 0°C to +80°C\nCommercial Grade: −20°C to +85°C"
   },
   "lifecycle": {
     "zh": "2028",
