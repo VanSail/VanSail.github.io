@@ -319,6 +319,8 @@
 @media (max-width: 900px) {
   .page {
     padding: 2rem 1rem;
+    height: auto;
+    min-height: 0;
   }
 
   .workspace {
