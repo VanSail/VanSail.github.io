@@ -10,7 +10,7 @@ import {
 import PageHero from '@site/src/components/PageHero';
 import styles from '@site/src/pages/index.module.css';
 
-type HeroType = 'ai' | 'robots' | 'software' | 'embedded';
+type HeroType = 'ai' | 'robots' | 'embedded';
 
 interface CategoryPageProps {
   /** 对应 PageHero 的动画类型 */
@@ -42,7 +42,7 @@ export default function CategoryPage({
   return (
     <Layout title={meta.title[locale]} description={meta.desc[locale]}>
       <main className={styles.page}>
-        <PageHero type={heroType} locale={locale} />
+        <PageHero type={heroType} />
         <AnimatedSection>
           <div className={styles.grid}>
             {items.map(item => (

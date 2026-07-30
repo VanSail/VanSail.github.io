@@ -180,8 +180,6 @@ export const robots: CardItem[] = [
   },
 ];
 
-export const devResources: CardItem[] = [];
-
 export const stm32Tools: CardItem[] = [
   {
     to: '/docs/stm32/dev-tools',
@@ -190,15 +188,6 @@ export const stm32Tools: CardItem[] = [
     icon: toolIcon,
   },
 ];
-
-/* ---------- section labels ---------- */
-
-export const sectionLabels = {
-  ai: {zh: '人工智能', en: 'Artificial Intelligence'},
-  robots: {zh: '机器人', en: 'Robotics'},
-  software: {zh: '软件', en: 'Software'},
-  stm32: {zh: '嵌入式', en: 'Embedded Systems'},
-};
 
 /* ---------- reusable Card component ---------- */
 

@@ -1,20 +1,18 @@
 import type {ReactNode} from 'react';
 import styles from './PageHero.module.css';
 
-type HeroType = 'ai' | 'robots' | 'software' | 'embedded';
+type HeroType = 'ai' | 'robots' | 'embedded';
 
 interface Props {
   type: HeroType;
-  locale: 'zh' | 'en';
 }
 
-export default function PageHero({type, locale}: Props): ReactNode {
+export default function PageHero({type}: Props): ReactNode {
   return (
     <div className={styles.heroArea}>
       <div className={styles.character}>
         {type === 'ai' && <AiOrb />}
         {type === 'robots' && <RoboGuard />}
-        {type === 'software' && <CodeCard />}
         {type === 'embedded' && <SmartChip />}
       </div>
     </div>
@@ -83,29 +81,7 @@ function RoboGuard() {
   );
 }
 
-/* ---- 3. 软件 - 悬浮 App 图标 ---- */
-function CodeCard() {
-  return (
-    <>
-      <div className={styles.softIcon}>
-        <div className={styles.softInner}>
-          <div className={styles.softEyes}>
-            <div className={styles.softEye}>
-              <div className={styles.softPupil} />
-            </div>
-            <div className={styles.softEye}>
-              <div className={styles.softPupil} />
-            </div>
-          </div>
-          <div className={styles.softMouth} />
-        </div>
-      </div>
-      <div className={styles.softGlowBar} />
-    </>
-  );
-}
-
-/* ---- 4. 嵌入式 - 智能芯片 ---- */
+/* ---- 3. 嵌入式 - 智能芯片 ---- */
 function SmartChip() {
   return (
     <div className={styles.chipWrap}>

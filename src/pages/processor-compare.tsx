@@ -5,11 +5,6 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import styles from './processor-compare.module.css';
 import {PROCESSORS, type LText, type Processor} from '../data/processors';
 
-interface LText {
-  zh: string;
-  en: string;
-}
-
 // 参数行：严格按用户提供的表格顺序与命名排列。
 // 官方页面 / 规格书 / 数据手册属于链接类字段，在规格头部以按钮展示（见 LINK_FIELDS）。
 interface FieldDef {

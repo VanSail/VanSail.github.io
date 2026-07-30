@@ -13,26 +13,6 @@
   margin-top: 0.6rem;
 }
 
-/* 返回 */
-.back {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  background: transparent;
-  border: 1px solid var(--ifm-color-emphasis-300);
-  color: var(--ifm-color-emphasis-700);
-  border-radius: 8px;
-  padding: 0.35rem 0.8rem;
-  font-size: 0.85rem;
-  cursor: pointer;
-  margin-bottom: 1.4rem;
-}
-
-.back:hover {
-  border-color: rgba(240, 160, 112, 0.6);
-  color: rgba(240, 160, 112, 1);
-}
-
 /* 选择器（多选） */
 .picker {
   position: relative;
@@ -475,10 +455,4 @@
   flex: 1 1 auto;
   border: 0;
   width: 100%;
-}
-
-@media (max-width: 640px) {
-  .home {
-    grid-template-columns: 1fr;
-  }
 }
