@@ -335,6 +335,18 @@
   }
 }
 
+/* 窄屏：控制栏横向滚动，避免分组换行后分隔线错乱 */
+@media (max-width: 768px) {
+  .controlbar {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .sep {
+    display: none;
+  }
+}
+
 /* ========== 节点交互（拖拽 / 编辑 / 高亮） ========== */
 .dragging {
   pointer-events: none;

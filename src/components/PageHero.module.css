@@ -560,3 +560,13 @@
     height: 64px;
   }
 }
+
+/* 极窄屏：缩小角色，避免溢出 hero 框 */
+@media (max-width: 480px) {
+  .character {
+    transform: scale(1.7);
+  }
+  .character:hover {
+    transform: translateY(-8px) scale(1.7);
+  }
+}
