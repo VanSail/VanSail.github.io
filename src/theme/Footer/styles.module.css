@@ -12,10 +12,24 @@
   margin: 0 auto;
 }
 
-/* 窄屏下放宽，避免三列卡片过度拥挤 */
+/* 窄屏下放宽，避免卡片过度拥挤 */
 @media screen and (max-width: 768px) {
   .inner {
     width: 90%;
+  }
+
+  /* 移动端：两卡整体居中；放得下一行就一行，放不下各自分行居中 */
+  .cols {
+    justify-content: center;
+  }
+
+  .wechatCol {
+    flex: 0 0 auto;
+  }
+
+  .heatmapCol {
+    flex: 1 1 auto;
+    min-width: 0;
   }
 }
 
