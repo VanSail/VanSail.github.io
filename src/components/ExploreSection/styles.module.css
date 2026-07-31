@@ -1,0 +1,318 @@
+.wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 72px 24px;
+}
+
+.headTitle {
+  text-align: center;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  margin: 0 0 26px;
+  color: var(--ifm-color-primary);
+}
+
+.inner {
+  width: 100%;
+  max-width: 960px;
+  display: flex;
+  gap: 40px;
+  align-items: stretch;
+}
+
+/* —— 左：单列竖向滚动卡片 —— */
+.scroller {
+  flex: 0 0 300px;
+  height: 420px;
+  overflow: hidden;
+  border-radius: 18px;
+  background: color-mix(
+    in srgb,
+    var(--ifm-color-primary) 5%,
+    var(--ifm-background-color)
+  );
+  border: 1px solid
+    color-mix(in srgb, var(--ifm-color-primary) 16%, transparent);
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    #000 12%,
+    #000 88%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    #000 12%,
+    #000 88%,
+    transparent
+  );
+}
+
+.track {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  animation: scrollY 28s linear infinite;
+  will-change: transform;
+}
+
+.scroller:hover .track {
+  animation-play-state: paused;
+}
+
+@keyframes scrollY {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-50%);
+  }
+}
+
+.card {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 84px;
+  margin: 8px 14px;
+  padding: 0 16px;
+  border-radius: 14px;
+  background: var(--ifm-background-color);
+  border: 1px solid
+    color-mix(in srgb, var(--ifm-color-primary) 18%, transparent);
+  color: var(--ifm-font-color-base);
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.cardActive {
+  border-color: color-mix(in srgb, var(--ifm-color-primary) 55%, transparent);
+  background: color-mix(
+    in srgb,
+    var(--ifm-color-primary) 10%,
+    var(--ifm-background-color)
+  );
+  box-shadow: 0 8px 22px
+    color-mix(in srgb, var(--ifm-color-primary) 18%, transparent);
+  transform: scale(1.02);
+}
+
+.cardIcon {
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: color-mix(
+    in srgb,
+    var(--ifm-color-primary) 12%,
+    var(--ifm-background-color)
+  );
+  color: var(--ifm-color-primary);
+}
+
+.iconSvg {
+  width: 24px;
+  height: 24px;
+}
+
+.cardTitle {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+/* —— 右：详情区 —— */
+.detail {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 22px 24px;
+  border-radius: 18px;
+  background: color-mix(
+    in srgb,
+    var(--ifm-color-primary) 6%,
+    var(--ifm-background-color)
+  );
+  border: 1px solid
+    color-mix(in srgb, var(--ifm-color-primary) 16%, transparent);
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.detailHead {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.logoBox {
+  flex: 0 0 auto;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ifm-background-color);
+  border: 1px solid
+    color-mix(in srgb, var(--ifm-color-primary) 30%, transparent);
+  color: var(--ifm-color-primary);
+}
+
+.detailTitle {
+  margin: 0 0 4px;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--ifm-color-primary);
+}
+
+.detailDesc {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.6;
+  opacity: 0.82;
+}
+
+.catalogBox {
+  flex: 1 1 auto;
+  max-height: 220px;
+  overflow-y: auto;
+  padding-right: 6px;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--ifm-color-primary) 40%, transparent)
+    transparent;
+}
+
+.catalogBox::-webkit-scrollbar {
+  width: 8px;
+}
+
+.catalogBox::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--ifm-color-primary) 40%, transparent);
+  border-radius: 8px;
+}
+
+.catalogBox::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.group + .group {
+  margin-top: 16px;
+}
+
+.groupTitle {
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  color: var(--ifm-heading-color);
+  margin-bottom: 8px;
+  padding-bottom: 4px;
+  border-bottom: 2px solid
+    color-mix(in srgb, var(--ifm-color-primary) 35%, transparent);
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.item {
+  display: block;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--ifm-font-color-base);
+  opacity: 0.85;
+  text-decoration: none;
+  transition:
+    background 0.18s ease,
+    opacity 0.18s ease,
+    transform 0.18s ease;
+}
+
+.item::before {
+  content: '›';
+  margin-right: 8px;
+  color: var(--ifm-color-primary);
+  font-weight: 700;
+}
+
+.item:hover,
+.item:focus-visible {
+  background: color-mix(
+    in srgb,
+    var(--ifm-color-primary) 10%,
+    var(--ifm-background-color)
+  );
+  opacity: 1;
+  transform: translateX(2px);
+  text-decoration: none;
+  outline: none;
+}
+
+.allLink {
+  margin-top: 16px;
+  align-self: flex-start;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ifm-color-primary);
+  text-decoration: none;
+}
+
+.allLink:hover {
+  opacity: 0.75;
+  text-decoration: none;
+}
+
+@media (max-width: 720px) {
+  .wrap {
+    padding: 48px 18px;
+  }
+  .inner {
+    flex-direction: column;
+    gap: 24px;
+  }
+  .scroller {
+    flex: 1 1 auto;
+    width: 100%;
+    height: 300px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track {
+    animation: none;
+  }
+  .scroller {
+    overflow-y: auto;
+    scrollbar-width: thin;
+  }
+}
