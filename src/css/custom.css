@@ -198,6 +198,19 @@ body {
     margin: 0 auto;
     padding: 0 20px;
   }
+
+  /* 非文档页的主内容区与导航栏内容区等宽并居中，两侧保留 20px 间隙；
+     文档页（html 含 .docs-doc-page）除外，保持自带阅读布局 */
+  main {
+    max-width: var(--content-width);
+    margin-inline: auto;
+    padding-inline: 20px;
+  }
+
+  html.docs-doc-page main {
+    max-width: none;
+    padding-inline: 0;
+  }
 }
 
 .navbar__inner {
