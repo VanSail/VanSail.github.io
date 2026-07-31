@@ -1,12 +1,8 @@
 import type {ReactNode} from 'react';
 import Layout from '@theme/Layout';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import {
-  Card,
-  AnimatedSection,
-  type CardItem,
-  type LText,
-} from '@site/src/data/cards';
+import {Card, AnimatedSection, type CardItem} from '@site/src/data/cards';
+import type {LText} from '@site/src/types';
 import PageHero from '@site/src/components/PageHero';
 import styles from '@site/src/pages/index.module.css';
 

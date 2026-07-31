@@ -14,7 +14,13 @@ interface LogEntry {
 }
 
 interface SerialPortLike {
-  open(opts: {baudRate: number; dataBits?: number; stopBits?: number; parity?: string; flowControl?: string}): Promise<void>;
+  open(opts: {
+    baudRate: number;
+    dataBits?: number;
+    stopBits?: number;
+    parity?: string;
+    flowControl?: string;
+  }): Promise<void>;
   close(): Promise<void>;
   readable: ReadableStream<Uint8Array> | null;
   writable: WritableStream<Uint8Array> | null;
@@ -24,13 +30,17 @@ interface SerialPortLike {
 declare global {
   interface Navigator {
     serial?: {
-      requestPort(opts?: {filters?: Array<{usbVendorId?: number; usbProductId?: number}>}): Promise<SerialPortLike>;
+      requestPort(opts?: {
+        filters?: Array<{usbVendorId?: number; usbProductId?: number}>;
+      }): Promise<SerialPortLike>;
       getPorts(): Promise<SerialPortLike[]>;
     };
   }
 }
 
-const BAUD_RATES = [1200, 2400, 4800, 9600, 19200, 38400, 57600, 115200, 230400, 460800, 921600];
+const BAUD_RATES = [
+  1200, 2400, 4800, 9600, 19200, 38400, 57600, 115200, 230400, 460800, 921600,
+];
 const MAX_LOGS = 2000;
 const RING_BUFFER_BATCH_MS = 50; // 接收节流：每 ~50ms 合并刷一次 UI
 const MAX_DECODE_BYTES_PER_CHUNK = 64 * 1024;
@@ -46,7 +56,10 @@ const bytesToHex = (bytes: Uint8Array): string => {
 
 // 解析 HEX 文本（空格分隔）成 Uint8Array，失败返回 null
 const parseHexInput = (text: string): Uint8Array | null => {
-  const parts = text.trim().split(/[\s,]+/).filter(Boolean);
+  const parts = text
+    .trim()
+    .split(/[\s,]+/)
+    .filter(Boolean);
   if (parts.length === 0) return null;
   const bytes = new Uint8Array(parts.length);
   for (let i = 0; i < parts.length; i++) {
@@ -67,7 +80,10 @@ const toError = (e: unknown, locale: Locale): string => {
     [/open/i, '打开串口失败：设备可能被占用或已断开'],
     [/write|flush|send/i, '发送失败：串口可能已断开'],
     [/read/i, '读取失败：串口可能已断开'],
-    [/network|frame|parity|overrun/i, `串口通信异常：${msg}（请检查波特率/接线）`],
+    [
+      /network|frame|parity|overrun/i,
+      `串口通信异常：${msg}（请检查波特率/接线）`,
+    ],
     [/.*/, `操作失败：${msg}`],
   ];
   const en: Array<[RegExp, string]> = [
@@ -75,7 +91,10 @@ const toError = (e: unknown, locale: Locale): string => {
     [/open/i, 'Failed to open port: device may be busy or disconnected'],
     [/write|flush|send/i, 'Send failed: port may be disconnected'],
     [/read/i, 'Read failed: port may be disconnected'],
-    [/network|frame|parity|overrun/i, `Serial communication error: ${msg} (check baud rate / wiring)`],
+    [
+      /network|frame|parity|overrun/i,
+      `Serial communication error: ${msg} (check baud rate / wiring)`,
+    ],
     [/.*/, `Operation failed: ${msg}`],
   ];
   const map = locale === 'en' ? en : zh;
@@ -87,7 +106,10 @@ const toError = (e: unknown, locale: Locale): string => {
 
 const T = {
   title: {zh: '串口监视器', en: 'Serial Monitor'},
-  desc: {zh: '通过浏览器进行串口数据的发送与接收', en: 'Send and receive serial data right in the browser'},
+  desc: {
+    zh: '通过浏览器进行串口数据的发送与接收',
+    en: 'Send and receive serial data right in the browser',
+  },
   subtitle: {
     zh: '通过浏览器 Web Serial API 与串口设备通信（需使用 Chrome / Edge 等 Chromium 内核浏览器，并通过 HTTPS 访问）',
     en: 'Communicate with serial devices via the Web Serial API (requires a Chromium-based browser such as Chrome / Edge, accessed over HTTPS)',
@@ -106,7 +128,10 @@ const T = {
   disconnected: {zh: '未连接', en: 'Disconnected'},
   waiting: {zh: '等待数据…', en: 'Waiting for data…'},
   pausedBadge: {zh: '已暂停，新数据不展示', en: 'Paused — new data is hidden'},
-  placeholderHex: {zh: '十六进制，如：48 49 0A', en: 'HEX bytes, e.g. 48 49 0A'},
+  placeholderHex: {
+    zh: '十六进制，如：48 49 0A',
+    en: 'HEX bytes, e.g. 48 49 0A',
+  },
   placeholderText: {zh: '输入要发送的内容', en: 'Type something to send'},
   send: {zh: '发送', en: 'Send'},
   hexSend: {zh: 'HEX 发送', en: 'HEX Send'},
@@ -114,7 +139,10 @@ const T = {
   appendCrlf: {zh: '发送时自动追加 CRLF', en: 'Append CRLF on send'},
   autoSend: {zh: '定时发送（自动循环）', en: 'Auto Send (timer loop)'},
   sendContent: {zh: '发送内容', en: 'Content'},
-  placeholderAutoHex: {zh: 'HEX 字节，如 01 03 00 00', en: 'HEX bytes, e.g. 01 03 00 00'},
+  placeholderAutoHex: {
+    zh: 'HEX 字节，如 01 03 00 00',
+    en: 'HEX bytes, e.g. 01 03 00 00',
+  },
   placeholderAutoText: {zh: '要循环发送的文本', en: 'Text to send repeatedly'},
   interval: {zh: '间隔 (ms)', en: 'Interval (ms)'},
   sendAsHex: {zh: '以 HEX 形式发送', en: 'Send as HEX'},
@@ -122,8 +150,14 @@ const T = {
   startAuto: {zh: '启动定时发送', en: 'Start Auto Send'},
   connectedMsg: {zh: '已连接，波特率 ', en: 'Connected, baud rate '},
   disconnectedMsg: {zh: '已断开连接', en: 'Disconnected'},
-  hexFormatError: {zh: '十六进制格式错误（应为 00-FF 的空格分隔字节）', en: 'Invalid HEX format (space-separated bytes from 00 to FF)'},
-  autoEmpty: {zh: '自动发送内容为空，已暂停', en: 'Auto-send content is empty, paused'},
+  hexFormatError: {
+    zh: '十六进制格式错误（应为 00-FF 的空格分隔字节）',
+    en: 'Invalid HEX format (space-separated bytes from 00 to FF)',
+  },
+  autoEmpty: {
+    zh: '自动发送内容为空，已暂停',
+    en: 'Auto-send content is empty, paused',
+  },
 } as const;
 
 export default function SerialMonitor(): ReactNode {
@@ -148,8 +182,12 @@ export default function SerialMonitor(): ReactNode {
   const [stats, setStats] = useState({tx: 0, rx: 0});
 
   const portRef = useRef<SerialPortLike | null>(null);
-  const writerRef = useRef<WritableStreamDefaultWriter<Uint8Array> | null>(null);
-  const readerRef = useRef<ReadableStreamDefaultReader<Uint8Array> | null>(null);
+  const writerRef = useRef<WritableStreamDefaultWriter<Uint8Array> | null>(
+    null,
+  );
+  const readerRef = useRef<ReadableStreamDefaultReader<Uint8Array> | null>(
+    null,
+  );
   const logRef = useRef<HTMLDivElement>(null);
   const logIdCounterRef = useRef(0);
 
@@ -230,7 +268,9 @@ export default function SerialMonitor(): ReactNode {
     } else {
       // 文本模式：用 TextDecoder 解码
       const merged =
-        total <= MAX_DECODE_BYTES_PER_CHUNK ? mergeChunks(chunks, total) : truncateChunks(chunks, total);
+        total <= MAX_DECODE_BYTES_PER_CHUNK
+          ? mergeChunks(chunks, total)
+          : truncateChunks(chunks, total);
       try {
         payload = new TextDecoder('utf-8', {fatal: false}).decode(merged);
       } catch {
@@ -270,7 +310,10 @@ export default function SerialMonitor(): ReactNode {
 
   const appendLog = (text: string, dir: LogDir) => {
     if (!text) return;
-    const time = new Date().toLocaleTimeString('zh-CN', {hour12: false});
+    const time = new Date().toLocaleTimeString(
+      locale === 'en' ? 'en-GB' : 'zh-CN',
+      {hour12: false},
+    );
     // 单调递增 id（避免 Date.now() 同毫秒冲突，也避免丢字符导致视觉抖动）
     logIdCounterRef.current += 1;
     const id = logIdCounterRef.current;
@@ -413,17 +456,27 @@ export default function SerialMonitor(): ReactNode {
       return;
     }
     autoSendCancelledRef.current = false;
-    autoSendTimerRef.current = window.setInterval(() => {
-      if (autoSendCancelledRef.current) return;
-      void send(autoSendText);
-    }, Math.max(100, autoSendInterval));
+    autoSendTimerRef.current = window.setInterval(
+      () => {
+        if (autoSendCancelledRef.current) return;
+        void send(autoSendText);
+      },
+      Math.max(100, autoSendInterval),
+    );
     return () => {
       if (autoSendTimerRef.current !== null) {
         clearInterval(autoSendTimerRef.current);
         autoSendTimerRef.current = null;
       }
     };
-  }, [autoSendEnabled, autoSendInterval, autoSendText, connected, hexMode, addNewline]);
+  }, [
+    autoSendEnabled,
+    autoSendInterval,
+    autoSendText,
+    connected,
+    hexMode,
+    addNewline,
+  ]);
 
   return (
     <Layout title={T.title[locale]} description={T.desc[locale]}>
@@ -448,7 +501,8 @@ export default function SerialMonitor(): ReactNode {
                 className={styles.select}
                 value={baudRate}
                 disabled={connected}
-                onChange={e => setBaudRate(Number(e.target.value))}>
+                onChange={e => setBaudRate(Number(e.target.value))}
+              >
                 {BAUD_RATES.map(b => (
                   <option key={b} value={b}>
                     {b}
@@ -465,7 +519,8 @@ export default function SerialMonitor(): ReactNode {
               <button
                 className={`${styles.btn} ${styles.btnPrimary}`}
                 onClick={() => void connect()}
-                disabled={!supported}>
+                disabled={!supported}
+              >
                 {T.connect[locale]}
               </button>
             )}
@@ -473,16 +528,23 @@ export default function SerialMonitor(): ReactNode {
             <button
               className={styles.btn}
               onClick={() => setPaused(p => !p)}
-              disabled={logs.length === 0}>
+              disabled={logs.length === 0}
+            >
               {paused ? T.resume[locale] : T.pause[locale]}
             </button>
 
-            <button className={styles.btn} onClick={clearLog} disabled={logs.length === 0}>
+            <button
+              className={styles.btn}
+              onClick={clearLog}
+              disabled={logs.length === 0}
+            >
               {T.clear[locale]}
             </button>
 
             <div className={styles.status}>
-              <span className={`${styles.dot} ${connected ? styles.dotOn : ''}`} />
+              <span
+                className={`${styles.dot} ${connected ? styles.dotOn : ''}`}
+              />
               {connected ? T.connected[locale] : T.disconnected[locale]}
               {connected && (
                 <span className={styles.stats}>
@@ -494,14 +556,15 @@ export default function SerialMonitor(): ReactNode {
 
           <div ref={logRef} className={styles.log}>
             {logs.length === 0 ? (
-                <span className={styles.logLine} style={{opacity: 0.4}}>
-                  {T.waiting[locale]}
-                </span>
+              <span className={styles.logLine} style={{opacity: 0.4}}>
+                {T.waiting[locale]}
+              </span>
             ) : (
               logs.map(l => (
                 <span
                   key={l.id}
-                  className={`${styles.logLine} ${l.dir === 'out' ? styles.logOut : styles.logIn}`}>
+                  className={`${styles.logLine} ${l.dir === 'out' ? styles.logOut : styles.logIn}`}
+                >
                   <span className={styles.logTime}>{l.time}</span>
                   {l.text}
                 </span>
@@ -518,21 +581,27 @@ export default function SerialMonitor(): ReactNode {
             <input
               className={styles.input}
               value={input}
-              placeholder={hexMode ? T.placeholderHex[locale] : T.placeholderText[locale]}
+              placeholder={
+                hexMode ? T.placeholderHex[locale] : T.placeholderText[locale]
+              }
               onChange={e => setInput(e.target.value)}
               onKeyDown={e => {
                 if (e.key === 'Enter') void send();
               }}
             />
-              <button
-                className={`${styles.btn} ${styles.btnPrimary}`}
-                onClick={() => void send()}
-                disabled={!connected}>
-                {T.send[locale]}
-              </button>
+            <button
+              className={`${styles.btn} ${styles.btnPrimary}`}
+              onClick={() => void send()}
+              disabled={!connected}
+            >
+              {T.send[locale]}
+            </button>
           </div>
 
-          <div className={styles.inputRow} style={{marginTop: 12, flexWrap: 'wrap', gap: 16}}>
+          <div
+            className={styles.inputRow}
+            style={{marginTop: 12, flexWrap: 'wrap', gap: 16}}
+          >
             <label className={styles.toggle}>
               <input
                 type="checkbox"
@@ -574,7 +643,11 @@ export default function SerialMonitor(): ReactNode {
                   id="auto-text"
                   className={styles.input}
                   value={autoSendText}
-                  placeholder={autoSendHex ? T.placeholderAutoHex[locale] : T.placeholderAutoText[locale]}
+                  placeholder={
+                    autoSendHex
+                      ? T.placeholderAutoHex[locale]
+                      : T.placeholderAutoText[locale]
+                  }
                   onChange={e => setAutoSendText(e.target.value)}
                 />
               </div>
@@ -589,7 +662,11 @@ export default function SerialMonitor(): ReactNode {
                   min={100}
                   step={50}
                   value={autoSendInterval}
-                  onChange={e => setAutoSendInterval(Math.max(100, Number(e.target.value) || 1000))}
+                  onChange={e =>
+                    setAutoSendInterval(
+                      Math.max(100, Number(e.target.value) || 1000),
+                    )
+                  }
                 />
               </div>
               <label className={styles.toggle}>
@@ -606,7 +683,8 @@ export default function SerialMonitor(): ReactNode {
               <button
                 className={`${styles.btn} ${autoSendEnabled ? styles.btnDanger : styles.btnPrimary}`}
                 onClick={() => setAutoSendEnabled(v => !v)}
-                disabled={!connected || !autoSendText.trim()}>
+                disabled={!connected || !autoSendText.trim()}
+              >
                 {autoSendEnabled ? T.stopAuto[locale] : T.startAuto[locale]}
               </button>
             </div>

@@ -8,17 +8,13 @@ import {
 import Link from '@docusaurus/Link';
 
 import styles from '@site/src/pages/index.module.css';
+import type {LText} from '@site/src/types';
 
 /* ---------- types ---------- */
 
 export interface MenuOption {
   label: string | LText;
   to?: string | LText;
-}
-
-export interface LText {
-  zh: string;
-  en: string;
 }
 
 export interface CardItem {

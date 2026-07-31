@@ -3,7 +3,8 @@ import Layout from '@theme/Layout';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
 import styles from './processor-compare.module.css';
-import {PROCESSORS, type LText, type Processor} from '../data/processors';
+import {PROCESSORS, type Processor} from '../data/processors';
+import type {LText} from '@site/src/types';
 
 // 参数行：严格按用户提供的表格顺序与命名排列。
 // 官方页面 / 规格书 / 数据手册属于链接类字段，在规格头部以按钮展示（见 LINK_FIELDS）。
@@ -62,9 +63,11 @@ export default function ProcessorCompare(): ReactNode {
   const [selected, setSelected] = useState<string[]>([]);
   const [preview, setPreview] = useState<string | null>(null);
   const [previewTitle, setPreviewTitle] = useState<string>('');
+  const [previewFailed, setPreviewFailed] = useState(false);
   const openPreview = (url: string, title: string) => {
     setPreview(url);
     setPreviewTitle(title);
+    setPreviewFailed(false);
   };
 
   const MAX = 3;
@@ -77,7 +80,10 @@ export default function ProcessorCompare(): ReactNode {
   const remove = (id: string) =>
     setSelected(prev => prev.filter(x => x !== id));
 
-  const selectedProcs = PROCESSORS.filter(p => selected.includes(p.id));
+  // 按用户勾选顺序展示对比列，而非固定排序
+  const selectedProcs = selected
+    .map(id => PROCESSORS.find(p => p.id === id))
+    .filter((p): p is Processor => Boolean(p));
 
   return (
     <Layout title={meta.title[locale]} description={meta.desc[locale]}>
@@ -184,10 +190,19 @@ export default function ProcessorCompare(): ReactNode {
                 </span>
               </div>
               <iframe
+                key={preview}
                 src={preview}
                 className={styles.pdfFrame}
                 title="datasheet"
+                onError={() => setPreviewFailed(true)}
               />
+              {previewFailed && (
+                <div className={styles.pdfFallback} role="alert">
+                  {locale === 'zh'
+                    ? '该外部文档不允许在站内预览，请点击右上角「新标签打开」。'
+                    : 'This external document cannot be previewed inline. Use "Open" above to view it in a new tab.'}
+                </div>
+              )}
             </div>
           </div>
         )}

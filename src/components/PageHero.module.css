@@ -570,3 +570,10 @@
     transform: translateY(-8px) scale(1.7);
   }
 }
+
+/* 尊重「减少动态效果」偏好：关闭角色装饰动画 */
+@media (prefers-reduced-motion: reduce) {
+  .character * {
+    animation: none !important;
+  }
+}

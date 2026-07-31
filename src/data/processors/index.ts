@@ -1,10 +1,6 @@
-export type CategoryId = 'ai' | 'soc';
+import type {LText} from '@site/src/types';
 
-/** 双语文本：zh 中文 / en 英文 */
-export interface LText {
-  zh: string;
-  en: string;
-}
+export type CategoryId = 'ai' | 'soc';
 
 export interface Processor {
   id: string;
