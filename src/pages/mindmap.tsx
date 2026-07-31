@@ -4,6 +4,7 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import {useColorMode} from '@docusaurus/theme-common';
 
 import styles from './mindmap.module.css';
+import {GUIDE_GROUPS} from '@site/src/data/guideNav';
 
 /* ============ 常量 ============ */
 export const FONT_SIZE = 14;
@@ -686,120 +687,20 @@ function deleteNode(md: string, id: string): string {
   return serializeTree(tree);
 }
 
-/* ============ 模板库 ============ */
-interface Template {
-  id: string;
-  zh: string;
-  en: string;
-  zhMd: string;
-  enMd: string;
+/* ============ 默认示例：文档指南目录 ============ */
+function buildGuideMd(lang: 'zh' | 'en'): string {
+  const root = lang === 'zh' ? '文档指南' : 'Guide';
+  const lines = [`# ${root}`];
+  for (const g of GUIDE_GROUPS) {
+    lines.push(`## ${g.label[lang]}`);
+    for (const a of g.articles) {
+      lines.push(`### ${a.title[lang]}`);
+    }
+  }
+  return lines.join('\n');
 }
 
-const TEMPLATES: Template[] = [
-  {
-    id: 'reading',
-    zh: '读书笔记',
-    en: 'Reading Notes',
-    zhMd: `# 书名《思考，快与慢》
-| 作者：丹尼尔·卡尼曼；核心讲人类两套思维系统。
-## 系统 1：直觉
-| 快速、自动、情绪化，容易受偏见影响。
-### 典型偏差
-#### 锚定效应
-#### 可得性启发
-## 系统 2：理性
-| 缓慢、费力、需要专注，负责逻辑与计算。
-### 应用场景
-#### 决策复核
-#### 复杂推理`,
-    enMd: `# Book《Thinking, Fast and Slow》
-| Author: Daniel Kahneman; about two systems of thought.
-## System 1: Intuition
-| Fast, automatic, emotional, bias-prone.
-### Biases
-#### Anchoring
-#### Availability
-## System 2: Reason
-| Slow, effortful, logical.
-### Use cases
-#### Decision review
-#### Complex reasoning`,
-  },
-  {
-    id: 'project',
-    zh: '项目规划',
-    en: 'Project Plan',
-    zhMd: `# 新功能上线
-| 目标：提升激活率 15%。
-## 范围
-### 必须做
-#### 核心流程
-#### 数据埋点
-### 可选做
-#### 引导动画
-## 排期
-### 设计
-#### 交互稿
-### 研发
-#### 前端
-#### 后端
-## 风险
-#### 依赖外部服务`,
-    enMd: `# Feature Launch
-| Goal: +15% activation.
-## Scope
-### Must
-#### Core flow
-#### Tracking
-### Nice-to-have
-#### Onboarding animation
-## Timeline
-### Design
-#### Wireframe
-### Build
-#### Frontend
-#### Backend
-## Risks
-#### External dependency`,
-  },
-  {
-    id: 'learning',
-    zh: '学习路线',
-    en: 'Learning Path',
-    zhMd: `# 前端工程师路线
-| 目标：一年内达到中级。
-## 基础
-### HTML/CSS
-#### 布局
-#### 响应式
-### JavaScript
-#### 异步
-#### 原型链
-## 进阶
-### 框架
-#### React
-#### 状态管理
-### 工程化
-#### 构建
-#### 测试`,
-    enMd: `# Frontend Path
-| Goal: mid-level in a year.
-## Basics
-### HTML/CSS
-#### Layout
-#### Responsive
-### JavaScript
-#### Async
-#### Prototypes
-## Advanced
-### Frameworks
-#### React
-#### State
-### Tooling
-#### Build
-#### Testing`,
-  },
-];
+const DEFAULT_MD = {zh: buildGuideMd('zh'), en: buildGuideMd('en')};
 function MindMapInner() {
   const {
     i18n: {currentLocale},
@@ -845,7 +746,6 @@ function MindMapInner() {
 
   const [hydrated, setHydrated] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [tplId, setTplId] = useState('');
   const [query, setQuery] = useState('');
   const [activeMatch, setActiveMatch] = useState(0);
   const [noteView, setNoteView] = useState<{
@@ -1245,6 +1145,9 @@ function MindMapInner() {
       if (src.linkStyle) setLinkStyle(src.linkStyle);
       if (src.bgId) setBgId(src.bgId);
       if (typeof src.bgCustom === 'string') setBgCustom(src.bgCustom);
+    } else {
+      // 首次打开：按当前语言展示文档指南目录示例
+      setMd(locale === 'zh' ? DEFAULT_MD.zh : DEFAULT_MD.en);
     }
     setHydrated(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -1344,6 +1247,8 @@ function MindMapInner() {
     const h = b.maxY - b.minY + pad * 2;
     const clone = svg.cloneNode(true) as SVGSVGElement;
     clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+    // 导出时移除每个节点上的交互工具（＋/↵/×），只保留导图本身
+    clone.querySelectorAll('[class*="nodeTools"]').forEach(el => el.remove());
     clone.setAttribute('width', String(w));
     clone.setAttribute('height', String(h));
     clone.setAttribute('viewBox', `0 0 ${w} ${h}`);
@@ -1486,8 +1391,6 @@ function MindMapInner() {
     lsStraight: locale === 'zh' ? '直线' : 'Straight',
     lsElbow: locale === 'zh' ? '折线' : 'Elbow',
     lsRounded: locale === 'zh' ? '圆角' : 'Rounded',
-    tplGroup: locale === 'zh' ? '模板' : 'Template',
-    tplPlaceholder: locale === 'zh' ? '选择模板…' : 'Pick a template…',
     searchLabel: locale === 'zh' ? '搜索' : 'Search',
     matchCount: locale === 'zh' ? '匹配' : 'matches',
     prev: locale === 'zh' ? '上一个' : 'Prev',
@@ -1645,30 +1548,6 @@ function MindMapInner() {
           >
             {copied ? t.copied : t.share}
           </button>
-        </div>
-
-        <span className={styles.sep} />
-
-        <div className={styles.group}>
-          <span className={styles.groupLabel}>{t.tplGroup}</span>
-          <select
-            className={styles.select}
-            value={tplId}
-            onChange={e => {
-              const id = e.target.value;
-              setTplId('');
-              if (!id) return;
-              const tpl = TEMPLATES.find(tp => tp.id === id);
-              if (tpl) applyHistory(locale === 'zh' ? tpl.zhMd : tpl.enMd);
-            }}
-          >
-            <option value="">{t.tplPlaceholder}</option>
-            {TEMPLATES.map(tp => (
-              <option key={tp.id} value={tp.id}>
-                {locale === 'zh' ? tp.zh : tp.en}
-              </option>
-            ))}
-          </select>
         </div>
 
         <span className={styles.sep} />

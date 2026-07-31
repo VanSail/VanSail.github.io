@@ -1,4 +1,5 @@
 import React, {type ReactNode} from 'react';
+import {useLocation} from '@docusaurus/router';
 import clsx from 'clsx';
 import {
   useThemeConfig,
@@ -80,6 +81,8 @@ function NavbarContentLayout({
 
 export default function NavbarContent(): ReactNode {
   const mobileSidebar = useNavbarMobileSidebar();
+  const {pathname} = useLocation();
+  const docsPrefix = pathname.startsWith('/en/') ? '/en' : '';
 
   const items = useNavbarItems();
   const [leftItems, rightItems] = splitNavbarItems(items);
@@ -107,6 +110,38 @@ export default function NavbarContent(): ReactNode {
         // Ask the user to add the respective navbar items => more flexible
         <>
           <NavbarItems items={otherRightItems} />
+          <a
+            href={`${docsPrefix}/mindmap`}
+            className={styles.githubLink}
+            aria-label="思维导图"
+            title="思维导图"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+              className={styles.githubIcon}
+            >
+              <path d="M12 12 12 4M12 12 20 8M12 12 20 16M12 12 12 20M12 12 4 16M12 12 4 8" />
+              <circle
+                cx="12"
+                cy="12"
+                r="2.4"
+                fill="currentColor"
+                stroke="none"
+              />
+              <circle cx="12" cy="4" r="1.6" />
+              <circle cx="20" cy="8" r="1.6" />
+              <circle cx="20" cy="16" r="1.6" />
+              <circle cx="12" cy="20" r="1.6" />
+              <circle cx="4" cy="16" r="1.6" />
+              <circle cx="4" cy="8" r="1.6" />
+            </svg>
+          </a>
           <a
             href="https://github.com/VanSail/VanSail.github.io"
             target="_blank"

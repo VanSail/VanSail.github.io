@@ -87,15 +87,6 @@ const toolIcon = (
   </svg>
 );
 
-const mindmapIcon = (
-  <svg {...svgProps}>
-    <circle cx="6" cy="6" r="2.2" />
-    <circle cx="6" cy="18" r="2.2" />
-    <circle cx="18" cy="12" r="2.6" />
-    <path d="M8.2 6.8 15.4 11M8.2 17.2 15.4 13" />
-  </svg>
-);
-
 const serialIcon = (
   <svg {...svgProps}>
     <rect x="3" y="5.5" width="18" height="13" rx="2" />
@@ -187,16 +178,6 @@ export const stm32Tools: CardItem[] = [
     title: {zh: '开发工具', en: 'Dev Tools'},
     desc: {zh: '嵌入式开发 · 工具链', en: 'Embedded Dev · Toolchain'},
     icon: toolIcon,
-  },
-];
-
-/* 首页工具：思维导图、串口助手 —— 与导航分类卡片统一以 Card 渲染 */
-export const homeTools: CardItem[] = [
-  {
-    to: '/mindmap',
-    title: {zh: '思维导图', en: 'Mind Map'},
-    desc: {zh: '可视化梳理思路与知识', en: 'Visualize ideas and knowledge'},
-    icon: mindmapIcon,
   },
   {
     to: '/serial-monitor',
