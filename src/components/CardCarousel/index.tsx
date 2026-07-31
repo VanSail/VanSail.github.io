@@ -24,6 +24,9 @@ export default function CardCarousel({items}: {items: CardItem[]}): ReactNode {
 
   return (
     <section className={styles.carousel} aria-label="卡片导航">
+      <h2 className={styles.headTitle}>
+        {locale === 'en' ? 'Explore' : '探索板块'}
+      </h2>
       {rows.map(({list, reverse}, r) => {
         // 复制一份卡片实现无缝循环滚动
         const loopItems = [...list, ...list];

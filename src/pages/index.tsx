@@ -4,8 +4,8 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Hero3D from '@site/src/components/Hero3D';
 import Divider from '@site/src/components/Divider';
 import CardCarousel from '@site/src/components/CardCarousel';
-import FeatureSteps from '@site/src/components/FeatureSteps';
-import HardwareTags from '@site/src/components/HardwareTags';
+import GuidePreview from '@site/src/components/GuidePreview';
+import KnowledgeCards from '@site/src/components/KnowledgeCards';
 import {homeTools, aiAgents, robots, stm32Tools} from '@site/src/data/cards';
 
 export default function Home(): ReactNode {
@@ -28,10 +28,10 @@ export default function Home(): ReactNode {
         <CardCarousel
           items={[...homeTools, ...aiAgents, ...robots, ...stm32Tools]}
         />
-        {/* 网站特点：竖向步骤条（开源可验证 / 持续更新 / 社区共建） */}
-        <FeatureSteps />
-        {/* 底部硬件名词标签区：3 行横向滑动，悬停显示释义 */}
-        <HardwareTags />
+        {/* 中段文档指南预览：左教程 logo + 右文档目录 */}
+        <GuidePreview />
+        {/* 底部知识卡片区：居中网格，点击跳转 /knowledge 总页 */}
+        <KnowledgeCards />
       </main>
     </Layout>
   );
