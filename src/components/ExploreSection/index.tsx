@@ -169,6 +169,7 @@ export default function ExploreSection(): ReactElement {
 
   return (
     <section
+      id="explore"
       className={styles.wrap}
       aria-label={isZh ? '探索教程' : 'Explore Tutorials'}
     >

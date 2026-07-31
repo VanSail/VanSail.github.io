@@ -110,8 +110,9 @@ export default function NavbarContent(): ReactNode {
           <NavbarLogo />
           <NavbarItems items={leftItems} />
           {navCategories.map(cat => {
-            const external = cat.entry.startsWith('http');
-            const href = external ? cat.entry : `${docsPrefix}${cat.entry}`;
+            const to = cat.navTo ?? cat.entry;
+            const external = to.startsWith('http');
+            const href = external ? to : `${docsPrefix}${to}`;
             return (
               <a
                 key={cat.id}

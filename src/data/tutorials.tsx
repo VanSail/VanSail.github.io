@@ -21,6 +21,8 @@ export interface Tutorial {
   icon: TutorialIcon;
   /** 文档根路径：内部文档（自动加 /en 前缀）或外链。用于「查看全部」 */
   entry: string;
+  /** 导航栏分类链接地址（覆盖 entry）。仅用于导航栏跳转，需为站内路径 */
+  navTo?: string;
   /** 本站是否有对应的真实教程文档；true 时右列以卡片+「查看全部」呈现，
    *  false 时仅平铺展示分类与分类下的内容（不暗示有站内完整体系） */
   hasDocs?: boolean;
@@ -61,6 +63,7 @@ export const TUTORIALS: Tutorial[] = [
     },
     icon: 'mcu',
     entry: '/docs/embedded',
+    navTo: '/docs/embedded',
     hasDocs: true,
     groups: [
       {
@@ -87,6 +90,7 @@ export const TUTORIALS: Tutorial[] = [
     },
     icon: 'ros',
     entry: 'https://docs.ros.org',
+    navTo: '/#explore',
     groups: [
       {
         label: {zh: 'ROS 1', en: 'ROS 1'},
@@ -125,6 +129,7 @@ export const TUTORIALS: Tutorial[] = [
     },
     icon: 'ai',
     entry: 'https://opencode.ai',
+    navTo: '/#explore',
     groups: [
       {
         label: {zh: '代理与模型', en: 'Agents & Models'},
