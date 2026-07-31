@@ -1,6 +1,6 @@
 import type {LText} from '@site/src/types';
 
-/** 首页特点流动框（FloatingStrip）展示的网站特点标签。 */
+/** 首页底部流动标签条（Testimonials）展示的网站特点标签。 */
 export const FEATURE_TAGS: LText[] = [
   {zh: '开源硬件', en: 'Open Hardware'},
   {zh: '嵌入式开发', en: 'Embedded Dev'},
@@ -12,7 +12,7 @@ export const FEATURE_TAGS: LText[] = [
   {zh: '社区共建', en: 'Community'},
 ];
 
-/** 首页特性介绍区块（SectionPlaceholder）的要点。 */
+/** 首页中段竖向步骤条（FeatureSteps）的要点。 */
 export const FEATURE_HIGHLIGHTS: {title: LText; desc: LText}[] = [
   {
     title: {zh: '开源可验证', en: 'Open & Verified'},

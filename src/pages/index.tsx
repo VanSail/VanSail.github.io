@@ -4,8 +4,8 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Hero3D from '@site/src/components/Hero3D';
 import Divider from '@site/src/components/Divider';
 import CardCarousel from '@site/src/components/CardCarousel';
-import SectionPlaceholder from '@site/src/components/SectionPlaceholder';
-import Testimonials from '@site/src/components/Testimonials';
+import FeatureSteps from '@site/src/components/FeatureSteps';
+import HardwareTags from '@site/src/components/HardwareTags';
 import {homeTools, aiAgents, robots, stm32Tools} from '@site/src/data/cards';
 
 export default function Home(): ReactNode {
@@ -24,14 +24,14 @@ export default function Home(): ReactNode {
         {/* 3D 地球视觉 */}
         <Hero3D />
         <Divider />
-        {/* 两行反向流动的卡片 */}
+        {/* 一行 3 张、自动无缝横向滚动的卡片导航 */}
         <CardCarousel
           items={[...homeTools, ...aiAgents, ...robots, ...stm32Tools]}
         />
-        {/* 卡片与标签之间的占位区块（后续替换为实际模块） */}
-        <SectionPlaceholder />
-        {/* 参考 What People Say 的流动评价卡片框 */}
-        <Testimonials />
+        {/* 网站特点：竖向步骤条（开源可验证 / 持续更新 / 社区共建） */}
+        <FeatureSteps />
+        {/* 底部硬件名词标签区：3 行横向滑动，悬停显示释义 */}
+        <HardwareTags />
       </main>
     </Layout>
   );
