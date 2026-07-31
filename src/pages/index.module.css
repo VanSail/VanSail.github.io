@@ -7,9 +7,6 @@
   width: var(--content-width);
   margin: 0 auto;
   padding: 48px 20px 64px;
-  /* 首页品牌强调色：统一为“扬帆”橙，呼应导航栏与地球 */
-  --brand: #f0a070;
-  --brand-rgb: 240, 160, 112;
 }
 
 /* ---------------- Section ---------------- */
@@ -63,15 +60,13 @@
   align-items: center;
   gap: 16px;
   padding: 18px 20px;
-  /* 与评价流动框一致的纯表面背景 + 圆角 + 柔和投影 */
+  /* 与评价流动框一致的纯表面背景 + 圆角 + 柔和投影（统一 token） */
   background: var(--ifm-background-surface-color);
   border: 1px solid var(--ifm-hr-border-color);
-  border-radius: 16px;
+  border-radius: var(--card-radius, 16px);
   text-decoration: none;
   color: var(--ifm-color-base);
-  box-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.18),
-    0 8px 22px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--card-shadow);
   transition:
     border-color 0.25s ease,
     transform 0.25s cubic-bezier(0.2, 0.7, 0.3, 1),
@@ -82,9 +77,7 @@
 .card:hover {
   border-color: color-mix(in srgb, var(--brand) 40%, transparent);
   transform: translateY(-4px);
-  box-shadow:
-    0 6px 16px color-mix(in srgb, var(--brand) 18%, transparent),
-    0 14px 34px rgba(0, 0, 0, 0.18);
+  box-shadow: var(--card-shadow-hover);
 }
 
 .card:hover .cardIcon {
@@ -181,7 +174,7 @@
   font: inherit;
   background: var(--ifm-background-surface-color);
   border: 1px solid var(--ifm-hr-border-color);
-  border-radius: 16px;
+  border-radius: var(--card-radius, 16px);
 }
 
 .menuCardWrap .card:hover {
@@ -208,8 +201,8 @@
   flex-direction: column;
   background: var(--ifm-background-surface-color);
   border: 1px solid var(--brand);
-  border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  border-radius: var(--card-radius, 16px);
+  box-shadow: var(--card-shadow-hover);
   overflow: hidden;
   z-index: 30;
 }

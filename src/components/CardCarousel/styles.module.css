@@ -1,6 +1,6 @@
 .carousel {
   --cols: 3;
-  --gap: 18px;
+  --gap: var(--card-gap, 18px);
   --carousel-w: var(--content-width, 72vw);
   --slide-w: calc(
     (var(--carousel-w) - var(--gap) * (var(--cols) - 1)) / var(--cols)

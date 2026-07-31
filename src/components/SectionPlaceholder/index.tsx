@@ -1,23 +1,23 @@
 import type {ReactNode} from 'react';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
+import {FEATURE_HIGHLIGHTS} from '@site/src/data/features';
 import styles from './styles.module.css';
 
-/**
- * 首页卡片与标签之间的占位区块。
- * 仅用于占好内容区域位置，具体模块由用户后续替换。
- */
-export default function SectionPlaceholder({
-  label = '内容占位区',
-  hint = '后续在此放置专题 / 教程 / 导航等模块',
-}: {
-  label?: string;
-  hint?: string;
-}): ReactNode {
+/** 首页卡片与特点流动框之间的特性介绍区块。 */
+export default function SectionPlaceholder(): ReactNode {
+  const {
+    i18n: {currentLocale},
+  } = useDocusaurusContext();
+  const locale: 'zh' | 'en' = currentLocale === 'en' ? 'en' : 'zh';
+
   return (
-    <section className={styles.placeholder} aria-label={label}>
-      <div className={styles.box}>
-        <span className={styles.label}>{label}</span>
-        <span className={styles.hint}>{hint}</span>
-      </div>
+    <section className={styles.placeholder} aria-label="网站特点">
+      {FEATURE_HIGHLIGHTS.map(h => (
+        <div className={styles.item} key={h.title.en}>
+          <span className={styles.itemTitle}>{h.title[locale]}</span>
+          <span className={styles.itemDesc}>{h.desc[locale]}</span>
+        </div>
+      ))}
     </section>
   );
 }

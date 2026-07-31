@@ -1,38 +1,51 @@
 .placeholder {
-  /* 与网站内容区对齐（和地球、卡片、标签同宽） */
+  /* 与网站内容区对齐（和地球、卡片同宽） */
   width: var(--content-width, 72vw);
   max-width: 100%;
-  /* 与上方卡片、下方标签都拉开间距 */
   margin: 56px auto 0;
-  padding: 0;
+  /* 与上方卡片、下方流动框都拉开间距 */
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--card-gap, 18px);
 }
 
-.box {
-  min-height: 180px;
+.item {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  border: 1px dashed var(--ifm-hr-border-color);
-  border-radius: 18px;
-  background:
-    radial-gradient(
-      140% 160% at 0% 0%,
-      rgba(240, 160, 112, 0.06),
-      transparent 55%
-    ),
-    var(--ifm-background-surface-color);
+  gap: 8px;
+  padding: 18px 20px;
+  border-radius: var(--card-radius, 16px);
+  background: var(--ifm-background-surface-color);
+  border: 1px solid var(--ifm-hr-border-color);
+  box-shadow: var(--card-shadow, 0 1px 2px rgba(0, 0, 0, 0.18));
+  transition:
+    border-color 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
-.label {
+.item:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in srgb, var(--brand) 40%, transparent);
+  box-shadow: var(--card-shadow-hover, 0 6px 16px rgba(0, 0, 0, 0.2));
+}
+
+.itemTitle {
   font-size: 15px;
   font-weight: 600;
-  color: var(--ifm-color-emphasis-700);
-  letter-spacing: 0.5px;
+  color: var(--brand);
+  letter-spacing: 0.3px;
 }
 
-.hint {
+.itemDesc {
   font-size: 13px;
-  color: var(--ifm-color-emphasis-500);
+  line-height: 1.6;
+  color: var(--ifm-font-color-base);
+  opacity: 0.8;
+}
+
+@media (max-width: 720px) {
+  .placeholder {
+    grid-template-columns: 1fr;
+  }
 }
