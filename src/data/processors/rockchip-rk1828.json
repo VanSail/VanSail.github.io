@@ -1,0 +1,94 @@
+{
+  "name": {
+    "zh": "瑞芯微 RK1828",
+    "en": "Rockchip RK1828"
+  },
+  "category": "ai",
+  "process": {
+    "zh": "未公布",
+    "en": "Not specified"
+  },
+  "arch": {
+    "zh": "3 核 64位 RISC-V处理器\n- 1× SRV 通用核心\n- 2× VRV 向量核心",
+    "en": "3-core 64-bit RISC-V processor\n- 1× SRV general-purpose core\n- 2× VRV vector cores"
+  },
+  "isa": {
+    "zh": "SRV：RV64GCB\nVRV0/VRV1：RV64GCBV",
+    "en": "SRV: RV64GCB\nVRV0/VRV1: RV64GCBV"
+  },
+  "gpu": {
+    "zh": "集成 2D 图形引擎 RGA",
+    "en": "Integrated 2D RGA graphics engine"
+  },
+  "mcu": {
+    "zh": "无",
+    "en": "None"
+  },
+  "tops": {
+    "zh": "20 TOPS\n- 最高 7B LLM/VLM",
+    "en": "20 TOPS\n- Up to 7B LLM/VLM"
+  },
+  "memory": {
+    "zh": "5GB DRAM",
+    "en": "5GB DRAM"
+  },
+  "storage": {
+    "zh": "eMMC 4.51 / SD 3.0 / SDIO 3.0（复用）\nFSPI",
+    "en": "Multiplexed eMMC 4.51 / SD 3.0 / SDIO 3.0 interface\nFSPI"
+  },
+  "codec": {
+    "zh": "集成 JPEG 编码 / 解码器",
+    "en": "Integrated JPEG encoder/decoder"
+  },
+  "videoIn": {
+    "zh": "无",
+    "en": "None"
+  },
+  "display": {
+    "zh": "无",
+    "en": "None"
+  },
+  "audio": {
+    "zh": "1× SAI\n- 支持 I²S/PCM/TDM",
+    "en": "1× SAI\n- Supports I²S/PCM/TDM"
+  },
+  "pcie": {
+    "zh": "2× PCIe 2.1 x1",
+    "en": "2× PCIe 2.1 x1"
+  },
+  "usb": {
+    "zh": "1× USB 3.2 Gen 1\n- 与一路 PCIe 2.1 复用\n1× USB 2.0",
+    "en": "1× USB 3.2 Gen 1\n- Multiplexed with one PCIe 2.1 interface\n1× USB 2.0"
+  },
+  "network": {
+    "zh": "1× 10/100/1000 Mbps GMAC",
+    "en": "1× 10/100/1000 Mbps GMAC"
+  },
+  "other": {
+    "zh": "SPI/I2C/UART/PWMGPIO",
+    "en": "SPI/I2C/UART/PWMGPIO"
+  },
+  "pkg": {
+    "zh": "FCBGA746L",
+    "en": "FCBGA746L"
+  },
+  "size": {
+    "zh": "19 × 19 mm",
+    "en": "19 × 19 mm"
+  },
+  "system": {
+    "zh": "作为 AI 协处理器\n- 由主处理器通过 RKNN 软件栈管理",
+    "en": "AI Coprocessor\n- Controlled by the host processor via RKNN"
+  },
+  "temp": {
+    "zh": "0～85℃",
+    "en": "0～85℃"
+  },
+  "lifecycle": {
+    "zh": "未公布",
+    "en": "Not specified"
+  },
+  "page": "https://www.rock-chips.com/a/cn/product/RK18xilie/2025/1114/2113.html",
+  "brief": "",
+  "datasheet": "https://rockchip.fr/RK182X%20datasheet%20V1.5.pdf"
+}
