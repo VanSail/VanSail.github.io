@@ -39,8 +39,8 @@ export default function Knowledge(): ReactElement {
           </h1>
           <p className={styles.subtitle}>
             {isZh
-              ? '汇总机器人、嵌入式、AI 与通信协议领域常见技术名词，每个名词给出缩写、中英文全称与简明含义，帮助快速建立术语体系。'
-              : 'A curated glossary of robotics, embedded, AI and communication-protocol terms. Each entry shows the abbreviation, its Chinese & English full name, and a concise meaning.'}
+              ? '机器人、嵌入式、AI 与协议领域常见技术名词，帮你快速建立术语体系。'
+              : 'Common terms across robotics, embedded, AI and protocols — build your glossary fast.'}
           </p>
         </header>
 
