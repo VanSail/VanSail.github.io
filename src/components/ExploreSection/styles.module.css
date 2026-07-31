@@ -50,27 +50,14 @@
     #000 88%,
     transparent
   );
+  cursor: grab;
 }
 
 .track {
   display: flex;
   flex-direction: column;
   width: 100%;
-  animation: scrollY 28s linear infinite;
   will-change: transform;
-}
-
-.scroller:hover .track {
-  animation-play-state: paused;
-}
-
-@keyframes scrollY {
-  from {
-    transform: translateY(0);
-  }
-  to {
-    transform: translateY(-50%);
-  }
 }
 
 .card {
@@ -308,11 +295,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .track {
-    animation: none;
-  }
   .scroller {
     overflow-y: auto;
     scrollbar-width: thin;
+    cursor: default;
   }
 }

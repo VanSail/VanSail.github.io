@@ -1,4 +1,4 @@
-import type {ReactElement, CSSProperties} from 'react';
+import type {ReactElement} from 'react';
 import {useEffect, useRef, useState} from 'react';
 import {useLocation} from '@docusaurus/router';
 import Link from '@docusaurus/Link';
@@ -65,39 +65,90 @@ function TutorialIconSvg({kind}: {kind: TutorialIcon}): ReactElement {
 /**
  * 首页「探索」联动区：左侧单列竖向无缝滚动的教程卡片，
  * 当某张卡片滚动到中央时，右侧详情区切换为该教程（logo + 简介 + 目录）。
+ *
+ * 交互：
+ *  - 自动匀速滚动（CSS 不可控，故用 JS 驱动 transform）
+ *  - 鼠标悬停左列：暂停自动滚动，可用滚轮手动浏览
+ *  - 鼠标离开：从当前位置继续自动滚动
  */
 export default function ExploreSection(): ReactElement {
   const {pathname} = useLocation();
   const locale: 'zh' | 'en' = pathname.startsWith('/en/') ? 'en' : 'zh';
   const isZh = locale === 'zh';
 
+  const N = TUTORIALS.length;
   const [activeId, setActiveId] = useState(TUTORIALS[0].id);
-  const listRef = useRef<HTMLDivElement>(null);
 
-  // 用 IntersectionObserver 检测哪张卡片进入左列垂直中央
+  const scrollerRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const posRef = useRef(0); // 已滚动的「卡片数」（浮点）
+  const pausedRef = useRef(false);
+  const activeRef = useRef(0);
+  // 量得的布局参数（卡片步长、scroller 高度、居中偏移）
+  const stepRef = useRef(100);
+  const centerOffRef = useRef(2);
+
   useEffect(() => {
-    const root = listRef.current;
-    if (!root) return;
-    const items = Array.from(
-      root.querySelectorAll<HTMLElement>('[data-tut-id]'),
-    );
-    // 只观察原始序列（避免复制份重复触发）
-    const originals = items.filter(el => el.dataset.origin === '1');
-    const observer = new IntersectionObserver(
-      entries => {
-        entries.forEach(e => {
-          if (e.isIntersecting) {
-            const id = (e.target as HTMLElement).dataset.tutId;
-            if (id) setActiveId(id);
-          }
-        });
-      },
-      // 把激活区压缩为左列垂直中央一条
-      {root, rootMargin: '-45% 0px -45% 0px', threshold: 0},
-    );
-    originals.forEach(el => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
+    const scroller = scrollerRef.current;
+    const track = trackRef.current;
+    if (!scroller || !track) return;
+
+    // 量取真实步长与居中偏移，避免与 CSS 尺寸硬编码耦合
+    const kids = track.children;
+    if (kids.length >= 2) {
+      stepRef.current =
+        (kids[1] as HTMLElement).offsetTop -
+          (kids[0] as HTMLElement).offsetTop || 100;
+    }
+    const scrollerH = scroller.clientHeight || 420;
+    centerOffRef.current = scrollerH / 2 / stepRef.current - 0.5;
+
+    const reduce = window.matchMedia(
+      '(prefers-reduced-motion: reduce)',
+    ).matches;
+
+    // 居中卡片索引：视觉上位于 scroller 垂直中央的那张
+    const centeredIndex = () => {
+      const idx = Math.round(posRef.current + centerOffRef.current);
+      return ((idx % N) + N) % N;
+    };
+
+    let raf = 0;
+    let last = performance.now();
+    const loop = (now: number) => {
+      const dt = Math.min((now - last) / 1000, 0.05);
+      last = now;
+      if (!pausedRef.current && !reduce) {
+        // 28s 走完一轮（N 张卡片）的匀速速度
+        posRef.current += (N / 28) * dt;
+      }
+      // 应用位移（doubled 序列保证无缝）
+      const p = posRef.current % N;
+      track.style.transform = `translateY(${-p * stepRef.current}px)`;
+      // 仅在居中卡片变化时更新右侧详情，避免每帧 setState
+      const idx = centeredIndex();
+      if (idx !== activeRef.current) {
+        activeRef.current = idx;
+        setActiveId(TUTORIALS[idx].id);
+      }
+      raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
+
+    // 滚轮手动浏览（非 passive，阻止页面滚动）
+    const onWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      posRef.current += (e.deltaY / stepRef.current) * 0.6;
+      // 归一到正数，保持循环
+      while (posRef.current < 0) posRef.current += N;
+    };
+    scroller.addEventListener('wheel', onWheel, {passive: false});
+
+    return () => {
+      cancelAnimationFrame(raf);
+      scroller.removeEventListener('wheel', onWheel);
+    };
+  }, [N]);
 
   const active = TUTORIALS.find(t => t.id === activeId) ?? TUTORIALS[0];
   const doubled = [...TUTORIALS, ...TUTORIALS];
@@ -105,6 +156,13 @@ export default function ExploreSection(): ReactElement {
 
   const resolveTo = (to: string) =>
     to.startsWith('http') ? to : `${docsPrefix}${to}`;
+
+  // 点击某卡片 → 让其滚动到中央
+  const focusCard = (i: number) => {
+    const target = i - centerOffRef.current;
+    posRef.current = target;
+    while (posRef.current < 0) posRef.current += N;
+  };
 
   return (
     <section
@@ -115,17 +173,20 @@ export default function ExploreSection(): ReactElement {
 
       <div className={styles.inner}>
         {/* 左：单列竖向滚动教程卡片 */}
-        <div className={styles.scroller} ref={listRef}>
-          <div className={styles.track}>
+        <div
+          className={styles.scroller}
+          ref={scrollerRef}
+          onMouseEnter={() => (pausedRef.current = true)}
+          onMouseLeave={() => (pausedRef.current = false)}
+        >
+          <div className={styles.track} ref={trackRef}>
             {doubled.map((t, i) => (
               <div
                 key={`${t.id}-${i}`}
-                data-tutId={t.id}
-                data-origin={i < TUTORIALS.length ? '1' : '0'}
                 className={`${styles.card} ${
                   t.id === activeId ? styles.cardActive : ''
                 }`}
-                onClick={() => setActiveId(t.id)}
+                onClick={() => focusCard(i < N ? i : i - N)}
               >
                 <span className={styles.cardIcon}>
                   <TutorialIconSvg kind={t.icon} />
