@@ -15,12 +15,10 @@ export default function KnowledgeCards(): ReactElement {
   const isZh = locale === 'zh';
   const cardsPath = locale === 'en' ? '/en/knowledge' : '/knowledge';
 
-  // 把卡片均分为 2 行
-  const perRow = Math.ceil(KNOWLEDGE_CARDS.length / 2);
-  const rows: (typeof KNOWLEDGE_CARDS)[] = [
-    KNOWLEDGE_CARDS.slice(0, perRow),
-    KNOWLEDGE_CARDS.slice(perRow, perRow * 2),
-  ];
+  // 按奇偶索引交错分配到两行，保证两行标签集合互斥、互不重复
+  const rows: (typeof KNOWLEDGE_CARDS)[] = [0, 1].map(r =>
+    KNOWLEDGE_CARDS.filter((_, i) => i % 2 === r),
+  );
 
   return (
     <section
@@ -46,7 +44,7 @@ export default function KnowledgeCards(): ReactElement {
                 {doubled.map((tag, i) => (
                   <Link
                     className={styles.card}
-                    to={cardsPath}
+                    to={`${cardsPath}#${tag.abbr}`}
                     key={`${tag.abbr}-${i}`}
                     aria-label={isZh ? tag.nameZh : tag.nameEn}
                   >
@@ -56,9 +54,6 @@ export default function KnowledgeCards(): ReactElement {
                         {isZh ? tag.nameZh : tag.nameEn}
                       </span>
                     </div>
-                    <p className={styles.desc}>
-                      {isZh ? tag.descZh : tag.descEn}
-                    </p>
                   </Link>
                 ))}
               </div>

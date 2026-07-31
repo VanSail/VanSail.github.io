@@ -34,6 +34,7 @@
 .item {
   padding: 18px 20px;
   border-radius: 16px;
+  scroll-margin-top: 88px;
   background: color-mix(
     in srgb,
     var(--ifm-color-primary) 8%,

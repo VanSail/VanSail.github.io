@@ -36,7 +36,7 @@ export default function Knowledge(): ReactElement {
 
         <ul className={styles.grid}>
           {KNOWLEDGE_CARDS.map(tag => (
-            <li className={styles.item} key={tag.abbr}>
+            <li className={styles.item} id={tag.abbr} key={tag.abbr}>
               <div className={styles.itemHead}>
                 <span className={styles.abbr}>{tag.abbr}</span>
                 <span className={styles.fullName}>
