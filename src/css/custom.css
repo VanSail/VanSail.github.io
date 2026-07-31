@@ -289,21 +289,6 @@ body {
   color: rgba(240, 160, 112, 1) !important;
 }
 
-/* 导航栏双语标签：根据 html[lang] 自动显示对应语言 */
-html[lang='zh-CN'] .nav-lang-en,
-html[lang='zh'] .nav-lang-en {
-  display: none;
-}
-
-html[lang='en'] .nav-lang-zh {
-  display: none;
-}
-
-/* 非中文非英文时默认显示英文 */
-html:not([lang='zh-CN']):not([lang='zh']):not([lang='en']) .nav-lang-zh {
-  display: none;
-}
-
 .dropdown__menu {
   background: rgba(0, 0, 0, 0.7) !important;
   backdrop-filter: blur(8px) !important;

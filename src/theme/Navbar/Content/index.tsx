@@ -13,8 +13,13 @@ import {
 import NavbarItem, {type Props as NavbarItemConfig} from '@theme/NavbarItem';
 import NavbarMobileSidebarToggle from '@theme/Navbar/MobileSidebar/Toggle';
 import NavbarLogo from '@theme/Navbar/Logo';
+import {TUTORIALS} from '@site/src/data/tutorials';
 
 import styles from './styles.module.css';
+
+/** 导航栏分类：与探索板块数据同源，避免路径漂移 */
+const NAV_CATEGORY_IDS = ['ai', 'ros', 'embedded'];
+const navCategories = TUTORIALS.filter(t => NAV_CATEGORY_IDS.includes(t.id));
 
 function useNavbarItems() {
   // TODO temporary casting until ThemeConfig type is improved
@@ -83,6 +88,7 @@ export default function NavbarContent(): ReactNode {
   const mobileSidebar = useNavbarMobileSidebar();
   const {pathname} = useLocation();
   const docsPrefix = pathname.startsWith('/en/') ? '/en' : '';
+  const isZh = !pathname.startsWith('/en/');
 
   const items = useNavbarItems();
   const [leftItems, rightItems] = splitNavbarItems(items);
@@ -103,6 +109,21 @@ export default function NavbarContent(): ReactNode {
           {!mobileSidebar.disabled && <NavbarMobileSidebarToggle />}
           <NavbarLogo />
           <NavbarItems items={leftItems} />
+          {navCategories.map(cat => {
+            const external = cat.entry.startsWith('http');
+            const href = external ? cat.entry : `${docsPrefix}${cat.entry}`;
+            return (
+              <a
+                key={cat.id}
+                href={href}
+                className="navbar__link"
+                target={external ? '_blank' : undefined}
+                rel={external ? 'noreferrer' : undefined}
+              >
+                {isZh ? cat.title.zh : cat.title.en}
+              </a>
+            );
+          })}
         </>
       }
       right={
