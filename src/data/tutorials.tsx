@@ -63,7 +63,7 @@ export const TUTORIALS: Tutorial[] = [
     },
     icon: 'mcu',
     entry: '/docs/embedded',
-    navTo: '/docs/embedded',
+    navTo: '/embedded',
     hasDocs: true,
     groups: [
       {
@@ -90,7 +90,7 @@ export const TUTORIALS: Tutorial[] = [
     },
     icon: 'ros',
     entry: 'https://docs.ros.org',
-    navTo: '/#explore',
+    navTo: '/robots',
     groups: [
       {
         label: {zh: 'ROS 1', en: 'ROS 1'},
@@ -129,7 +129,7 @@ export const TUTORIALS: Tutorial[] = [
     },
     icon: 'ai',
     entry: 'https://opencode.ai',
-    navTo: '/#explore',
+    navTo: '/ai',
     groups: [
       {
         label: {zh: '代理与模型', en: 'Agents & Models'},
