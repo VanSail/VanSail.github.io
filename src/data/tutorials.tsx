@@ -19,8 +19,11 @@ export interface Tutorial {
   title: LText;
   desc: LText;
   icon: TutorialIcon;
-  /** 文档根路径（内部文档，组件自动加 /en 前缀），用于「查看全部」 */
+  /** 文档根路径：内部文档（自动加 /en 前缀）或外链。用于「查看全部」 */
   entry: string;
+  /** 本站是否有对应的真实教程文档；true 时右列以卡片+「查看全部」呈现，
+   *  false 时仅平铺展示分类与分类下的内容（不暗示有站内完整体系） */
+  hasDocs?: boolean;
   /** 详情区分组目录 */
   groups: TutorialGroup[];
 }
@@ -39,6 +42,7 @@ export const TUTORIALS: Tutorial[] = [
     },
     icon: 'book',
     entry: '/docs/guide',
+    hasDocs: true,
     // 复用文档指南目录数据
     groups: GUIDE_GROUPS.map(g => ({
       label: g.label,
@@ -49,21 +53,26 @@ export const TUTORIALS: Tutorial[] = [
     })),
   },
   {
-    id: 'stm32',
-    title: {zh: 'STM32 教程', en: 'STM32 Tutorials'},
+    id: 'embedded',
+    title: {zh: '嵌入式开发', en: 'Embedded Dev'},
     desc: {
-      zh: '面向 STM32 系列单片机的嵌入式开发教程与开发工具说明。',
-      en: 'Embedded development tutorials and tooling for the STM32 family.',
+      zh: '面向 STM32 等微控制器的嵌入式开发教程与开发工具说明。',
+      en: 'Embedded development tutorials and tooling for STM32 and more.',
     },
     icon: 'mcu',
-    entry: '/docs/stm32',
+    entry: '/docs/embedded',
+    hasDocs: true,
     groups: [
       {
         label: {zh: '开发工具', en: 'Dev Tools'},
         links: [
           {
             label: {zh: '开发工具', en: 'Dev Tools'},
-            to: '/docs/stm32/dev-tools',
+            to: '/docs/embedded/dev-tools',
+          },
+          {
+            label: {zh: '串口助手', en: 'Serial Monitor'},
+            to: '/serial-monitor',
           },
         ],
       },
@@ -71,21 +80,30 @@ export const TUTORIALS: Tutorial[] = [
   },
   {
     id: 'ros',
-    title: {zh: 'ROS 机器人', en: 'ROS Robotics'},
+    title: {zh: '机器人开发', en: 'Robotics'},
     desc: {
-      zh: '机器人操作系统 ROS 的发行版与核心概念教程，覆盖 Noetic 到 Jazzy。',
-      en: 'ROS distributions and core concepts, from Noetic to Jazzy.',
+      zh: '机器人操作系统 ROS 的发行版与核心概念教程，覆盖 ROS 1 到 ROS 2。',
+      en: 'ROS distributions and core concepts, from ROS 1 to ROS 2.',
     },
     icon: 'ros',
     entry: 'https://docs.ros.org',
     groups: [
       {
-        label: {zh: 'ROS 发行版', en: 'ROS Distros'},
+        label: {zh: 'ROS 1', en: 'ROS 1'},
         links: [
+          {
+            label: {zh: 'Melodic', en: 'Melodic'},
+            to: 'https://wiki.ros.org/melodic',
+          },
           {
             label: {zh: 'Noetic', en: 'Noetic'},
             to: 'https://wiki.ros.org/noetic',
           },
+        ],
+      },
+      {
+        label: {zh: 'ROS 2', en: 'ROS 2'},
+        links: [
           {
             label: {zh: 'Humble', en: 'Humble'},
             to: 'https://docs.ros.org/en/humble/',
@@ -100,7 +118,7 @@ export const TUTORIALS: Tutorial[] = [
   },
   {
     id: 'ai',
-    title: {zh: 'AI 代理', en: 'AI Agents'},
+    title: {zh: 'AI 智能体', en: 'AI Agents'},
     desc: {
       zh: '开源 AI 代理框架与模型，自主规划并调用工具完成目标。',
       en: 'Open-source AI agent frameworks and models that plan and use tools.',
@@ -112,8 +130,11 @@ export const TUTORIALS: Tutorial[] = [
         label: {zh: '代理与模型', en: 'Agents & Models'},
         links: [
           {label: {zh: 'OpenCode', en: 'OpenCode'}, to: 'https://opencode.ai'},
-          {label: {zh: 'OpenClaw', en: 'OpenClaw'}, to: 'https://opencode.ai'},
-          {label: {zh: 'Hermes', en: 'Hermes'}, to: 'https://opencode.ai'},
+          {label: {zh: 'OpenClaw', en: 'OpenClaw'}, to: 'https://openclaw.ai'},
+          {
+            label: {zh: 'Hermes Agent', en: 'Hermes Agent'},
+            to: 'https://hermes-agent.org',
+          },
         ],
       },
     ],

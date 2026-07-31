@@ -137,7 +137,7 @@ export const aiAgents: CardItem[] = [
   },
   {
     to: 'https://hermes-agent.nousresearch.com/',
-    title: {zh: 'Hermes', en: 'Hermes'},
+    title: {zh: 'Hermes Agent', en: 'Hermes Agent'},
     desc: {zh: '跨平台 AI 代理', en: 'Cross-Platform AI Agent'},
     icon: aiIcon.hermes,
   },
@@ -174,7 +174,7 @@ export const robots: CardItem[] = [
 
 export const stm32Tools: CardItem[] = [
   {
-    to: '/docs/stm32/dev-tools',
+    to: '/docs/embedded/dev-tools',
     title: {zh: '开发工具', en: 'Dev Tools'},
     desc: {zh: '嵌入式开发 · 工具链', en: 'Embedded Dev · Toolchain'},
     icon: toolIcon,

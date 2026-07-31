@@ -5,7 +5,7 @@ export const FEATURE_TAGS: LText[] = [
   {zh: '开源硬件', en: 'Open Hardware'},
   {zh: '嵌入式开发', en: 'Embedded Dev'},
   {zh: 'AI 智能体', en: 'AI Agents'},
-  {zh: 'STM32 工具链', en: 'STM32 Toolchain'},
+  {zh: '嵌入式工具链', en: 'Embedded Toolchain'},
   {zh: 'ROS 机器人', en: 'ROS Robotics'},
   {zh: '思维导图', en: 'Mind Map'},
   {zh: '串口调试', en: 'Serial Monitor'},

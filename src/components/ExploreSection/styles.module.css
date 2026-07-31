@@ -279,6 +279,13 @@
   text-decoration: none;
 }
 
+/* 外链标记：提示点击会跳转到站外 */
+.ext {
+  margin-left: 6px;
+  font-size: 11px;
+  opacity: 0.55;
+}
+
 @media (max-width: 720px) {
   .wrap {
     padding: 48px 18px;

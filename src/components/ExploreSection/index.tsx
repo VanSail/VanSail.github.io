@@ -222,21 +222,32 @@ export default function ExploreSection(): ReactElement {
                   {isZh ? g.label.zh : g.label.en}
                 </span>
                 <ul className={styles.list}>
-                  {g.links.map((link, li) => (
-                    <li key={li}>
-                      <Link className={styles.item} to={resolveTo(link.to)}>
-                        {isZh ? link.label.zh : link.label.en}
-                      </Link>
-                    </li>
-                  ))}
+                  {g.links.map((link, li) => {
+                    const external = link.to.startsWith('http');
+                    return (
+                      <li key={li}>
+                        <Link className={styles.item} to={resolveTo(link.to)}>
+                          {isZh ? link.label.zh : link.label.en}
+                          {external && (
+                            <span className={styles.ext} aria-hidden="true">
+                              ↗
+                            </span>
+                          )}
+                        </Link>
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
             ))}
           </div>
 
-          <Link className={styles.allLink} to={resolveTo(active.entry)}>
-            {isZh ? '查看全部 ›' : 'View all ›'}
-          </Link>
+          {/* 仅当本站有对应教程文档时，才提供「查看全部」入口 */}
+          {active.hasDocs && (
+            <Link className={styles.allLink} to={resolveTo(active.entry)}>
+              {isZh ? '查看全部 ›' : 'View all ›'}
+            </Link>
+          )}
         </div>
       </div>
     </section>
