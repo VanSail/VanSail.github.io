@@ -289,6 +289,35 @@ body {
   color: rgba(240, 160, 112, 1) !important;
 }
 
+/* 导航栏分类链接分组：拉开间距、提供可点击区域与悬停反馈 */
+.navbarCats {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 10px;
+}
+
+.navbarCatLink {
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.navbarCatLink:hover {
+  background: color-mix(in srgb, var(--brand) 14%, transparent);
+  color: rgba(240, 160, 112, 1) !important;
+}
+
+.navbarCatLink.navbar__link--active {
+  background: color-mix(in srgb, var(--brand) 18%, transparent);
+  color: rgba(240, 160, 112, 1) !important;
+}
+
 .dropdown__menu {
   background: rgba(0, 0, 0, 0.7) !important;
   backdrop-filter: blur(8px) !important;

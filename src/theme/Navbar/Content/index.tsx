@@ -109,22 +109,30 @@ export default function NavbarContent(): ReactNode {
           {!mobileSidebar.disabled && <NavbarMobileSidebarToggle />}
           <NavbarLogo />
           <NavbarItems items={leftItems} />
-          {navCategories.map(cat => {
-            const to = cat.navTo ?? cat.entry;
-            const external = to.startsWith('http');
-            const href = external ? to : `${docsPrefix}${to}`;
-            return (
-              <a
-                key={cat.id}
-                href={href}
-                className="navbar__link"
-                target={external ? '_blank' : undefined}
-                rel={external ? 'noreferrer' : undefined}
-              >
-                {isZh ? cat.title.zh : cat.title.en}
-              </a>
-            );
-          })}
+          <div className="navbarCats">
+            {navCategories.map(cat => {
+              const to = cat.navTo ?? cat.entry;
+              const external = to.startsWith('http');
+              const href = external ? to : `${docsPrefix}${to}`;
+              const active =
+                !external &&
+                (pathname === href || pathname.startsWith(`${href}/`));
+              return (
+                <a
+                  key={cat.id}
+                  href={href}
+                  className={
+                    'navbar__link navbarCatLink' +
+                    (active ? ' navbar__link--active' : '')
+                  }
+                  target={external ? '_blank' : undefined}
+                  rel={external ? 'noreferrer' : undefined}
+                >
+                  {isZh ? cat.title.zh : cat.title.en}
+                </a>
+              );
+            })}
+          </div>
         </>
       }
       right={
