@@ -5,13 +5,13 @@
   --slide-w: calc(
     (var(--carousel-w) - var(--gap) * (var(--cols) - 1)) / var(--cols)
   );
-  --duration: 40s;
-  --duration-rev: 46s;
+  --duration: 26s;
+  --duration-rev: 30s;
   position: relative;
   width: var(--carousel-w);
   max-width: 100%;
-  /* 与上方地球效果拉开距离 */
-  margin: 40px auto 0;
+  /* 与上方地球/分割线拉开距离 */
+  margin: 44px auto 0;
   display: flex;
   flex-direction: column;
   /* 两行之间的间距 */
@@ -44,13 +44,13 @@
   align-items: stretch;
   width: max-content;
   will-change: transform;
-  animation: cardScroll var(--duration) linear infinite;
+  animation: cardScroll var(--duration) linear infinite !important;
 }
 
 /* 第二行反向流动，形成交错视觉效果 */
 .trackReverse {
-  animation-name: cardScrollRev;
-  animation-duration: var(--duration-rev);
+  animation-name: cardScrollRev !important;
+  animation-duration: var(--duration-rev) !important;
 }
 
 /* 悬停或键盘聚焦时暂停，便于点击任意卡片 */
@@ -96,28 +96,13 @@
 @media (max-width: 860px) {
   .carousel {
     --cols: 2;
-    --duration: 34s;
+    --duration: 22s;
   }
 }
 
 @media (max-width: 560px) {
   .carousel {
     --cols: 1;
-    --duration: 28s;
-  }
-}
-
-/* 尊重无障碍偏好：关闭自动滚动，改为可手动横向浏览 */
-@media (prefers-reduced-motion: reduce) {
-  .track {
-    animation: none;
-  }
-  .viewport {
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-  }
-  .slide {
-    scroll-snap-align: center;
+    --duration: 18s;
   }
 }

@@ -1,0 +1,104 @@
+/* 流动卡片框：横向无缝滚动，每张卡展示一个网站特点标签 */
+.section {
+  /* 与网站内容区对齐（和地球、卡片同宽） */
+  width: var(--content-width, 72vw);
+  max-width: 100%;
+  /* 放在首页偏下，与上方内容拉开间距 */
+  margin: 56px auto 0;
+}
+
+.viewport {
+  overflow: hidden;
+  /* 上下留白，容纳卡片 hover 上浮与投影 */
+  padding: 8px 0 12px;
+  /* 左右边缘柔和淡出，强化流动感 */
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 4%,
+    #000 96%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 4%,
+    #000 96%,
+    transparent 100%
+  );
+}
+
+.track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  /* 整体向左无缝循环；强制流动，不受减动效压制 */
+  animation: shoutScroll var(--dur, 42s) linear infinite !important;
+}
+
+/* 悬停时暂停滚动，便于查看 */
+.section:hover .track {
+  animation-play-state: paused;
+}
+
+.card {
+  /* 用 margin 充当间距，保证复制边界对称、平移 -50% 无缝衔接 */
+  margin-right: 18px;
+  flex: 0 0 200px;
+  width: 200px;
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 18px;
+  border-radius: 16px;
+  background: var(--ifm-background-surface-color);
+  border: 1px solid var(--ifm-hr-border-color);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.18),
+    0 8px 22px rgba(0, 0, 0, 0.12);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in srgb, var(--ifm-color-primary) 40%, transparent);
+  box-shadow:
+    0 6px 16px color-mix(in srgb, var(--ifm-color-primary) 18%, transparent),
+    0 14px 34px rgba(0, 0, 0, 0.18);
+}
+
+/* 卡片上的网站特点标签（pill） */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--ifm-color-primary);
+  background: color-mix(in srgb, var(--ifm-color-primary) 10%, transparent);
+  border: 1px solid
+    color-mix(in srgb, var(--ifm-color-primary) 28%, transparent);
+}
+
+@keyframes shoutScroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 560px) {
+  .card {
+    flex-basis: 160px;
+    width: 160px;
+  }
+}

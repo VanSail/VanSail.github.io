@@ -63,73 +63,28 @@
   align-items: center;
   gap: 16px;
   padding: 18px 20px;
-  /* 极淡顶部高光叠加表面色，营造克制的玻璃质感而不抢戏 */
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0)),
-    var(--ifm-background-surface-color);
+  /* 与评价流动框一致的纯表面背景 + 圆角 + 柔和投影 */
+  background: var(--ifm-background-surface-color);
   border: 1px solid var(--ifm-hr-border-color);
-  border-radius: 14px;
+  border-radius: 16px;
   text-decoration: none;
   color: var(--ifm-color-base);
-  /* 静止态极淡投影，避免平面呆板 */
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.22);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.18),
+    0 8px 22px rgba(0, 0, 0, 0.12);
   transition:
     border-color 0.25s ease,
     transform 0.25s cubic-bezier(0.2, 0.7, 0.3, 1),
     box-shadow 0.25s ease;
 }
 
-/* Hover 斜向微光扫过 - 更"贵"的精致微交互 */
-.card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(
-    120deg,
-    transparent 38%,
-    rgba(var(--brand-rgb), 0.08) 50%,
-    transparent 62%
-  );
-  transform: translateX(-120%);
-  transition: transform 0.7s ease;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.card:hover::before {
-  transform: translateX(120%);
-}
-
-/* Hover 径向光晕 - 卡片被"点亮"的精致感 */
-.card::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(var(--brand-rgb), 0.09),
-    transparent 70%
-  );
-  opacity: 0;
-  transition: opacity 0.35s ease;
-  pointer-events: none;
-  border-radius: inherit;
-  z-index: 0;
-}
-
-.card:hover::after {
-  opacity: 1;
-}
-
+/* Hover：上浮 + 主色边框/阴影，与评价流动框一致 */
 .card:hover {
-  border-color: rgba(var(--brand-rgb), 0.45);
+  border-color: color-mix(in srgb, var(--brand) 40%, transparent);
   transform: translateY(-4px);
-  /* 中性柔影 + 极淡描边光，高级而克制，避免喧闹橙光 */
   box-shadow:
-    0 14px 34px rgba(0, 0, 0, 0.38),
-    0 0 0 1px rgba(var(--brand-rgb), 0.16),
-    0 6px 20px rgba(var(--brand-rgb), 0.07);
+    0 6px 16px color-mix(in srgb, var(--brand) 18%, transparent),
+    0 14px 34px rgba(0, 0, 0, 0.18);
 }
 
 .card:hover .cardIcon {
@@ -226,7 +181,7 @@
   font: inherit;
   background: var(--ifm-background-surface-color);
   border: 1px solid var(--ifm-hr-border-color);
-  border-radius: 14px;
+  border-radius: 16px;
 }
 
 .menuCardWrap .card:hover {

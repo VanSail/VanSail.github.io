@@ -15,10 +15,11 @@ export default function CardCarousel({items}: {items: CardItem[]}): ReactNode {
   const locale: 'zh' | 'en' = currentLocale === 'en' ? 'en' : 'zh';
 
   // 将卡片拆成两行，避免同一卡片在相邻行重复出现
+  // 首行向右循环、次行向左循环，形成交错流动效果
   const mid = Math.ceil(items.length / 2);
   const rows: {list: CardItem[]; reverse: boolean}[] = [
-    {list: items.slice(0, mid), reverse: false},
-    {list: items.slice(mid), reverse: true},
+    {list: items.slice(0, mid), reverse: true},
+    {list: items.slice(mid), reverse: false},
   ];
 
   return (

@@ -244,7 +244,7 @@ export default function Hero3D(): ReactElement {
         frame = requestAnimationFrame(animate);
         // 未拖拽时缓慢自转；拖拽时以用户操作为主
         if (!dragging) {
-          globe.rotation.y += 0.0016;
+          globe.rotation.y += 0.003;
         }
         // 悬停时球体微微朝光标方向倾斜，像"看向"光标
         const targetX = dragging ? globe.rotation.x : my * 0.5;
@@ -261,18 +261,15 @@ export default function Hero3D(): ReactElement {
         renderer.render(scene, camera);
       };
 
-      // 尊重"减少动态效果"偏好：静止用户只看到一帧静态地球，不做自转
-      const prefersReduced =
-        typeof window.matchMedia === 'function' &&
-        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-      // 至少渲染一帧，保证暂停/减弱动画时也能看到地球
+      // 地球为装饰性动效，始终自转（用户明确需要流动效果）；
+      // 仅在进入视口时运行、滚出暂停，避免持续占用 GPU。
+      // 至少渲染一帧，保证首屏静止时也能看到地球
       camera.lookAt(scene.position);
       renderer.render(scene, camera);
 
       let running = false;
       const startLoop = () => {
-        if (running || prefersReduced) return;
+        if (running) return;
         running = true;
         frame = requestAnimationFrame(animate);
       };
@@ -282,24 +279,22 @@ export default function Hero3D(): ReactElement {
         cancelAnimationFrame(frame);
       };
 
-      if (!prefersReduced) {
-        // 仅在 hero 进入视口时运行动画，滚出视口即暂停，避免持续占用 GPU
-        if (typeof IntersectionObserver === 'function') {
-          io = new IntersectionObserver(
-            entries => {
-              const entry = entries[0];
-              if (entry && entry.isIntersecting) {
-                startLoop();
-              } else {
-                stopLoop();
-              }
-            },
-            {threshold: 0},
-          );
-          io.observe(mount);
-        } else {
-          startLoop();
-        }
+      // 仅在 hero 进入视口时运行动画，滚出视口即暂停，避免持续占用 GPU
+      if (typeof IntersectionObserver === 'function') {
+        io = new IntersectionObserver(
+          entries => {
+            const entry = entries[0];
+            if (entry && entry.isIntersecting) {
+              startLoop();
+            } else {
+              stopLoop();
+            }
+          },
+          {threshold: 0},
+        );
+        io.observe(mount);
+      } else {
+        startLoop();
       }
 
       const onResize = () => {
