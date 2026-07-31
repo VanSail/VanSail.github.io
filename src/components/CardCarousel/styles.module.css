@@ -6,10 +6,16 @@
     (var(--carousel-w) - var(--gap) * (var(--cols) - 1)) / var(--cols)
   );
   --duration: 40s;
+  --duration-rev: 46s;
   position: relative;
   width: var(--carousel-w);
   max-width: 100%;
-  margin: 0 auto;
+  /* 与上方地球效果拉开距离 */
+  margin: 40px auto 0;
+  display: flex;
+  flex-direction: column;
+  /* 两行之间的间距 */
+  gap: 14px;
   /* 左右边缘柔和淡出，强化滚动的流动感 */
   -webkit-mask-image: linear-gradient(
     90deg,
@@ -41,6 +47,12 @@
   animation: cardScroll var(--duration) linear infinite;
 }
 
+/* 第二行反向流动，形成交错视觉效果 */
+.trackReverse {
+  animation-name: cardScrollRev;
+  animation-duration: var(--duration-rev);
+}
+
 /* 悬停或键盘聚焦时暂停，便于点击任意卡片 */
 .carousel:hover .track,
 .carousel:focus-within .track {
@@ -69,6 +81,15 @@
   }
   to {
     transform: translateX(-50%);
+  }
+}
+
+@keyframes cardScrollRev {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
   }
 }
 
