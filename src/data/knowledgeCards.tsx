@@ -334,6 +334,76 @@ export const KNOWLEDGE_CARDS: KnowledgeCard[] = [
       'ARM’s on-chip bus spec linking CPU and peripherals: AXI for high-performance (burst, out-of-order), AHB for high-bandwidth subsystems, APB for low-power slow slaves.',
     cat: 'hardware',
   },
+  {
+    abbr: 'LPDDR5',
+    nameZh: '低功耗 DDR5 内存',
+    nameEn: 'LPDDR5',
+    descZh:
+      '低功耗 DDR SDRAM 家族一员（JEDEC 2019 标准），面向手机/笔记本等移动设备；与 DDR5 是独立标准、版本号不表示同源。峰值速率 6400 MT/s，较 LPDDR4 翻倍。',
+    descEn:
+      'A Low-Power DDR SDRAM (JEDEC 2019) for phones/laptops. Independent from DDR5 — same version number, different standard. Peaks at 6400 MT/s, 2× LPDDR4.',
+    cat: 'hardware',
+  },
+  {
+    abbr: 'MT/s',
+    nameZh: '百万次传输每秒',
+    nameEn: 'MT/s',
+    descZh:
+      '衡量总线有效传输率的指标：每秒百万次数据传输操作。DDR 在时钟双沿均传输，故 MT/s 常高于内部时钟 MHz；内存带宽 = MT/s × 位宽 ÷ 8。',
+    descEn:
+      'Megatransfers per second: effective bus transfers per second. With DDR (data on both clock edges) MT/s exceeds the internal clock MHz; bandwidth = MT/s × width ÷ 8.',
+    cat: 'hardware',
+  },
+  {
+    abbr: 'eMMC',
+    nameZh: '嵌入式多媒体卡',
+    nameEn: 'eMMC',
+    descZh:
+      '将 NAND 闪存与控制器集成于单颗 BGA 封装、焊接在主板上的固态存储，不可插拔；8 位并行半双工。曾广泛用于手机/入门设备，速率低于 UFS/NVMe。',
+    descEn:
+      'NAND flash + controller in one soldered BGA package (non-removable), 8-bit parallel half-duplex. Common in phones/budget devices; slower than UFS/NVMe.',
+    cat: 'hardware',
+  },
+  {
+    abbr: 'UFS',
+    nameZh: '通用闪存存储',
+    nameEn: 'UFS',
+    descZh:
+      '面向手机等移动设备的闪存规范，用 MIPI M-PHY 串行全双工接口，基于 SCSI 命令队列；速率与扩展性优于 eMMC 的并行半双工方案（如 UFS 4.0 达 5.8 GB/s）。',
+    descEn:
+      'Flash spec for mobiles using MIPI M-PHY serial full-duplex with SCSI command queuing; faster and more scalable than eMMC (UFS 4.0 ≈ 5.8 GB/s).',
+    cat: 'hardware',
+  },
+  {
+    abbr: 'NVMe',
+    nameZh: '高速固态硬盘协议',
+    nameEn: 'NVMe SSD',
+    descZh:
+      '基于 PCIe 的非易失存储接口协议，充分发挥 SSD 低延迟与内部并行性；多队列、全双工，带宽远超 SATA/AHCI（后者为机械硬盘设计）。常见于 M.2 形态。',
+    descEn:
+      'A PCIe-based SSD interface exploiting low latency and internal parallelism with deep queues and full-duplex, far faster than SATA/AHCI; usually M.2.',
+    cat: 'hardware',
+  },
+  {
+    abbr: 'MIPI CSI',
+    nameZh: '摄像头串行接口',
+    nameEn: 'MIPI CSI',
+    descZh:
+      'MIPI 联盟制定的摄像头串行接口规范，连接图像传感器/摄像头模组与处理器（SoC），是手机、平板等移动设备的主流摄像头接口。',
+    descEn:
+      'The MIPI Alliance camera serial interface linking image sensors/modules to the SoC; the mainstream camera interface in phones and tablets.',
+    cat: 'hardware',
+  },
+  {
+    abbr: 'MIPI DSI',
+    nameZh: '显示串行接口',
+    nameEn: 'MIPI DSI',
+    descZh:
+      'MIPI 联盟制定的显示串行接口规范，连接处理器（SoC）与显示屏模组，是移动设备液晶/OLED 屏的主流高速显示接口。',
+    descEn:
+      'The MIPI Alliance display serial interface linking the SoC to display panels; the mainstream high-speed screen interface in mobile devices.',
+    cat: 'hardware',
+  },
 
   // ===================== AI（编译 / 推理 / 框架，来自 AISystem 仓库 03-05 模块） =====================
   {

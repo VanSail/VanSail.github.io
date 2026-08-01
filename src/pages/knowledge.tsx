@@ -19,9 +19,12 @@ export default function Knowledge(): ReactElement {
   const [query, setQuery] = useState('');
 
   const filtered = useMemo(() => {
+    const sorted = [...KNOWLEDGE_CARDS].sort((a, b) =>
+      a.abbr.localeCompare(b.abbr),
+    );
     const q = query.trim().toLowerCase();
-    if (!q) return KNOWLEDGE_CARDS;
-    return KNOWLEDGE_CARDS.filter(c => {
+    if (!q) return sorted;
+    return sorted.filter(c => {
       const hay = [c.abbr, c.nameZh, c.nameEn, c.descZh, c.descEn]
         .join(' ')
         .toLowerCase();
