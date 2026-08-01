@@ -26,6 +26,7 @@
 
 .group {
   margin-bottom: 44px;
+  scroll-margin-top: 84px;
 }
 
 .groupTitle {
@@ -64,7 +65,7 @@
   padding: 16px 20px 18px;
   border-radius: 16px;
   border-top: 3px solid var(--ifm-color-primary);
-  scroll-margin-top: 88px;
+  scroll-margin-top: 84px;
   background: color-mix(
     in srgb,
     var(--ifm-color-primary) 6%,
@@ -140,5 +141,183 @@
   }
   .field {
     grid-template-columns: 48px 1fr;
+  }
+}
+
+/* ===== 搜索框 ===== */
+.searchBox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 520px;
+  margin: 22px auto 0;
+  padding: 0 14px;
+  height: 46px;
+  border-radius: 999px;
+  background: var(--ifm-background-color);
+  border: 1.5px solid
+    color-mix(in srgb, var(--ifm-color-primary) 28%, transparent);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.searchBox:focus-within {
+  border-color: var(--ifm-color-primary);
+  box-shadow: 0 4px 18px
+    color-mix(in srgb, var(--ifm-color-primary) 22%, transparent);
+}
+
+.searchIcon {
+  flex: none;
+  color: var(--ifm-color-primary);
+  opacity: 0.75;
+}
+
+.searchInput {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 15px;
+  color: var(--ifm-font-color-base);
+}
+
+.searchInput::placeholder {
+  opacity: 0.55;
+}
+
+/* 去掉浏览器默认 search 清除按钮，使用自定义 */
+.searchInput::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
+
+.searchClear {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--ifm-color-primary) 14%, transparent);
+  color: var(--ifm-color-primary);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+
+.searchClear:hover {
+  background: color-mix(in srgb, var(--ifm-color-primary) 24%, transparent);
+}
+
+.resultHint {
+  margin: 12px 0 0;
+  font-size: 13px;
+  opacity: 0.6;
+  text-align: center;
+}
+
+.empty {
+  margin: 40px 0;
+  text-align: center;
+  font-size: 15px;
+  opacity: 0.6;
+}
+
+/* ===== 分类导航目录 ===== */
+.toc {
+  position: sticky;
+  top: 16px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0 0 36px;
+  padding: 12px 16px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--ifm-background-color) 88%, transparent);
+  border: 1px solid
+    color-mix(in srgb, var(--ifm-color-primary) 16%, transparent);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(6px);
+}
+
+.tocLabel {
+  font-size: 12px;
+  font-weight: 700;
+  opacity: 0.55;
+  letter-spacing: 0.5px;
+  flex: none;
+}
+
+.tocList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tocLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  color: var(--cat-color, var(--ifm-color-primary));
+  border: 1px solid
+    color-mix(
+      in srgb,
+      var(--cat-color, var(--ifm-color-primary)) 35%,
+      transparent
+    );
+  background: color-mix(
+    in srgb,
+    var(--cat-color, var(--ifm-color-primary)) 8%,
+    transparent
+  );
+  transition:
+    background 0.15s ease,
+    transform 0.15s ease;
+}
+
+.tocLink:hover {
+  background: color-mix(
+    in srgb,
+    var(--cat-color, var(--ifm-color-primary)) 18%,
+    transparent
+  );
+  transform: translateY(-1px);
+}
+
+.tocDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex: none;
+}
+
+.tocCount {
+  font-size: 11px;
+  font-weight: 700;
+  opacity: 0.6;
+  padding-left: 2px;
+}
+
+@media (max-width: 560px) {
+  .toc {
+    top: 8px;
+    padding: 10px 12px;
+  }
+  .tocLabel {
+    width: 100%;
   }
 }
