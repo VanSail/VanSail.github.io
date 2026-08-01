@@ -4,7 +4,7 @@ import type {LText} from '@site/src/types';
 export const FEATURE_TAGS: LText[] = [
   {zh: '开源硬件', en: 'Open Hardware'},
   {zh: '嵌入式', en: 'Embedded'},
-  {zh: 'AI 智能体', en: 'AI Agents'},
+  {zh: '智能体', en: 'Agents'},
   {zh: '嵌入式工具链', en: 'Embedded Toolchain'},
   {zh: 'ROS 机器人', en: 'ROS Robotics'},
   {zh: '思维导图', en: 'Mind Map'},

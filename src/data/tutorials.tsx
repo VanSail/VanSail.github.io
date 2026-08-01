@@ -119,7 +119,7 @@ export const TUTORIALS: Tutorial[] = [
   },
   {
     id: 'ai',
-    title: {zh: 'AI 智能体', en: 'AI Agents'},
+    title: {zh: '智能体', en: 'Agents'},
     desc: {
       zh: '开源 AI 代理框架与模型，自主规划并调用工具完成目标。',
       en: 'Open-source AI agent frameworks and models that plan and use tools.',

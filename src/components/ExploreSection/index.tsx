@@ -248,7 +248,10 @@ export default function ExploreSection(): ReactElement {
 
           {/* 仅当本站有对应教程文档时，才提供「查看全部」入口 */}
           {active.hasDocs && (
-            <Link className={styles.allLink} to={resolveTo(active.entry)}>
+            <Link
+              className={styles.allLink}
+              to={resolveTo(active.navTo ?? active.entry)}
+            >
               {isZh ? '查看全部 ›' : 'View all ›'}
             </Link>
           )}
