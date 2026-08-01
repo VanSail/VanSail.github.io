@@ -24,6 +24,8 @@ export interface CardItem {
   icon: ReactNode;
   menu?: MenuOption[];
   numbered?: boolean;
+  /** 菜单项水平平铺为列，而非点击展开下拉（用于 ROS 版本选择等） */
+  menuInline?: boolean;
 }
 
 /* ---------- SVG props ---------- */
@@ -155,10 +157,11 @@ export const robots: CardItem[] = [
       {label: 'Melodic', to: 'https://wiki.ros.org/melodic'},
       {label: 'Noetic', to: 'https://wiki.ros.org/noetic'},
     ],
+    menuInline: true,
     icon: rosIcon,
   },
   {
-    to: '/docs/ros2',
+    to: '/docs/robot/ros2/',
     title: {zh: 'ROS2', en: 'ROS2'},
     desc: {
       zh: '新一代 · DDS 实时跨平台',
@@ -167,7 +170,9 @@ export const robots: CardItem[] = [
     menu: [
       {label: 'Humble', to: 'https://docs.ros.org/en/humble/'},
       {label: 'Jazzy', to: 'https://docs.ros.org/en/jazzy/'},
+      {label: 'ROS2 文档', to: '/docs/robot/ros2/'},
     ],
+    menuInline: true,
     icon: rosIcon,
   },
 ];
@@ -246,6 +251,82 @@ function MenuCard({
     items[next]?.focus();
   };
 
+  // 菜单项渲染为可点击链接/静态项，供下拉与内联两种模式复用
+  const renderMenuItems = (containerClass: string) =>
+    item.menu!.map((opt, i) => {
+      const label =
+        typeof opt.label === 'string' ? opt.label : opt.label[locale];
+      const to =
+        opt.to === undefined
+          ? undefined
+          : typeof opt.to === 'string'
+            ? opt.to
+            : opt.to[locale];
+      const inner = (
+        <>
+          {item.numbered && <span className={styles.menuStep}>{i + 1}</span>}
+          <span className={styles.menuLabel}>{label}</span>
+          {to?.startsWith('http') && <span className={styles.menuExt}>↗</span>}
+        </>
+      );
+      if (!to) {
+        return (
+          <span
+            key={i}
+            className={`${styles.menuItem} ${styles.menuItemStatic}`}
+            role="menuitem"
+            tabIndex={-1}
+          >
+            {inner}
+          </span>
+        );
+      }
+      const ext = to.startsWith('http');
+      return ext ? (
+        <a
+          key={i}
+          href={to}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={`${styles.menuItem} ${containerClass}`}
+          role="menuitem"
+          onClick={() => close()}
+        >
+          {inner}
+        </a>
+      ) : (
+        <Link
+          key={i}
+          to={to}
+          className={`${styles.menuItem} ${containerClass}`}
+          role="menuitem"
+          onClick={() => close()}
+        >
+          {inner}
+        </Link>
+      );
+    });
+
+  // 内联模式：菜单项水平平铺成列，始终展开，不折叠
+  if (item.menuInline) {
+    return (
+      <div className={`${styles.menuCardWrap} ${styles.menuInlineWrap}`}>
+        <div className={`${styles.card} ${styles.cardInline}`}>
+          <span className={styles.cardIcon} aria-hidden="true">
+            {item.icon}
+          </span>
+          <span className={styles.cardBody}>
+            <span className={styles.cardTitle}>{item.title[locale]}</span>
+            <span className={styles.cardDesc}>{item.desc[locale]}</span>
+          </span>
+        </div>
+        <div className={styles.menuInline} role="menu">
+          {renderMenuItems(styles.menuCol)}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.menuCardWrap} ref={wrapRef}>
       <button
@@ -274,63 +355,7 @@ function MenuCard({
           ref={popoverRef}
           onKeyDown={onMenuKeyDown}
         >
-          {item.menu!.map((opt, i) => {
-            const label =
-              typeof opt.label === 'string' ? opt.label : opt.label[locale];
-            const to =
-              opt.to === undefined
-                ? undefined
-                : typeof opt.to === 'string'
-                  ? opt.to
-                  : opt.to[locale];
-            const inner = (
-              <>
-                {item.numbered && (
-                  <span className={styles.menuStep}>{i + 1}</span>
-                )}
-                <span className={styles.menuLabel}>{label}</span>
-                {to?.startsWith('http') && (
-                  <span className={styles.menuExt}>↗</span>
-                )}
-              </>
-            );
-            if (!to) {
-              return (
-                <span
-                  key={i}
-                  className={`${styles.menuItem} ${styles.menuItemStatic}`}
-                  role="menuitem"
-                  tabIndex={-1}
-                >
-                  {inner}
-                </span>
-              );
-            }
-            const ext = to.startsWith('http');
-            return ext ? (
-              <a
-                key={i}
-                href={to}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.menuItem}
-                role="menuitem"
-                onClick={() => close()}
-              >
-                {inner}
-              </a>
-            ) : (
-              <Link
-                key={i}
-                to={to}
-                className={styles.menuItem}
-                role="menuitem"
-                onClick={() => close()}
-              >
-                {inner}
-              </Link>
-            );
-          })}
+          {renderMenuItems('')}
         </div>
       )}
     </div>

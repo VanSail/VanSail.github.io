@@ -1,5 +1,24 @@
 import type {LText} from '@site/src/types';
 import {GUIDE_GROUPS} from './guideNav';
+import {
+  ROS_GROUPS,
+  ROS1_GROUPS,
+  ROS2_DISTRO_GROUPS,
+  type RosArticle,
+} from './rosNav';
+
+const rosLink = (dir: string, a: RosArticle) => ({
+  label: a.title,
+  to: a.to ?? `/docs/robot/ros2/${dir}/${a.slug}`,
+});
+
+const toGroups = (
+  groups: {dir: string; label: LText; articles: RosArticle[]}[],
+) =>
+  groups.map(g => ({
+    label: g.label,
+    links: g.articles.map(a => rosLink(g.dir, a)),
+  }));
 
 export type TutorialIcon = 'book' | 'mcu' | 'ros' | 'ai';
 
@@ -89,35 +108,13 @@ export const TUTORIALS: Tutorial[] = [
       en: 'ROS distributions and core concepts, from ROS 1 to ROS 2.',
     },
     icon: 'ros',
-    entry: 'https://docs.ros.org',
+    entry: '/docs/robot/ros2',
     navTo: '/robots',
+    hasDocs: true,
     groups: [
-      {
-        label: {zh: 'ROS 1', en: 'ROS 1'},
-        links: [
-          {
-            label: {zh: 'Melodic', en: 'Melodic'},
-            to: 'https://wiki.ros.org/melodic',
-          },
-          {
-            label: {zh: 'Noetic', en: 'Noetic'},
-            to: 'https://wiki.ros.org/noetic',
-          },
-        ],
-      },
-      {
-        label: {zh: 'ROS 2', en: 'ROS 2'},
-        links: [
-          {
-            label: {zh: 'Humble', en: 'Humble'},
-            to: 'https://docs.ros.org/en/humble/',
-          },
-          {
-            label: {zh: 'Jazzy', en: 'Jazzy'},
-            to: 'https://docs.ros.org/en/jazzy/',
-          },
-        ],
-      },
+      ...toGroups(ROS1_GROUPS),
+      ...toGroups(ROS2_DISTRO_GROUPS),
+      ...toGroups(ROS_GROUPS),
     ],
   },
   {

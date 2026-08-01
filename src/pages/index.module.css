@@ -241,6 +241,58 @@
   }
 }
 
+/* ---------------- Inline menu (horizontal columns) ---------------- */
+/* 菜单项以列形式平铺在卡片标题下方，始终展开，用于 ROS 版本选择 */
+.menuInlineWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.menuInlineWrap .cardInline {
+  width: 100%;
+  flex: initial;
+  cursor: default;
+  background: var(--ifm-background-surface-color);
+  border: 1px solid var(--ifm-hr-border-color);
+  border-radius: var(--card-radius, 16px);
+}
+
+.menuInline {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 10px;
+}
+
+/* 每列子项：等宽、居中、柔和表面 + 圆角，与卡片风格统一 */
+.menuCol {
+  flex: initial;
+  justify-content: center;
+  border: 1px solid var(--ifm-hr-border-color);
+  border-radius: 12px;
+  background: var(--ifm-background-surface-color);
+  font-size: 14px;
+  padding: 10px 8px;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.menuCol:hover {
+  border-color: var(--brand);
+  background: rgba(var(--brand-rgb), 0.12);
+  transform: translateY(-2px);
+}
+
+/* 窄屏：列数不足以排成一行时允许换行 */
+@media screen and (max-width: 560px) {
+  .menuInline {
+    grid-auto-flow: row;
+  }
+}
+
 /* ---------------- External link indicator ---------------- */
 .cardExt {
   position: absolute;

@@ -71,8 +71,8 @@ function TutorialIconSvg({kind}: {kind: TutorialIcon}): ReactElement {
  *
  * 交互：
  *  - 自动匀速滚动（CSS 不可控，故用 JS 驱动 transform）
- *  - 鼠标悬停左列：暂停自动滚动，可用滚轮手动浏览
- *  - 鼠标离开：从当前位置继续自动滚动
+ *  - 鼠标悬停右侧详情区：暂停左列自动滚动
+ *  - 鼠标离开右列：左列从当前位置继续自动滚动
  */
 export default function ExploreSection(): ReactElement {
   const {pathname} = useLocation();
@@ -177,12 +177,7 @@ export default function ExploreSection(): ReactElement {
 
       <div className={styles.inner}>
         {/* 左：单列竖向滚动教程卡片 */}
-        <div
-          className={styles.scroller}
-          ref={scrollerRef}
-          onMouseEnter={() => (pausedRef.current = true)}
-          onMouseLeave={() => (pausedRef.current = false)}
-        >
+        <div className={styles.scroller} ref={scrollerRef}>
           <div className={styles.track} ref={trackRef}>
             {doubled.map((t, i) => (
               <div
@@ -203,8 +198,13 @@ export default function ExploreSection(): ReactElement {
           </div>
         </div>
 
-        {/* 右：随居中卡片切换的详情区 */}
-        <div className={styles.detail} key={active.id}>
+        {/* 右：随居中卡片切换的详情区，悬停右列时左列停止滚动 */}
+        <div
+          className={styles.detail}
+          key={active.id}
+          onMouseEnter={() => (pausedRef.current = true)}
+          onMouseLeave={() => (pausedRef.current = false)}
+        >
           <div className={styles.detailHead}>
             <div className={styles.logoBox}>
               <TutorialIconSvg kind={active.icon} />
