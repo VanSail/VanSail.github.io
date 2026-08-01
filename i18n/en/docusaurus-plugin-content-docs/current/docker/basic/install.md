@@ -2,9 +2,15 @@
 sidebar_position: 10
 ---
 
-# Install Docker Engine
+# Install Docker
 
-This guide shows how to install Docker Engine (Community Edition) on Debian and Ubuntu. It follows the [official Docker install docs](https://docs.docker.com/engine/install/debian/) and works on dev boards (Radxa, Raspberry Pi, and other ARM devices) as well as x86 servers and workstations.
+This guide shows how to install Docker Engine (Community Edition) on Debian and Ubuntu.
+
+:::tip
+
+See the [official Docker docs](https://docs.docker.com/).
+
+:::
 
 ## Supported versions
 
@@ -22,7 +28,7 @@ The official Docker repository provides prebuilt packages for these releases:
   </TabItem>
 </Tabs>
 
-> 💡 **Architecture note**: Docker ships prebuilt packages for both `amd64` and `arm64` (e.g. Radxa Rock 4D, Raspberry Pi). The install commands are identical; apt picks the package matching your current architecture.
+> 💡 **Architecture note**: Docker ships prebuilt packages for both `amd64` and `arm64`. The install commands are identical; apt picks the package matching your current architecture.
 
 ## Uninstall old versions
 
@@ -80,7 +86,7 @@ sudo apt update
 
 > ⚠️ **Derivative distros**: On Debian testing or derivatives like Kali, the `VERSION_CODENAME` from `/etc/os-release` may not map to a stable suite. Replace `$(. /etc/os-release && echo "$VERSION_CODENAME")` with a concrete stable codename (e.g. `trixie`, `bookworm`).
 
-## Install Docker Engine
+## Install Docker
 
 Install the latest Docker Engine and its core components:
 
@@ -120,7 +126,7 @@ sudo apt install -y docker-ce=<VERSION_STRING> docker-ce-cli=<VERSION_STRING> co
 
 Docker pulls images from Docker Hub (`registry-1.docker.io`) by default. On some networks (e.g. mainland China, intranets, or hosts whose IPv6 egress is blocked) this address may be **unreachable**, causing `docker run` to hang and finally fail with `i/o timeout`.
 
-> ⚠️ Verified on a Radxa Rock 4D (Debian 12, arm64): `registry-1.docker.io` only resolved to an IPv6 address with no working egress, so pulling `hello-world` failed every time. After configuring the mirror below, the pull succeeded.
+> ⚠️ Verified in practice: `registry-1.docker.io` only resolved to an IPv6 address with no working egress on some networks, so pulling `hello-world` failed. After configuring the mirror below, the pull succeeded.
 
 To pull images reliably, configure a registry mirror. Using the public DaoCloud mirror as an example:
 
@@ -166,18 +172,6 @@ docker run hello-world
 > ⚠️ Adding a user to the `docker` group is effectively equivalent to granting `root` privileges (container mounts can escape), so only do this on trusted hosts.
 
 ## Troubleshooting & notes
-
-::::tip
-
-**ARM boards (Radxa, Raspberry Pi) auto-suspend**
-
-Some ARM board images enable idle auto-suspend by default (suspending after ~20 minutes of inactivity and dropping the network). The board will appear "offline" during remote work and needs a physical button press to wake. For always-on services or remote deployment, disable auto-suspend:
-
-```bash title="Linux" showLineNumbers
-sudo systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
-```
-
-::::
 
 ::::tip
 

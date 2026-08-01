@@ -2,9 +2,15 @@
 sidebar_position: 10
 ---
 
-# 安装 Docker Engine
+# 安装 Docker
 
-本篇介绍如何在 Debian 与 Ubuntu 系统上安装 Docker Engine（社区版）。内容参考 [Docker 官方安装文档](https://docs.docker.com/engine/install/debian/)，适用于开发板（如 Radxa、Raspberry Pi 等 ARM 设备）与 x86 服务器、工作站。
+本篇介绍如何在 Debian 与 Ubuntu 系统上安装 Docker Engine（社区版）。
+
+:::tip
+
+参考 [Docker 官方文档](https://docs.docker.com/)。
+
+:::
 
 ## 版本支持
 
@@ -22,7 +28,7 @@ Docker 官方仓库为以下发行版提供预编译包：
   </TabItem>
 </Tabs>
 
-> 💡 **架构提示**：Docker 同时提供 `amd64` 与 `arm64`（如 Radxa Rock 4D、树莓派）预编译包，安装命令完全一致，apt 会根据当前架构自动选择。
+> 💡 **架构提示**：Docker 官方仓库同时提供 `amd64` 与 `arm64` 预编译包，安装命令完全一致，apt 会根据当前架构自动选择。
 
 ## 卸载旧版本
 
@@ -80,7 +86,7 @@ sudo apt update
 
 > ⚠️ **衍生发行版注意**：若使用 Debian testing 或 Kali 等衍生版，`/etc/os-release` 的 `VERSION_CODENAME` 可能无法对应稳定代号，请将上面命令中的 `$(. /etc/os-release && echo "$VERSION_CODENAME")` 替换为具体的稳定代号（如 `trixie`、`bookworm`）。
 
-## 安装 Docker Engine
+## 安装 Docker
 
 安装最新版本的 Docker Engine 及其核心组件：
 
@@ -120,7 +126,7 @@ sudo apt install -y docker-ce=<VERSION_STRING> docker-ce-cli=<VERSION_STRING> co
 
 Docker 默认从 Docker Hub（`registry-1.docker.io`）拉取镜像。在部分网络环境（如国内、内网、仅 IPv6 出口受限的主机）下，该地址可能**无法直连**，表现为 `docker run` 长时间卡住并最终报 `i/o timeout`。
 
-> ⚠️ 本教程在 Radxa Rock 4D（Debian 12, arm64）上实测：`registry-1.docker.io` 的 DNS 仅返回 IPv6 地址且出站不通，直连拉取 `hello-world` 必然失败。配置下方镜像加速器后拉取成功。
+> ⚠️ 本教程实测：`registry-1.docker.io` 在部分网络下 DNS 仅返回 IPv6 地址且出站不通，直连拉取 `hello-world` 会失败。配置下方镜像加速器后即可正常拉取。
 
 为稳定拉取镜像，建议配置国内镜像加速器。以 DaoCloud 公共镜像为例：
 
@@ -166,18 +172,6 @@ docker run hello-world
 > ⚠️ 将用户加入 `docker` 组相当于赋予其 `root` 等价权限（可借助 Docker 挂载逃逸），请仅在可信主机上操作。
 
 ## 常见问题与注意事项
-
-::::tip
-
-**ARM 开发板（如 Radxa、树莓派）自动挂起**
-
-部分 ARM 开发板镜像默认开启空闲自动挂起（约 20 分钟无操作即 `suspend`，且会断开网络）。远程操作时板子会"失联"，需物理按键唤醒。若用于常驻服务或远程部署，建议禁用自动挂起：
-
-```bash title="Linux" showLineNumbers
-sudo systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
-```
-
-::::
 
 ::::tip
 
