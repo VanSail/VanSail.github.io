@@ -1,5 +1,4 @@
 import type {LText} from '@site/src/types';
-import {GUIDE_GROUPS} from './guideNav';
 import {
   ROS_GROUPS,
   ROS1_GROUPS,
@@ -55,25 +54,6 @@ export interface Tutorial {
  */
 export const TUTORIALS: Tutorial[] = [
   {
-    id: 'doc-guide',
-    title: {zh: '文档指南', en: 'Docs Guide'},
-    desc: {
-      zh: '从基础语法到进阶技巧，系统讲解本站文档的写作规范与组件用法。',
-      en: 'From basics to advanced tips — how to write docs on this site.',
-    },
-    icon: 'book',
-    entry: '/docs/guide',
-    hasDocs: true,
-    // 复用文档指南目录数据
-    groups: GUIDE_GROUPS.map(g => ({
-      label: g.label,
-      links: g.articles.map(a => ({
-        label: a.title,
-        to: `/docs/guide/${g.dir}/${a.slug}`,
-      })),
-    })),
-  },
-  {
     id: 'embedded',
     title: {zh: '嵌入式', en: 'Embedded'},
     desc: {
@@ -118,28 +98,6 @@ export const TUTORIALS: Tutorial[] = [
     ],
   },
   {
-    id: 'docker',
-    title: {zh: 'Docker', en: 'Docker'},
-    desc: {
-      zh: '容器化平台教程，将应用与依赖打包成轻量可移植的镜像，一次构建处处运行。',
-      en: 'Containerization tutorials — package apps and deps into portable images.',
-    },
-    icon: 'docker',
-    entry: '/docs/docker',
-    hasDocs: true,
-    groups: [
-      {
-        label: {zh: '安装与配置', en: 'Install & Setup'},
-        links: [
-          {
-            label: {zh: '安装 Docker Engine', en: 'Install Docker Engine'},
-            to: '/docs/docker/install-debian',
-          },
-        ],
-      },
-    ],
-  },
-  {
     id: 'ai',
     title: {zh: '智能体', en: 'Agents'},
     desc: {
@@ -159,6 +117,26 @@ export const TUTORIALS: Tutorial[] = [
             label: {zh: 'Hermes Agent', en: 'Hermes Agent'},
             to: 'https://hermes-agent.org',
           },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'toolbox',
+    title: {zh: '工具箱', en: 'Toolbox'},
+    desc: {
+      zh: '实用软件与开发工具的使用教程，聚合 Docker、思维导图等，后续将补充 Conda 等。',
+      en: 'Usage guides for handy software and dev tools — Docker, Mind Map and more, with Conda coming soon.',
+    },
+    icon: 'docker',
+    entry: '/toolbox',
+    navTo: '/toolbox',
+    groups: [
+      {
+        label: {zh: '软件与工具', en: 'Software & Tools'},
+        links: [
+          {label: {zh: 'Docker 使用', en: 'Docker'}, to: '/docs/docker'},
+          {label: {zh: '思维导图', en: 'Mind Map'}, to: '/mindmap'},
         ],
       },
     ],

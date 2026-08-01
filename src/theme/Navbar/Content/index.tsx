@@ -18,7 +18,7 @@ import {TUTORIALS} from '@site/src/data/tutorials';
 import styles from './styles.module.css';
 
 /** 导航栏分类：与探索板块数据同源，避免路径漂移 */
-const NAV_CATEGORY_IDS = ['ai', 'ros', 'embedded'];
+const NAV_CATEGORY_IDS = ['ai', 'toolbox', 'ros', 'embedded'];
 const navCategories = TUTORIALS.filter(t => NAV_CATEGORY_IDS.includes(t.id));
 
 function useNavbarItems() {
