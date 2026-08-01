@@ -23,7 +23,7 @@
     justify-content: center;
   }
 
-  .wechatCol {
+  .socialCol {
     flex: 0 0 auto;
   }
 
@@ -57,22 +57,23 @@
     border-color 0.2s ease;
 }
 
-.wechatCol {
-  flex: 0 0 260px;
+.socialCol {
+  flex: 0 0 auto;
   justify-content: center;
+  align-items: center;
 }
 
 .heatmapCol {
   flex: 1 1 400px;
 }
 
-/* 页脚卡片 hover：轻柔上浮 + 主题色描边与暖橙辉光 */
+/* 页脚卡片：静态外观，hover 不再产生方块阴影/上浮，仅鼠标悬停 logo 时弹出二维码 */
+.col {
+  transition: border-color 0.2s ease;
+}
+
 .col:hover {
-  transform: translateY(-3px);
   border-color: rgba(240, 160, 112, 0.4);
-  box-shadow:
-    0 10px 28px rgba(0, 0, 0, 0.3),
-    0 6px 20px rgba(240, 160, 112, 0.1);
 }
 
 /* —— 列标题：居中，底部渐变边线 —— */
@@ -121,30 +122,99 @@
   }
 }
 
-/* 微信图标：微信绿，置于标题左侧 */
-.wechatIcon {
-  width: 18px;
-  height: 18px;
-  flex: 0 0 auto;
-  fill: #07c160;
+/* —— 社交联系：bilibili / 微信 / QQ logo 横向紧凑排列 —— */
+.socialList {
+  display: flex;
+  flex-direction: row;
+  gap: 1.4rem;
+  align-items: center;
+  justify-content: center;
 }
 
-/* —— 二维码扫码框：黑底内嵌面板 + 细边，invert 后居中 —— */
-.qrFrame {
-  align-self: center;
-  padding: 10px;
+.socialItem {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.socialItem:hover {
+  transform: translateY(-2px);
+}
+
+.socialIconBili {
+  width: 28px;
+  height: 28px;
+  flex: 0 0 auto;
+  fill: #fb7299; /* bilibili 粉 */
+  filter: drop-shadow(0 0 4px rgba(251, 114, 153, 0.5));
+  transition: filter 0.2s ease;
+}
+
+.socialIconWechat {
+  width: 28px;
+  height: 28px;
+  flex: 0 0 auto;
+  fill: #07c160; /* 微信绿 */
+  filter: drop-shadow(0 0 4px rgba(7, 193, 96, 0.5));
+  transition: filter 0.2s ease;
+}
+
+.socialIconQq {
+  width: 28px;
+  height: 28px;
+  flex: 0 0 auto;
+  fill: #12b7f5; /* QQ 蓝 */
+  filter: drop-shadow(0 0 4px rgba(18, 183, 245, 0.5));
+  transition: filter 0.2s ease;
+}
+
+.socialItem:hover .socialIconBili,
+.socialItem:hover .socialIconWechat,
+.socialItem:hover .socialIconQq {
+  filter: drop-shadow(0 0 8px rgba(240, 160, 112, 0.7));
+}
+
+/* 悬停弹出二维码：黑底面板置于 logo 下方 */
+.qrPop {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 12px);
+  transform: translateX(-50%) scale(0.92);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  padding: 8px;
   background: #0f0e0d;
   border: 1px solid var(--ifm-hr-border-color);
   border-radius: 12px;
   line-height: 0;
+  /* 固定尺寸，避免 visibility:hidden 状态下子元素宽度被压缩为 0 */
+  width: 116px;
+  height: 116px;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    visibility 0.2s;
+  z-index: 20;
+}
+
+.socialItem:hover .qrPop {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) scale(1);
 }
 
 .qr {
-  width: 104px;
-  height: 104px;
+  width: 100px;
+  height: 100px;
+  min-width: 100px;
+  min-height: 100px;
   border-radius: 6px;
   display: block;
-  filter: invert(1) opacity(0.92);
+  object-fit: contain;
 }
 
 .contribIcon {

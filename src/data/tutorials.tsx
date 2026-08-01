@@ -56,7 +56,7 @@ export const TUTORIALS: Tutorial[] = [
   },
   {
     id: 'embedded',
-    title: {zh: '嵌入式开发', en: 'Embedded Dev'},
+    title: {zh: '嵌入式', en: 'Embedded'},
     desc: {
       zh: '面向 STM32 等微控制器的嵌入式开发教程与开发工具说明。',
       en: 'Embedded development tutorials and tooling for STM32 and more.',
@@ -83,7 +83,7 @@ export const TUTORIALS: Tutorial[] = [
   },
   {
     id: 'ros',
-    title: {zh: '机器人开发', en: 'Robotics'},
+    title: {zh: '机器人', en: 'Robotics'},
     desc: {
       zh: '机器人操作系统 ROS 的发行版与核心概念教程，覆盖 ROS 1 到 ROS 2。',
       en: 'ROS distributions and core concepts, from ROS 1 to ROS 2.',

@@ -1,5 +1,4 @@
-import React, {useRef} from 'react';
-import {useHistory} from 'react-router-dom';
+import React from 'react';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import ContribHeatmap from '@site/src/components/ContribHeatmap';
@@ -87,61 +86,85 @@ function WechatIcon({className}: {className?: string}) {
   );
 }
 
+function BilibiliIcon({className}: {className?: string}) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <path d="M18.223 3.086a1.25 1.25 0 0 1 0 1.768L17.08 5.996h1.17A3.75 3.75 0 0 1 22 9.747v7.5a3.75 3.75 0 0 1-3.75 3.75H5.75A3.75 3.75 0 0 1 2 17.247v-7.5a3.75 3.75 0 0 1 3.75-3.751h1.166L5.775 4.854a1.25 1.25 0 1 1 1.768-1.768l2.652 2.652c.079.079.145.165.198.258h3.214c.053-.093.119-.179.198-.258l2.652-2.652a1.25 1.25 0 0 1 1.768 0zM18.25 8.496H5.75a1.25 1.25 0 0 0-1.247 1.157l-.003.094v7.5c0 .659.51 1.198 1.157 1.246l.093.004h12.5a1.25 1.25 0 0 0 1.247-1.157l.003-.093v-7.5c0-.69-.56-1.248-1.247-1.248zM8.5 11.996a1 1 0 0 1 1 1v1.5a1 1 0 1 1-2 0v-1.5a1 1 0 0 1 1-1zm7 0a1 1 0 0 1 1 1v1.5a1 1 0 1 1-2 0v-1.5a1 1 0 0 1 1-1z" />
+    </svg>
+  );
+}
+
+function QqIcon({className}: {className?: string}) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <path d="M12 2.2c-2.6 0-4.7 2-4.7 4.9 0 1.1.2 1.8.4 2.4-.9.6-2.4 2.1-3 4.6-.4 1.7-.4 3.4.1 4.8.3-.3.6-.6.9-1 .1 1.4.6 2.5 1.3 3.3-.1.4-.1.8 0 1.1.3.9 1.3 1.6 2.6 1.6.9 0 1.7-.3 2.2-.8.4.1.8.1 1.2 0 .5.5 1.3.8 2.2.8 1.3 0 2.3-.7 2.6-1.6.1-.3.1-.7 0-1.1.7-.8 1.2-1.9 1.3-3.3.3.4.6.7.9 1 .5-1.4.5-3.1.1-4.8-.6-2.5-2.1-4-3-4.6.2-.6.4-1.3.4-2.4C16.7 4.2 14.6 2.2 12 2.2zM9.1 7.6c.6 0 1.1.5 1.1 1.1 0 .6-.5 1.1-1.1 1.1-.6 0-1.1-.5-1.1-1.1 0-.6.5-1.1 1.1-1.1zm5.8 0c.6 0 1.1.5 1.1 1.1 0 .6-.5 1.1-1.1 1.1-.6 0-1.1-.5-1.1-1.1 0-.6.5-1.1 1.1-1.1z" />
+    </svg>
+  );
+}
+
 export default function Footer(): React.JSX.Element {
   const {
     i18n: {currentLocale},
   } = useDocusaurusContext();
   const locale: 'zh' | 'en' = currentLocale === 'en' ? 'en' : 'zh';
   const t = {
-    wechat: locale === 'en' ? 'WeChat Contact' : '微信联系',
-  };
-
-  // 微信联系区：连点 3 次（1.5s 内）跳转到“芯片参数”工具（隐藏入口）
-  const history = useHistory();
-  const clickCount = useRef(0);
-  const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const handleWechatClick = () => {
-    clickCount.current += 1;
-    if (resetTimer.current) clearTimeout(resetTimer.current);
-    resetTimer.current = setTimeout(() => {
-      clickCount.current = 0;
-    }, 1500);
-    if (clickCount.current >= 3) {
-      clickCount.current = 0;
-      if (resetTimer.current) clearTimeout(resetTimer.current);
-      history.push(
-        locale === 'en' ? '/en/processor-compare' : '/processor-compare',
-      );
-    }
+    bilibili: locale === 'en' ? 'Bilibili' : '哔哩哔哩',
+    wechat: locale === 'en' ? 'WeChat' : '微信',
+    qq: locale === 'en' ? 'QQ' : 'QQ',
   };
 
   return (
     <footer className={styles.footer}>
       <div className={styles.inner}>
         <div className={styles.cols}>
-          {/* 左：微信联系（连点 3 次进入“芯片参数”） */}
-          <div
-            className={`${styles.col} ${styles.wechatCol}`}
-            onClick={handleWechatClick}
-            role="button"
-            tabIndex={0}
-            onKeyDown={e => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                handleWechatClick();
-              }
-            }}
-          >
+          {/* 左：社交联系 — bilibili / 微信 / QQ logo 横向排列，悬停显示二维码 */}
+          <div className={`${styles.col} ${styles.socialCol}`}>
             <h3 className={styles.colTitle}>
-              <WechatIcon className={styles.wechatIcon} />
-              <span className={styles.colTitleText}>{t.wechat}</span>
+              <span className={styles.colTitleText}>
+                {locale === 'en' ? 'Contact Us' : '联系我们'}
+              </span>
             </h3>
-            <div className={styles.qrFrame}>
-              <img
-                className={styles.qr}
-                src={useBaseUrl('/img/wechat.webp')}
-                alt={t.wechat}
-              />
+            <div className={styles.socialList}>
+              <div className={styles.socialItem}>
+                <BilibiliIcon className={styles.socialIconBili} />
+                <div className={styles.qrPop}>
+                  <img
+                    className={styles.qr}
+                    src={useBaseUrl('/img/vansail-bilibili.png')}
+                    alt={t.bilibili}
+                  />
+                </div>
+              </div>
+              <div className={styles.socialItem}>
+                <WechatIcon className={styles.socialIconWechat} />
+                <div className={styles.qrPop}>
+                  <img
+                    className={styles.qr}
+                    src={useBaseUrl('/img/vansali-wechat.png')}
+                    alt={t.wechat}
+                  />
+                </div>
+              </div>
+              <div className={styles.socialItem}>
+                <QqIcon className={styles.socialIconQq} />
+                <div className={styles.qrPop}>
+                  <img
+                    className={styles.qr}
+                    src={useBaseUrl('/img/vansali-qq.png')}
+                    alt={t.qq}
+                  />
+                </div>
+              </div>
             </div>
           </div>
 

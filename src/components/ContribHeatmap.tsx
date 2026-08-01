@@ -1,9 +1,10 @@
 import React, {useEffect, useMemo, useState} from 'react';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 import styles from './ContribHeatmap.module.css';
 
 // ── Types ──────────────────────────────────────────────
-// 数据源为实时 API github-contributions-api.jogruber.de（返回扁平格式：
-// 按日期升序的每天贡献数据）。运行时直接拉取，保证贡献图实时更新。
+// 数据源为构建时抓取并写入 static/contrib-data.json 的本地静态文件
+// （脚本 scripts/fetch-contrib.mjs 负责生成，避免运行时依赖第三方 API）。
 interface FlatDay {
   date: string; // 'YYYY-MM-DD'
   count: number;
@@ -171,7 +172,7 @@ function ErrorFallback() {
 
 // ── Main component ─────────────────────────────────────
 export default function ContribHeatmap(): React.JSX.Element {
-  const dataUrl = 'https://github-contributions-api.jogruber.de/v4/VanSail';
+  const dataUrl = useBaseUrl('/contrib-data.json');
   const [grid, setGrid] = useState<(Cell | null)[][]>([]);
   const [monthLabels, setMonthLabels] = useState<MonthLabel[]>([]);
   const [numWeeks, setNumWeeks] = useState(0);
