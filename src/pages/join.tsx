@@ -14,8 +14,8 @@ const meta = {
 };
 
 const cta = {
-  zh: '继续阅读：文档指南',
-  en: 'Read the docs guide',
+  zh: '文档指南',
+  en: 'Docs Guide',
 };
 
 export default function JoinPage(): ReactNode {
@@ -38,7 +38,7 @@ export default function JoinPage(): ReactNode {
           <JoinSteps locale={locale} />
           <div className={styles.cta}>
             <Link to={docPath} className={styles.ctaLink}>
-              {cta[locale]} →
+              {cta[locale]}
             </Link>
           </div>
         </div>

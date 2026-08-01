@@ -1139,7 +1139,18 @@ function MindMapInner() {
   useEffect(() => {
     const src = parseHash(window.location.hash) ?? readSaved();
     if (src) {
-      if (typeof src.md === 'string') setMd(src.md);
+      // 若缓存的仍是默认示例（用户未编辑过），按当前语言重新选取，
+      // 避免语言切换后示例仍是旧语言内容
+      let md =
+        typeof src.md === 'string'
+          ? src.md
+          : locale === 'zh'
+            ? DEFAULT_MD.zh
+            : DEFAULT_MD.en;
+      if (md === DEFAULT_MD.zh || md === DEFAULT_MD.en) {
+        md = locale === 'zh' ? DEFAULT_MD.zh : DEFAULT_MD.en;
+      }
+      setMd(md);
       if (src.direction) setDirection(src.direction);
       if (src.themeName) setThemeName(src.themeName);
       if (src.linkStyle) setLinkStyle(src.linkStyle);

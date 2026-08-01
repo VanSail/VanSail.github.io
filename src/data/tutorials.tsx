@@ -37,7 +37,7 @@ export interface Tutorial {
 export const TUTORIALS: Tutorial[] = [
   {
     id: 'doc-guide',
-    title: {zh: '文档指南', en: 'Documentation Guide'},
+    title: {zh: '文档指南', en: 'Docs Guide'},
     desc: {
       zh: '从基础语法到进阶技巧，系统讲解本站文档的写作规范与组件用法。',
       en: 'From basics to advanced tips — how to write docs on this site.',
