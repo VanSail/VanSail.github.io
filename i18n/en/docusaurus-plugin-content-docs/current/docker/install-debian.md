@@ -116,6 +116,29 @@ sudo apt install -y docker-ce=<VERSION_STRING> docker-ce-cli=<VERSION_STRING> co
 
 ::::
 
+## Configure a registry mirror (required on restricted networks)
+
+Docker pulls images from Docker Hub (`registry-1.docker.io`) by default. On some networks (e.g. mainland China, intranets, or hosts whose IPv6 egress is blocked) this address may be **unreachable**, causing `docker run` to hang and finally fail with `i/o timeout`.
+
+> ⚠️ Verified on a Radxa Rock 4D (Debian 12, arm64): `registry-1.docker.io` only resolved to an IPv6 address with no working egress, so pulling `hello-world` failed every time. After configuring the mirror below, the pull succeeded.
+
+To pull images reliably, configure a registry mirror. Using the public DaoCloud mirror as an example:
+
+```bash title="Linux" showLineNumbers
+sudo mkdir -p /etc/docker
+echo '{"registry-mirrors":["https://docker.m.daocloud.io"]}' | sudo tee /etc/docker/daemon.json >/dev/null
+sudo chmod 644 /etc/docker/daemon.json
+sudo systemctl restart docker
+```
+
+Confirm the mirror is active:
+
+```bash title="Linux" showLineNumbers
+sudo docker info | grep -A1 "Registry Mirrors"
+```
+
+You should see `https://docker.m.daocloud.io/`. You can substitute any other working mirror (e.g. Alibaba Cloud's Container Registry, which requires a login to get a personal acceleration address).
+
 ## Verify the installation
 
 Run the official `hello-world` image to confirm Docker can pull and start a container:
@@ -134,13 +157,43 @@ By default only `root` and members of the `docker` group can run `docker` comman
 sudo usermod -aG docker $USER
 ```
 
-**Log out and back in** (or reboot) for the group change to take effect. You can then run Docker without `sudo`:
+After joining the group you must **reload the group membership** for it to take effect. The safest way is to log out and back in (or reboot); when working over SSH, simply **opening a new SSH session** picks up the `docker` group automatically — no system restart needed. You can then run Docker without `sudo`:
 
 ```bash title="Linux" showLineNumbers
 docker run hello-world
 ```
 
 > ⚠️ Adding a user to the `docker` group is effectively equivalent to granting `root` privileges (container mounts can escape), so only do this on trusted hosts.
+
+## Troubleshooting & notes
+
+::::tip
+
+**ARM boards (Radxa, Raspberry Pi) auto-suspend**
+
+Some ARM board images enable idle auto-suspend by default (suspending after ~20 minutes of inactivity and dropping the network). The board will appear "offline" during remote work and needs a physical button press to wake. For always-on services or remote deployment, disable auto-suspend:
+
+```bash title="Linux" showLineNumbers
+sudo systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
+```
+
+::::
+
+::::tip
+
+**Extra dependencies are installed**
+
+`apt install docker-ce` also pulls in `containerd.io`, `docker-buildx-plugin`, `docker-compose-plugin`, and may bring in `apparmor`, `nftables`, `pigz`, `docker-ce-rootless-extras`. This is normal and requires no manual intervention.
+
+::::
+
+::::warning
+
+**Image pull timeout**
+
+If `docker run` fails with `failed to resolve reference ... i/o timeout`, the host usually cannot reach Docker Hub directly. First confirm you configured the [registry mirror](#configure-a-registry-mirror-required-on-restricted-networks) above; if it still fails, check outbound connectivity (`curl -4 https://registry-1.docker.io/v2/`).
+
+::::
 
 ## Uninstall Docker Engine
 

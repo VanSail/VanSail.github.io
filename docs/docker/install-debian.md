@@ -116,6 +116,29 @@ sudo apt install -y docker-ce=<VERSION_STRING> docker-ce-cli=<VERSION_STRING> co
 
 ::::
 
+## 配置镜像加速器（国内 / 受限网络必看）
+
+Docker 默认从 Docker Hub（`registry-1.docker.io`）拉取镜像。在部分网络环境（如国内、内网、仅 IPv6 出口受限的主机）下，该地址可能**无法直连**，表现为 `docker run` 长时间卡住并最终报 `i/o timeout`。
+
+> ⚠️ 本教程在 Radxa Rock 4D（Debian 12, arm64）上实测：`registry-1.docker.io` 的 DNS 仅返回 IPv6 地址且出站不通，直连拉取 `hello-world` 必然失败。配置下方镜像加速器后拉取成功。
+
+为稳定拉取镜像，建议配置国内镜像加速器。以 DaoCloud 公共镜像为例：
+
+```bash title="Linux" showLineNumbers
+sudo mkdir -p /etc/docker
+echo '{"registry-mirrors":["https://docker.m.daocloud.io"]}' | sudo tee /etc/docker/daemon.json >/dev/null
+sudo chmod 644 /etc/docker/daemon.json
+sudo systemctl restart docker
+```
+
+验证加速器已生效：
+
+```bash title="Linux" showLineNumbers
+sudo docker info | grep -A1 "Registry Mirrors"
+```
+
+输出中出现 `https://docker.m.daocloud.io/` 即表示配置成功。你也可以替换为其他可用镜像源（如阿里云容器镜像服务，需登录账号获取专属加速地址）。
+
 ## 验证安装
 
 运行官方 `hello-world` 镜像，验证 Docker 能正常拉取并启动容器：
@@ -134,13 +157,43 @@ sudo docker run hello-world
 sudo usermod -aG docker $USER
 ```
 
-执行后**注销并重新登录**（或重启），使组权限生效。之后即可免 `sudo` 运行：
+加入组后，需要**重新加载用户组**才能生效。最稳妥是注销并重新登录（或重启）；若通过 SSH 操作，直接**重开一个 SSH 会话**即可（新会话会自动带上 `docker` 组），无需重启系统。之后即可免 `sudo` 运行：
 
 ```bash title="Linux" showLineNumbers
 docker run hello-world
 ```
 
 > ⚠️ 将用户加入 `docker` 组相当于赋予其 `root` 等价权限（可借助 Docker 挂载逃逸），请仅在可信主机上操作。
+
+## 常见问题与注意事项
+
+::::tip
+
+**ARM 开发板（如 Radxa、树莓派）自动挂起**
+
+部分 ARM 开发板镜像默认开启空闲自动挂起（约 20 分钟无操作即 `suspend`，且会断开网络）。远程操作时板子会"失联"，需物理按键唤醒。若用于常驻服务或远程部署，建议禁用自动挂起：
+
+```bash title="Linux" showLineNumbers
+sudo systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
+```
+
+::::
+
+::::tip
+
+**安装会附带额外依赖**
+
+`apt install docker-ce` 会一并安装 `containerd.io`、`docker-buildx-plugin`、`docker-compose-plugin`，并可能拉入 `apparmor`、`nftables`、`pigz`、`docker-ce-rootless-extras` 等依赖，属正常现象，无需手动干预。
+
+::::
+
+::::warning
+
+**镜像拉取超时**
+
+若 `docker run` 报 `failed to resolve reference ... i/o timeout`，通常是网络无法直连 Docker Hub。请先确认已按上文配置[镜像加速器](#配置镜像加速器国内--受限网络必看)；若仍失败，检查主机是否能访问外网（`curl -4 https://registry-1.docker.io/v2/`）。
+
+::::
 
 ## 卸载 Docker Engine
 
