@@ -11,28 +11,3 @@ export const FEATURE_TAGS: LText[] = [
   {zh: '串口调试', en: 'Serial Monitor'},
   {zh: '社区共建', en: 'Community'},
 ];
-
-/** 首页中段竖向步骤条（FeatureSteps）的要点。 */
-export const FEATURE_HIGHLIGHTS: {title: LText; desc: LText}[] = [
-  {
-    title: {zh: '开源可验证', en: 'Open & Verified'},
-    desc: {
-      zh: '教程配套代码都能直接跑，不藏着掖着',
-      en: 'Every tutorial ships runnable code — nothing hidden',
-    },
-  },
-  {
-    title: {zh: '持续更新', en: 'Always Fresh'},
-    desc: {
-      zh: '跟着上游版本走，避免看完就过时',
-      en: 'Tracks upstream releases so docs never go stale',
-    },
-  },
-  {
-    title: {zh: '社区共建', en: 'Community Built'},
-    desc: {
-      zh: '任何人都能提交修正、补充案例',
-      en: 'Anyone can fix, extend and contribute examples',
-    },
-  },
-];

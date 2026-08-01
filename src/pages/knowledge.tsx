@@ -1,11 +1,7 @@
 import type {ReactElement} from 'react';
 import Layout from '@theme/Layout';
 import {useLocation} from '@docusaurus/router';
-import {
-  KNOWLEDGE_CARDS,
-  CARD_CATS,
-  type CardCat,
-} from '@site/src/data/knowledgeCards';
+import {KNOWLEDGE_CARDS, CARD_CATS} from '@site/src/data/knowledgeCards';
 import styles from './knowledge.module.css';
 
 /**

@@ -99,8 +99,6 @@ export default function NavbarContent(): ReactNode {
     item => item.type !== 'localeDropdown',
   );
 
-  const searchBarItem = items.find(item => item.type === 'search');
-
   return (
     <NavbarContentLayout
       left={
