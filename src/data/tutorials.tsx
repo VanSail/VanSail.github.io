@@ -20,7 +20,7 @@ const toGroups = (
     links: g.articles.map(a => rosLink(g.dir, a)),
   }));
 
-export type TutorialIcon = 'book' | 'mcu' | 'ros' | 'ai';
+export type TutorialIcon = 'book' | 'mcu' | 'ros' | 'ai' | 'docker';
 
 export interface TutorialLink {
   label: LText;
@@ -115,6 +115,28 @@ export const TUTORIALS: Tutorial[] = [
       ...toGroups(ROS1_GROUPS),
       ...toGroups(ROS2_DISTRO_GROUPS),
       ...toGroups(ROS_GROUPS),
+    ],
+  },
+  {
+    id: 'docker',
+    title: {zh: 'Docker', en: 'Docker'},
+    desc: {
+      zh: '容器化平台教程，将应用与依赖打包成轻量可移植的镜像，一次构建处处运行。',
+      en: 'Containerization tutorials — package apps and deps into portable images.',
+    },
+    icon: 'docker',
+    entry: '/docs/docker',
+    hasDocs: true,
+    groups: [
+      {
+        label: {zh: '安装与配置', en: 'Install & Setup'},
+        links: [
+          {
+            label: {zh: '安装 Docker Engine', en: 'Install Docker Engine'},
+            to: '/docs/docker/install-debian',
+          },
+        ],
+      },
     ],
   },
   {

@@ -45,6 +45,16 @@ const ICON_PATHS: Record<TutorialIcon, ReactElement> = {
       <circle cx="24" cy="24" r="3" />
     </>
   ),
+  docker: (
+    <>
+      <path d="M8 26h32c0 6-5 9-11 9-3 0-6 1-9 3-2-2-5-3-9-3-6 0-10-3-10-9z" />
+      <rect x="12" y="18" width="5" height="6" rx="1" />
+      <rect x="19" y="18" width="5" height="6" rx="1" />
+      <rect x="26" y="18" width="5" height="6" rx="1" />
+      <rect x="33" y="18" width="4" height="6" rx="1" />
+      <line x1="24" y1="36" x2="24" y2="42" />
+    </>
+  ),
 };
 
 /** 各教程对应的内联图标 */
