@@ -21,12 +21,28 @@ const TOOLS: ToolEntry[] = [
     to: '/docs/docker',
   },
   {
+    title: {zh: 'Conda 使用', en: 'Conda'},
+    desc: {
+      zh: '跨平台包、依赖与环境管理器教程，覆盖 Anaconda 与 Miniconda 的安装、环境管理与速查。',
+      en: 'Cross-platform package, dependency and environment manager guides — Anaconda and Miniconda install, env management and cheatsheet.',
+    },
+    to: '/docs/conda',
+  },
+  {
     title: {zh: '思维导图', en: 'Mind Map'},
     desc: {
       zh: '基于 Markdown 的实时思维导图工具，支持导出 SVG / PNG / Markdown。',
       en: 'Markdown-driven mind map tool with SVG / PNG / Markdown export.',
     },
     to: '/mindmap',
+  },
+  {
+    title: {zh: '芯片参数', en: 'Chip Specs'},
+    desc: {
+      zh: 'SoC / 处理器参数对比工具，汇总工艺、CPU、GPU、AI 算力与接口规格，快速横向选型。',
+      en: 'SoC / processor spec comparison — process node, CPU, GPU, AI compute and I/O, side-by-side.',
+    },
+    to: '/processor-compare',
   },
 ];
 
