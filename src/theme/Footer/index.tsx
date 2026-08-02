@@ -134,6 +134,7 @@ export default function Footer(): React.JSX.Element {
                 {locale === 'en' ? 'Contact Us' : '联系我们'}
               </span>
             </h3>
+
             <div className={styles.socialList}>
               <div className={styles.socialItem}>
                 <BilibiliIcon className={styles.socialIconBili} />
@@ -166,6 +167,13 @@ export default function Footer(): React.JSX.Element {
                 </div>
               </div>
             </div>
+
+            {/* 三个 logo 下方的扫码关注图（单独一行） */}
+            <img
+              className={styles.scanImg}
+              src={useBaseUrl('/img/wechat-scan.png')}
+              alt={locale === 'en' ? 'Scan to follow' : '扫码关注'}
+            />
           </div>
 
           {/* 右：GitHub 足迹 */}

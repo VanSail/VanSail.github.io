@@ -138,8 +138,8 @@
 }
 
 .socialIconBili {
-  width: 28px;
-  height: 28px;
+  width: 40px;
+  height: 40px;
   flex: 0 0 auto;
   fill: #fb7299; /* bilibili 粉 */
   filter: drop-shadow(0 0 4px rgba(251, 114, 153, 0.5));
@@ -147,8 +147,8 @@
 }
 
 .socialIconWechat {
-  width: 28px;
-  height: 28px;
+  width: 40px;
+  height: 40px;
   flex: 0 0 auto;
   fill: #07c160; /* 微信绿 */
   filter: drop-shadow(0 0 4px rgba(7, 193, 96, 0.5));
@@ -156,8 +156,8 @@
 }
 
 .socialIconQq {
-  width: 28px;
-  height: 28px;
+  width: 40px;
+  height: 40px;
   flex: 0 0 auto;
   fill: #12b7f5; /* QQ 蓝 */
   filter: drop-shadow(0 0 4px rgba(18, 183, 245, 0.5));
@@ -168,6 +168,16 @@
 .socialItem:hover .socialIconWechat,
 .socialItem:hover .socialIconQq {
   filter: drop-shadow(0 0 8px rgba(240, 160, 112, 0.7));
+}
+
+/* 三个 logo 下方的扫码关注图：单独一行居中，无边框，宽度与上方三个 logo 整体对齐 */
+.scanImg {
+  display: block;
+  width: 100%;
+  max-width: calc(40px * 3 + 1.4rem * 2);
+  height: auto;
+  margin: 1rem auto 0;
+  object-fit: contain;
 }
 
 /* 悬停弹出二维码：黑底面板置于 logo 下方 */
@@ -198,6 +208,28 @@
   opacity: 1;
   visibility: visible;
   transform: translateX(-50%) scale(1);
+}
+
+/* bilibili 二维码：向左弹出（右边缘对齐 logo 中心，整体向左展开） */
+.socialIconBili ~ .qrPop {
+  left: auto;
+  right: 50%;
+  transform: translateX(100%) scale(0.92);
+}
+
+.socialItem:hover .socialIconBili ~ .qrPop {
+  transform: translateX(100%) scale(1);
+}
+
+/* QQ 二维码：向右弹出（左边缘对齐 logo 中心，整体向右展开） */
+.socialIconQq ~ .qrPop {
+  left: 50%;
+  right: auto;
+  transform: translateX(-100%) scale(0.92);
+}
+
+.socialItem:hover .socialIconQq ~ .qrPop {
+  transform: translateX(-100%) scale(1);
 }
 
 .qr {
