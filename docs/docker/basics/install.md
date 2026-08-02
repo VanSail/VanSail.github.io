@@ -1,16 +1,16 @@
 ---
-sidebar_position: 10
+sidebar_position: 4
 ---
 
 # 安装 Docker
 
 本篇介绍如何在 Debian 与 Ubuntu 系统上安装 Docker Engine（社区版）。
 
-:::tip
+::::tip
 
 参考 [Docker 官方文档](https://docs.docker.com/)。
 
-:::
+::::
 
 ## 版本支持
 
@@ -106,7 +106,7 @@ sudo systemctl status docker --no-pager
 sudo systemctl enable --now docker
 ```
 
-::::tip
+:::::tip
 
 如需安装**特定版本**而非最新版，先列出可用版本：
 
@@ -120,7 +120,7 @@ apt list -a docker-ce
 sudo apt install -y docker-ce=<VERSION_STRING> docker-ce-cli=<VERSION_STRING> containerd.io docker-buildx-plugin docker-compose-plugin
 ```
 
-::::
+:::::
 
 ## 配置镜像加速器（国内 / 受限网络必看）
 
@@ -173,21 +173,21 @@ docker run hello-world
 
 ## 常见问题与注意事项
 
-::::tip
+:::::tip
 
 **安装会附带额外依赖**
 
 `apt install docker-ce` 会一并安装 `containerd.io`、`docker-buildx-plugin`、`docker-compose-plugin`，并可能拉入 `apparmor`、`nftables`、`pigz`、`docker-ce-rootless-extras` 等依赖，属正常现象，无需手动干预。
 
-::::
+:::::
 
-::::warning
+:::::warning
 
 **镜像拉取超时**
 
 若 `docker run` 报 `failed to resolve reference ... i/o timeout`，通常是网络无法直连 Docker Hub。请先确认已按上文配置[镜像加速器](#配置镜像加速器国内--受限网络必看)；若仍失败，检查主机是否能访问外网（`curl -4 https://registry-1.docker.io/v2/`）。
 
-::::
+:::::
 
 ## 卸载 Docker Engine
 

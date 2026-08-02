@@ -1,16 +1,16 @@
 ---
-sidebar_position: 10
+sidebar_position: 4
 ---
 
 # Install Docker
 
 This guide shows how to install Docker Engine (Community Edition) on Debian and Ubuntu.
 
-:::tip
+::::tip
 
 See the [official Docker docs](https://docs.docker.com/).
 
-:::
+::::
 
 ## Supported versions
 
@@ -106,7 +106,7 @@ If it is not running, start it and enable boot-time startup:
 sudo systemctl enable --now docker
 ```
 
-::::tip
+:::::tip
 
 To install a **specific version** instead of the latest, list the available versions first:
 
@@ -120,7 +120,7 @@ Then install the pinned version (replace `<VERSION_STRING>` with a string like `
 sudo apt install -y docker-ce=<VERSION_STRING> docker-ce-cli=<VERSION_STRING> containerd.io docker-buildx-plugin docker-compose-plugin
 ```
 
-::::
+:::::
 
 ## Configure a registry mirror (required on restricted networks)
 
@@ -173,21 +173,21 @@ docker run hello-world
 
 ## Troubleshooting & notes
 
-::::tip
+:::::tip
 
 **Extra dependencies are installed**
 
 `apt install docker-ce` also pulls in `containerd.io`, `docker-buildx-plugin`, `docker-compose-plugin`, and may bring in `apparmor`, `nftables`, `pigz`, `docker-ce-rootless-extras`. This is normal and requires no manual intervention.
 
-::::
+:::::
 
-::::warning
+:::::warning
 
 **Image pull timeout**
 
 If `docker run` fails with `failed to resolve reference ... i/o timeout`, the host usually cannot reach Docker Hub directly. First confirm you configured the [registry mirror](#configure-a-registry-mirror-required-on-restricted-networks) above; if it still fails, check outbound connectivity (`curl -4 https://registry-1.docker.io/v2/`).
 
-::::
+:::::
 
 ## Uninstall Docker Engine
 
