@@ -46,7 +46,8 @@
   display: flex;
   width: max-content;
   gap: 0;
-  animation: cardScroll 70s linear infinite;
+  animation: cardScroll linear infinite;
+  animation-duration: var(--scroll-duration, 110s);
   will-change: transform;
 }
 

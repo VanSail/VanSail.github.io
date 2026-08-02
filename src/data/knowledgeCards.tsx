@@ -537,6 +537,26 @@ export const KNOWLEDGE_CARDS: KnowledgeCard[] = [
     cat: 'ai',
   },
   {
+    abbr: 'RKNN',
+    nameZh: '瑞芯微神经网络工具链',
+    nameEn: 'Rockchip Neural Network',
+    descZh:
+      '瑞芯微（Rockchip）NPU 的推理工具链与运行时：RKNN-Toolkit2 将 PyTorch/TensorFlow 等模型转为 .rknn，再于板端 librknn 运行时高效执行推理，覆盖 RK356X/RK3588 等 SoC。',
+    descEn:
+      'Rockchip’s NPU inference toolkit and runtime: RKNN-Toolkit2 converts PyTorch/TensorFlow models to .rknn, then the on-board librknn runtime runs inference efficiently on SoCs like RK356X/RK3588.',
+    cat: 'ai',
+  },
+  {
+    abbr: 'RKNN-Toolkit2',
+    nameZh: '瑞芯微模型转换与量化工具',
+    nameEn: 'RKNN-Toolkit2',
+    descZh:
+      '瑞芯微官方 Python 工具包，负责把 PyTorch/TensorFlow/ONNX 等模型转为 .rknn，并提供量化（INT8/INT4）、精度评估与性能分析，最终在板端 librknn 运行时部署到 RK356X/RK3588 等 NPU。',
+    descEn:
+      'Rockchip’s official Python toolkit that converts PyTorch/TensorFlow/ONNX models to .rknn, with quantization (INT8/INT4), accuracy evaluation and profiling, then deploys on RK356X/RK3588 NPUs via the on-board librknn runtime.',
+    cat: 'ai',
+  },
+  {
     abbr: 'ZeRO',
     nameZh: '零冗余优化器',
     nameEn: 'Zero Redundancy Optimizer',
@@ -604,6 +624,16 @@ export const KNOWLEDGE_CARDS: KnowledgeCard[] = [
       '基于 C/C++ 的昇腾算子编程语言，提供矢量/矩阵/搬移 API，让开发者在 NPU 上高效实现自定义算子。',
     descEn:
       'Huawei’s C/C++ operator programming language for Ascend, with vector/matrix/copy APIs to write efficient custom NPU operators.',
+    cat: 'ai',
+  },
+  {
+    abbr: 'MobileNet',
+    nameZh: 'MobileNet 网络',
+    nameEn: 'MobileNet',
+    descZh:
+      '谷歌为移动与嵌入式视觉设计的轻量卷积网络系列，以深度可分离卷积大幅削减参数量与算力，兼顾精度与端侧实时性。',
+    descEn:
+      'Google’s lightweight CNN family for mobile and embedded vision; depthwise separable convolutions slash params and compute while keeping accuracy and on-device real-time speed.',
     cat: 'ai',
   },
 
@@ -1147,6 +1177,90 @@ export const KNOWLEDGE_CARDS: KnowledgeCard[] = [
       'ARM 的协处理器 15，用于系统控制：配置 MMU/Cache、内存保护、时钟与异常基址等。其寄存器（c0–c15）只能经 MRC/MCR 指令访问。',
     descEn:
       'ARM coprocessor 15 for system control: configures MMU/Cache, memory protection, clocks and exception base. Its c0–c15 registers are reached only via MRC/MCR.',
+    cat: 'embedded',
+  },
+
+  // ===================== 芯片参数术语（来自工具箱「芯片参数」对比工具） =====================
+  {
+    abbr: 'Process Node',
+    nameZh: '工艺制程',
+    nameEn: 'Process Node',
+    descZh:
+      '芯片制造的光刻线宽指标（如 7nm / 5nm / 3nm），代表晶体管最小特征尺寸；数值越小通常功耗越低、集成度越高，是 SoC 选型的关键能效参考。',
+    descEn:
+      'The lithography feature size of a chip (e.g. 7nm / 5nm / 3nm), the smallest transistor dimension; smaller nodes generally mean lower power and higher density — a key efficiency metric for SoC selection.',
+    cat: 'embedded',
+  },
+  {
+    abbr: 'ISA',
+    nameZh: '指令集架构',
+    nameEn: 'Instruction Set Architecture',
+    descZh:
+      '处理器软硬件间的接口规范，定义可执行的指令、寄存器与内存模型（如 ARMv8、x86、RISC-V）；它决定软件能否跨芯片运行，与具体微架构实现解耦。',
+    descEn:
+      'The contract between software and hardware — the instructions, registers and memory model a CPU exposes (e.g. ARMv8, x86, RISC-V); it governs software portability, independent of the microarchitecture.',
+    cat: 'embedded',
+  },
+
+  // ===================== 指令集架构（ISA）体系：ARM / RISC-V / x86 =====================
+  {
+    abbr: 'ARM',
+    nameZh: 'ARM 架构',
+    nameEn: 'ARM Architecture',
+    descZh:
+      '由 Arm 公司设计的精简指令集（RISC）处理器架构，以低功耗、高能效著称，广泛用于手机、嵌入式与服务器。常见系列：Cortex-A（应用）、Cortex-M（微控制）、Cortex-R（实时）；当前主流为 ARMv8-A 64 位与 ARMv9。',
+    descEn:
+      'A RISC processor architecture by Arm, known for low power and high efficiency, dominant in phones, embedded and servers. Families: Cortex-A (application), Cortex-M (MCU), Cortex-R (real-time); today mainly ARMv8-A 64-bit and ARMv9.',
+    cat: 'embedded',
+  },
+  {
+    abbr: 'RISC-V',
+    nameZh: 'RISC-V 架构',
+    nameEn: 'RISC-V',
+    descZh:
+      '开放、免费、模块化的精简指令集架构，由加州大学伯克利分校发起。指令集分基础整数集（如 RV32I/RV64I）与可选扩展（M/A/F/D/C…），无授权费、可自由定制，正快速进入嵌入式与高性能领域。',
+    descEn:
+      'An open, free, modular RISC ISA started at UC Berkeley. It splits a base integer set (RV32I/RV64I) from optional extensions (M/A/F/D/C…); no license fee and fully customizable, rapidly entering embedded and HPC.',
+    cat: 'embedded',
+  },
+  {
+    abbr: 'x86',
+    nameZh: 'x86 架构',
+    nameEn: 'x86 Architecture',
+    descZh:
+      '由 Intel（1978 年 8086）开创、AMD 等延续的复杂指令集（CISC）架构，向后兼容性强。包含 32 位 x86（IA-32）与 64 位 x86-64（AMD64）；主导桌面、笔记本与服务器，与 ARM 的能效路线形成对比。',
+    descEn:
+      'The CISC architecture pioneered by Intel (1978, 8086) and continued by AMD, with strong backward compatibility. Covers 32-bit x86 (IA-32) and 64-bit x86-64 (AMD64); dominant in desktops, laptops and servers, contrasting ARM’s efficiency focus.',
+    cat: 'embedded',
+  },
+  {
+    abbr: 'Codec',
+    nameZh: '编解码器',
+    nameEn: 'Codec',
+    descZh:
+      '对音视频数据压缩与解压缩的算法或硬件模块（如 H.265 / VP9 / AV1）；硬件 Codec 用固定电路加速编解码，比纯软件更省电，是多媒体 SoC 的核心指标。',
+    descEn:
+      'An algorithm or hardware block that encodes/decodes audio/video (e.g. H.265 / VP9 / AV1); a hardware codec offloads compression to fixed logic, saving far more power than software — central to multimedia SoCs.',
+    cat: 'embedded',
+  },
+  {
+    abbr: 'Package',
+    nameZh: '芯片封装',
+    nameEn: 'Chip Package',
+    descZh:
+      '把裸片（die）封装为保护外壳并提供引脚/焊球的工艺（如 BGA / QFN / LGA）；它决定引脚数、散热与可焊接性，和芯片内部电路同样影响板级设计与尺寸。',
+    descEn:
+      'The process of housing a bare die in a protective shell with pins/balls (e.g. BGA / QFN / LGA); it sets pin count, thermal and solderability traits — as design-critical as the die itself for board layout.',
+    cat: 'embedded',
+  },
+  {
+    abbr: 'PCIe',
+    nameZh: 'PCI Express',
+    nameEn: 'PCI Express',
+    descZh:
+      '主板上的高速串行扩展总线（如 PCIe 4.0/5.0 ×8/×16），用于 CPU 与 GPU、网卡、SSD 等外设互联；带宽随代际与通道数倍增，是 SoC 扩展能力的关键指标。',
+    descEn:
+      'The high-speed serial expansion bus on a board (e.g. PCIe 4.0/5.0 ×8/×16) linking CPU to GPUs, NICs, SSDs; bandwidth scales with generation and lane count — a key SoC expandability metric.',
     cat: 'embedded',
   },
 
