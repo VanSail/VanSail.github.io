@@ -9,7 +9,7 @@
     "en": "Not specified"
   },
   "arch": {
-    "zh": "3 核 64位 RISC-V处理器\n- 1× SRV 通用核心\n- 2× VRV 向量核心",
+    "zh": "3 核 64位 RISC-V 处理器\n- 1× SRV 通用核心\n- 2× VRV 向量核心",
     "en": "3-core 64-bit RISC-V processor\n- 1× SRV general-purpose core\n- 2× VRV vector cores"
   },
   "isa": {
