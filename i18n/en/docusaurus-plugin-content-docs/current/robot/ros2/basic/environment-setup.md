@@ -63,43 +63,33 @@ sudo add-apt-repository universe
 
 ### Add the ROS 2 Source
 
-Install the `ros2-apt-source` deb package to automatically configure the official ROS 2 apt repository (repo.ros2.org). The version is fetched dynamically via the GitHub API, and the package adapts to the current Ubuntu codename automatically.
+It is recommended to use the official ROS GPG key and apt source directly (the current official approach). This **does not depend on downloading a deb from GitHub Releases**, making it more reliable on restricted networks or ARM platforms.
 
 ```bash title="Ubuntu" showLineNumbers
-sudo apt update && sudo apt install curl -y
-export ROS_APT_SOURCE_VERSION=$(curl -s https://api.github.com/repos/ros-infrastructure/ros-apt-source/releases/latest | grep -F "tag_name" | awk -F'"' '{print $4}')
-curl -L -o /tmp/ros2-apt-source.deb "https://github.com/ros-infrastructure/ros-apt-source/releases/download/${ROS_APT_SOURCE_VERSION}/ros2-apt-source_${ROS_APT_SOURCE_VERSION}.$(. /etc/os-release && echo ${UBUNTU_CODENAME:-${VERSION_CODENAME}})_all.deb"
-sudo dpkg -i /tmp/ros2-apt-source.deb
+sudo apt update && sudo apt install curl gnupg lsb-release -y
+sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /tmp/ros.key
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo mv /tmp/ros.key /etc/apt/keyrings/ros-archive-keyring.gpg
+sudo chmod a+r /etc/apt/keyrings/ros-archive-keyring.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo ${UBUNTU_CODENAME:-${VERSION_CODENAME}}) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
+sudo apt update
 ```
 
-:::tip
+::::tip
 
-If the downloaded `ros2-apt-source.deb` is very small and cannot be installed, check the following:
+> ⚠️ **Alternative (ros2-apt-source deb)**: If your network can access GitHub Releases normally, you may use the older official method of downloading the `ros2-apt-source` deb to configure the source automatically. Note that when extracting the version, **do not use** the `awk -F'"'` style (it can fail under nested quoting); use the more robust `grep -oP` instead:
+>
+> ```bash title="Ubuntu" showLineNumbers
+> sudo apt update && sudo apt install curl -y
+> export ROS_APT_SOURCE_VERSION=$(curl -s https://api.github.com/repos/ros-infrastructure/ros-apt-source/releases/latest | grep -oP '"tag_name":\s*"\K[^"]+')
+> curl -L -o /tmp/ros2-apt-source.deb "https://github.com/ros-infrastructure/ros-apt-source/releases/download/${ROS_APT_SOURCE_VERSION}/ros2-apt-source_${ROS_APT_SOURCE_VERSION}.$(. /etc/os-release && echo ${UBUNTU_CODENAME:-${VERSION_CODENAME}})_all.deb"
+> sudo dpkg -i /tmp/ros2-apt-source.deb
+> sudo apt update
+> ```
+>
+> If `ROS_APT_SOURCE_VERSION` is empty (GitHub API rate limit or no network), visit [ROS Apt Source Releases](https://github.com/ros-infrastructure/ros-apt-source/releases) to get a version and set it explicitly, e.g. `export ROS_APT_SOURCE_VERSION="1.2.0"`.
 
-- Check whether ROS_APT_SOURCE_VERSION is correct
-
-```bash title="Ubuntu" showLineNumbers
-echo $ROS_APT_SOURCE_VERSION
-```
-
-If there is no output or it is empty, the version lookup failed. Check your network connection or the GitHub API rate limit.
-
-- Specify ROS_APT_SOURCE_VERSION manually
-
-Visit [ROS Apt Source Releases](https://github.com/ros-infrastructure/ros-apt-source/releases) to find an available version, then set it manually.
-
-```bash title="Ubuntu" showLineNumbers
-export ROS_APT_SOURCE_VERSION="1.2.0"
-```
-
-- Re-download \/ install the ROS 2 source
-
-```bash title="Ubuntu" showLineNumbers
-curl -L -o /tmp/ros2-apt-source.deb "https://github.com/ros-infrastructure/ros-apt-source/releases/download/${ROS_APT_SOURCE_VERSION}/ros2-apt-source_${ROS_APT_SOURCE_VERSION}.$(. /etc/os-release && echo ${UBUNTU_CODENAME:-${VERSION_CODENAME}})_all.deb"
-sudo dpkg -i /tmp/ros2-apt-source.deb
-```
-
-:::
+::::
 
 ## Install Development Tools
 
@@ -174,11 +164,44 @@ source /opt/ros/jazzy/setup.bash
   </TabItem>
 </Tabs>
 
+> 💡 If you don't want to `source` manually in every new terminal, add it to `~/.bashrc` (pick the line matching your distro):
+>
+> ```bash title="Ubuntu" showLineNumbers
+> echo "source /opt/ros/jazzy/setup.bash" >> ~/.bashrc
+> ```
+>
+> Or make it apply to all users (root required):
+>
+> ```bash title="Ubuntu" showLineNumbers
+> echo "source /opt/ros/jazzy/setup.bash" | sudo tee /etc/profile.d/ros2.sh > /dev/null
+> ```
+
 ## Verify the ROS 2 Environment
 
-Open two terminals and run the commands below:
+> 📦 `ros-base` only includes the communication libraries and CLI tools — it does **not** ship the demo nodes `demo_nodes_cpp` / `demo_nodes_py`. Install the demo packages before running the talker/listener verification (pick the line matching your distro):
 
-- Terminal 1
+<Tabs groupId="ros">
+  <TabItem value="humble" label="Humble" default>
+
+```bash title="Ubuntu" showLineNumbers
+sudo apt install ros-humble-demo-nodes-cpp ros-humble-demo-nodes-py -y
+```
+
+  </TabItem>
+  <TabItem value="jazzy" label="Jazzy" >
+
+```bash title="Ubuntu" showLineNumbers
+sudo apt install ros-jazzy-demo-nodes-cpp ros-jazzy-demo-nodes-py -y
+```
+
+  </TabItem>
+</Tabs>
+
+### Method 1: Two-Terminal Verification (recommended for understanding)
+
+Open two terminals and run:
+
+- Terminal 1 (talker, C++ publisher)
 
 <Tabs groupId="ros">
   <TabItem value="humble" label="Humble" default>
@@ -199,7 +222,7 @@ ros2 run demo_nodes_cpp talker
   </TabItem>
 </Tabs>
 
-- Terminal 2
+- Terminal 2 (listener, Python subscriber)
 
 <Tabs groupId="ros">
   <TabItem value="humble" label="Humble" default>
@@ -220,6 +243,27 @@ ros2 run demo_nodes_py listener
   </TabItem>
 </Tabs>
 
-The `talker` (C++) publishes string messages, and the `listener` (Python) subscribes to the same topic.
+### Method 2: Single-Terminal One-Shot Verification (great for scripts/containers)
 
-If they communicate correctly, it means ROS 2's publish/subscribe mechanism, topic discovery, and the C++ and Python client libraries are all working properly.
+No need for two terminals — start talker and listener in one command:
+
+<Tabs groupId="ros">
+  <TabItem value="humble" label="Humble" default>
+
+```bash title="Ubuntu" showLineNumbers
+source /opt/ros/humble/setup.bash
+ros2 run demo_nodes_cpp talker & sleep 2; ros2 run demo_nodes_py listener & sleep 4; kill %1 %2
+```
+
+  </TabItem>
+  <TabItem value="jazzy" label="Jazzy" >
+
+```bash title="Ubuntu" showLineNumbers
+source /opt/ros/jazzy/setup.bash
+ros2 run demo_nodes_cpp talker & sleep 2; ros2 run demo_nodes_py listener & sleep 4; kill %1 %2
+```
+
+  </TabItem>
+</Tabs>
+
+If the `listener` keeps printing `I heard: [Hello World: N]`, it means ROS 2's publish/subscribe, topic discovery, and the C++/Python client libraries are all working properly.

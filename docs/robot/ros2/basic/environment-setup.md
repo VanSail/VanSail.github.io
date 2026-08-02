@@ -60,45 +60,34 @@ sudo apt update && sudo apt install software-properties-common -y
 sudo add-apt-repository universe
 ```
 
-### 添加 ROS2 源
+### 添加 ROS 2 源
 
-通过下载安装 `ros2-apt-source` deb 包，自动配置 ROS 2 官方仓库（repo.ros2.org）的 apt 源。版本号通过 GitHub API 动态获取，安装包根据当前 Ubuntu 代号自动适配。
+推荐直接使用 ROS 官方提供的 GPG 密钥与 apt 源（官方文档当前推荐方式），**不依赖从 GitHub Release 下载 deb 包**，在受限网络或 ARM 平台上更稳妥。
 
 ```bash title="Ubuntu" showLineNumbers
-sudo apt update && sudo apt install curl -y
-export ROS_APT_SOURCE_VERSION=$(curl -s https://api.github.com/repos/ros-infrastructure/ros-apt-source/releases/latest | grep -F "tag_name" | awk -F'"' '{print $4}')
-curl -L -o /tmp/ros2-apt-source.deb "https://github.com/ros-infrastructure/ros-apt-source/releases/download/${ROS_APT_SOURCE_VERSION}/ros2-apt-source_${ROS_APT_SOURCE_VERSION}.$(. /etc/os-release && echo ${UBUNTU_CODENAME:-${VERSION_CODENAME}})_all.deb"
-sudo dpkg -i /tmp/ros2-apt-source.deb
+sudo apt update && sudo apt install curl gnupg lsb-release -y
+sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /tmp/ros.key
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo mv /tmp/ros.key /etc/apt/keyrings/ros-archive-keyring.gpg
+sudo chmod a+r /etc/apt/keyrings/ros-archive-keyring.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo ${UBUNTU_CODENAME:-${VERSION_CODENAME}}) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
+sudo apt update
 ```
 
 :::tip
 
-若下载的 `ros2-apt-source.deb` 文件很小且无法安装，可以按照下面步骤检查：
+> ⚠️ **备选方案（ros2-apt-source deb）**：如果你所在网络能正常访问 GitHub Release，也可以用官方旧方案——下载 `ros2-apt-source` deb 包自动配置源。注意提取版本号时**不要使用** `awk -F'"'` 这种写法（在多层引号嵌套场景下容易解析失败），改用更稳健的 `grep -oP`：
+>
+> ```bash title="Ubuntu" showLineNumbers
+> sudo apt update && sudo apt install curl -y
+> export ROS_APT_SOURCE_VERSION=$(curl -s https://api.github.com/repos/ros-infrastructure/ros-apt-source/releases/latest | grep -oP '"tag_name":\s*"\K[^"]+')
+> curl -L -o /tmp/ros2-apt-source.deb "https://github.com/ros-infrastructure/ros-apt-source/releases/download/${ROS_APT_SOURCE_VERSION}/ros2-apt-source_${ROS_APT_SOURCE_VERSION}.$(. /etc/os-release && echo ${UBUNTU_CODENAME:-${VERSION_CODENAME}})_all.deb"
+> sudo apt update
+> ```
+>
+> 若 `ROS_APT_SOURCE_VERSION` 为空（GitHub API 限流或网络不通），可手动访问 [ROS Apt Source Releases](https://github.com/ros-infrastructure/ros-apt-source/releases) 获取版本号后显式指定，例如 `export ROS_APT_SOURCE_VERSION="1.2.0"`。
 
-- 检查 ROS_APT_SOURCE_VERSION 是否正确
-
-```bash title="Ubuntu" showLineNumbers
-echo $ROS_APT_SOURCE_VERSION
-```
-
-若无输出或输出为空，说明版本号获取失败，需要手动检查网络连接或 GitHub API 限制。
-
-- 指定 ROS_APT_SOURCE_VERSION
-
-可以访问 [ROS Apt Source Releases](https://github.com/ros-infrastructure/ros-apt-source/releases) 查看可用的版本号，然后手动指定。
-
-```bash title="Ubuntu" showLineNumbers
-export ROS_APT_SOURCE_VERSION="1.2.0"
-```
-
-- 重新下载 \/ 安装 ROS2 源
-
-```bash title="Ubuntu" showLineNumbers
-curl -L -o /tmp/ros2-apt-source.deb "https://github.com/ros-infrastructure/ros-apt-source/releases/download/${ROS_APT_SOURCE_VERSION}/ros2-apt-source_${ROS_APT_SOURCE_VERSION}.$(. /etc/os-release && echo ${UBUNTU_CODENAME:-${VERSION_CODENAME}})_all.deb"
-sudo dpkg -i /tmp/ros2-apt-source.deb
-```
-
-:::
+::::
 
 ## 安装开发工具
 
@@ -173,11 +162,44 @@ source /opt/ros/jazzy/setup.bash
   </TabItem>
 </Tabs>
 
+> 💡 若每次打开新终端都要手动 `source`，可写入 `~/.bashrc` 自动加载（按实际发行版选择一行）：
+>
+> ```bash title="Ubuntu" showLineNumbers
+> echo "source /opt/ros/jazzy/setup.bash" >> ~/.bashrc
+> ```
+>
+> 或对所有用户生效（需 root）：
+>
+> ```bash title="Ubuntu" showLineNumbers
+> echo "source /opt/ros/jazzy/setup.bash" | sudo tee /etc/profile.d/ros2.sh > /dev/null
+> ```
+
 ## 验证 ROS2 环境
 
-打开了两个终端分别运行下面命令：
+> 📦 `ros-base` 只包含通信库与命令行工具，**不包含**演示节点 `demo_nodes_cpp` / `demo_nodes_py`。在运行下面的 talker/listener 验证前，请先安装演示包（按实际发行版选择）：
 
-- 终端 1
+<Tabs groupId="ros">
+  <TabItem value="humble" label="Humble" default>
+
+```bash title="Ubuntu" showLineNumbers
+sudo apt install ros-humble-demo-nodes-cpp ros-humble-demo-nodes-py -y
+```
+
+  </TabItem>
+  <TabItem value="jazzy" label="Jazzy" >
+
+```bash title="Ubuntu" showLineNumbers
+sudo apt install ros-jazzy-demo-nodes-cpp ros-jazzy-demo-nodes-py -y
+```
+
+  </TabItem>
+</Tabs>
+
+### 方法一：双终端验证（推荐理解通信）
+
+打开两个终端，分别运行：
+
+- 终端 1（talker，C++ 发布消息）
 
 <Tabs groupId="ros">
   <TabItem value="humble" label="Humble" default>
@@ -198,7 +220,7 @@ ros2 run demo_nodes_cpp talker
   </TabItem>
 </Tabs>
 
-- 终端 2
+- 终端 2（listener，Python 订阅消息）
 
 <Tabs groupId="ros">
   <TabItem value="humble" label="Humble" default>
@@ -219,6 +241,60 @@ ros2 run demo_nodes_py listener
   </TabItem>
 </Tabs>
 
-通过 `talker（C++）`发布字符串消息，`listener（Python）`订阅同一话题。
+### 方法二：单终端一键验证（适合脚本/容器）
 
-两者能正常通信，说明 ROS 2 的发布/订阅机制、话题发现、C++ 和 Python 客户端库都工作正常。
+无需开两个终端，用一个命令先后启动 talker 与 listener：
+
+<Tabs groupId="ros">
+  <TabItem value="humble" label="Humble" default>
+
+```bash title="Ubuntu" showLineNumbers
+source /opt/ros/humble/setup.bash
+ros2 run demo_nodes_cpp talker & sleep 2; ros2 run demo_nodes_py listener & sleep 4; kill %1 %2
+```
+
+  </TabItem>
+  <TabItem value="jazzy" label="Jazzy" >
+
+```bash title="Ubuntu" showLineNumbers
+source /opt/ros/jazzy/setup.bash
+ros2 run demo_nodes_cpp talker & sleep 2; ros2 run demo_nodes_py listener & sleep 4; kill %1 %2
+```
+
+  </TabItem>
+</Tabs>
+
+`listener` 若能持续打印 `I heard: [Hello World: N]`，说明 ROS 2 的发布/订阅、话题发现、C++/Python 客户端库均工作正常。
+
+## 使用 Docker 快速搭建 ROS 2（推荐隔离环境）
+
+如果你不想污染宿主机，或需要在 ARM（如树莓派、Radxa 等）平台快速获得可用的 ROS 2 环境，可以直接基于官方 `ubuntu:24.04` 镜像构建。以下步骤已验证可在 ARM64 平台（`ubuntu:24.04` + ROS 2 Jazzy）正常安装并通信。
+
+```bash title="Host" showLineNumbers
+# 1. 拉取 Ubuntu 24.04 基础镜像
+docker pull ubuntu:24.04
+
+# 2. 启动容器（保持运行）
+docker run -d --name ros2_build ubuntu:24.04 sleep infinity
+
+# 3. 在容器内执行安装（源配置见上文“添加 ROS 2 源”）
+docker exec -it ros2_build bash
+```
+
+进入容器后，依次执行上文的 **locale 设置 → 添加 ROS 2 源 → 安装开发工具 → 安装 ROS 2**。完成后验证：
+
+```bash title="Container" showLineNumbers
+source /opt/ros/jazzy/setup.bash
+ros2 run demo_nodes_cpp talker & sleep 2; ros2 run demo_nodes_py listener & sleep 4; kill %1 %2
+```
+
+验证通过后，把容器保存为可复用镜像：
+
+```bash title="Host" showLineNumbers
+# 让环境在任意 shell 自动生效
+docker exec ros2_build bash -c 'echo "source /opt/ros/jazzy/setup.bash" >> /root/.bashrc'
+# 提交为 ros2_jazzy 镜像
+docker commit ros2_build ros2_jazzy
+# 直接运行验证
+docker run --rm ros2_jazzy bash -c 'source /opt/ros/jazzy/setup.bash && ros2 pkg list | wc -l'
+```
