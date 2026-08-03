@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import styles from './ContribHeatmap.module.css';
 
