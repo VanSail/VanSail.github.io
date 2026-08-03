@@ -84,13 +84,18 @@ function TutorialIconSvg({kind}: {kind: TutorialIcon}): ReactElement {
  *  - 鼠标悬停右侧详情区：暂停左列自动滚动
  *  - 鼠标离开右列：左列从当前位置继续自动滚动
  */
-export default function ExploreSection(): ReactElement {
+export default function ExploreSection(): ReactElement | null {
   const {pathname} = useLocation();
   const locale: 'zh' | 'en' = pathname.startsWith('/en/') ? 'en' : 'zh';
   const isZh = locale === 'zh';
 
   const N = TUTORIALS.length;
-  const [activeId, setActiveId] = useState(TUTORIALS[0].id);
+  const [activeId, setActiveId] = useState<string | undefined>(
+    N > 0 ? TUTORIALS[0].id : undefined,
+  );
+
+  // 无教程数据时整块不渲染，避免下标/取余产生 NaN 与 undefined 解引用
+  if (N === 0) return null;
 
   const scrollerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
@@ -164,6 +169,7 @@ export default function ExploreSection(): ReactElement {
   }, [N]);
 
   const active = TUTORIALS.find(t => t.id === activeId) ?? TUTORIALS[0];
+  if (!active) return null;
   const doubled = [...TUTORIALS, ...TUTORIALS];
   const docsPrefix = locale === 'en' ? '/en' : '';
 
