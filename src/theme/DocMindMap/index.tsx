@@ -155,7 +155,6 @@ export default function DocMindMap({
   const [open, setOpen] = useState(true);
 
   const resolvedSize = Math.max(20, Math.min(100, Number(size) || 100));
-  const cardStyle: CSSProperties = {};
   const contentStyle: CSSProperties = {
     width: `${resolvedSize}%`,
     ...(resolvedSize < 100 ? {marginLeft: 'auto', marginRight: 'auto'} : {}),
@@ -165,7 +164,7 @@ export default function DocMindMap({
   const hint = locale === 'zh' ? '点击节点跳转章节' : 'Click a node to jump';
 
   return (
-    <div className={styles.card} style={cardStyle}>
+    <div className={styles.card}>
       <button
         type="button"
         className={styles.header}
