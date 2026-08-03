@@ -240,7 +240,9 @@ function ProcessorMultiPicker({
   }, []);
 
   const list = processors.filter(p =>
-    p.name[locale].toLowerCase().includes(query.trim().toLowerCase()),
+    (p.name[locale] ?? p.name.zh)
+      .toLowerCase()
+      .includes(query.trim().toLowerCase()),
   );
 
   return (

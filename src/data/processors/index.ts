@@ -37,7 +37,17 @@ export interface Processor {
 // 下划线开头的文件（如 _template.json）会被忽略，仅作模板用途。
 const ctx = require.context('.', false, /\.json$/);
 
+function isLText(v: unknown): v is LText {
+  return (
+    typeof v === 'object' &&
+    v !== null &&
+    typeof (v as LText).zh === 'string' &&
+    typeof (v as LText).en === 'string'
+  );
+}
+
 function loadProcessors(): Processor[] {
+  const validCategories: CategoryId[] = ['ai', 'soc'];
   return ctx
     .keys()
     .filter(path => !path.startsWith('./_'))
@@ -47,9 +57,15 @@ function loadProcessors(): Processor[] {
         default?: Record<string, unknown>;
       };
       const data = (mod.default ?? mod) as Record<string, unknown>;
-      return {id, ...data} as Processor;
+      const name = data.name;
+      const category = data.category;
+      // 结构校验：缺 name(zh/en) 或 category 非法的文件直接跳过，避免后续渲染崩溃
+      if (!isLText(name) || !validCategories.includes(category as CategoryId)) {
+        return null;
+      }
+      return {id, ...(data as unknown as Omit<Processor, 'id'>)} as Processor;
     })
-    .filter(p => p.name && p.name.zh)
+    .filter((p): p is Processor => p !== null)
     .sort((a, b) => a.name.zh.localeCompare(b.name.zh));
 }
 
