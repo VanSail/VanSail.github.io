@@ -264,18 +264,6 @@
   margin-top: 1.8rem;
 }
 
-.slots {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.vs {
-  font-weight: 700;
-  color: var(--ifm-color-emphasis-500);
-}
-
 /* 对比表 */
 .tableWrap {
   margin-top: 1.4rem;

@@ -380,16 +380,10 @@
 }
 
 /* 动画初始隐藏态 */
-.animHidden .sectionTitle,
 .animHidden .card,
 .animHidden .menuCardWrap {
   opacity: 0;
   transform: translateY(28px);
-}
-
-/* 入场触发后 */
-.animVisible .sectionTitle {
-  animation: sectionFadeIn 0.5s cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
 }
 
 .animVisible .card,
@@ -416,7 +410,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .animHidden .sectionTitle,
   .animHidden .card,
   .animHidden .menuCardWrap {
     opacity: 1;

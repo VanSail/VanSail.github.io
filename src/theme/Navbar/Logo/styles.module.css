@@ -2,39 +2,3 @@
 :global(.navbar__logo) {
   margin-right: 0;
 }
-
-/* 中英文品牌名堆叠：中文在上、英文在下，中文水平居中于英文之上 */
-.brandStack {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  gap: 3px;
-  line-height: 1.1;
-  margin-left: 0;
-}
-
-/* 中文名：书法体（楷体/行楷），优雅有辨识度，作视觉主体 */
-.brandCn {
-  font-family:
-    'STKaiti', 'KaiTi', '楷体', 'Kaiti SC', 'STXingkai', '华文行楷', cursive;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 1px;
-  padding-left: 1px; /* 抵消字距，保持视觉居中 */
-  color: #fff;
-  text-shadow: 0 1px 8px rgba(240, 160, 112, 0.3);
-}
-
-/* 英文名：精致衬线体，全大写宽字距，作次要标签 */
-.brandEn {
-  font-family: 'Optima', 'Palatino Linotype', 'Palatino', 'Georgia', serif;
-  font-size: 7.5px;
-  font-weight: 600;
-  letter-spacing: 3px;
-  padding-left: 3px;
-  text-transform: uppercase;
-  color: var(--ifm-color-primary);
-  opacity: 0.85;
-}
