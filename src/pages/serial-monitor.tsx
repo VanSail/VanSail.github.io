@@ -244,7 +244,10 @@ export default function SerialMonitor(): ReactNode {
     setStats(s => ({...s, rx: s.rx + chunk.length}));
 
     if (flushTimerRef.current !== null) return;
-    flushTimerRef.current = window.setTimeout(flushLogs, RING_BUFFER_BATCH_MS);
+    flushTimerRef.current = window.setTimeout(
+      () => flushLogsRef.current(),
+      RING_BUFFER_BATCH_MS,
+    );
   }, []);
 
   const flushLogs = useCallback(() => {
@@ -263,14 +266,14 @@ export default function SerialMonitor(): ReactNode {
       const merged =
         total <= MAX_DECODE_BYTES_PER_CHUNK
           ? mergeChunks(chunks, total)
-          : truncateChunks(chunks, total);
+          : truncateChunks(chunks);
       payload = bytesToHex(merged);
     } else {
       // 文本模式：用 TextDecoder 解码
       const merged =
         total <= MAX_DECODE_BYTES_PER_CHUNK
           ? mergeChunks(chunks, total)
-          : truncateChunks(chunks, total);
+          : truncateChunks(chunks);
       try {
         payload = new TextDecoder('utf-8', {fatal: false}).decode(merged);
       } catch {
@@ -280,6 +283,12 @@ export default function SerialMonitor(): ReactNode {
 
     appendLog(payload, 'in');
   }, [hexReceive]);
+
+  // 用 ref 持有最新的 flushLogs，避免 pushReceived 闭包捕获到过期版本
+  const flushLogsRef = useRef(flushLogs);
+  useEffect(() => {
+    flushLogsRef.current = flushLogs;
+  }, [flushLogs]);
 
   function mergeChunks(chunks: Uint8Array[], total: number): Uint8Array {
     const merged = new Uint8Array(total);
@@ -291,16 +300,18 @@ export default function SerialMonitor(): ReactNode {
     return merged;
   }
 
-  function truncateChunks(chunks: Uint8Array[], total: number): Uint8Array {
-    // 单批超限：只取末尾部分，但保留 HEX/文本可读性
+  function truncateChunks(chunks: Uint8Array[]): Uint8Array {
+    // 单批超限：只保留最后 take 字节，且保持原始到达顺序（用于 HEX/文本可读性）
     const take = MAX_DECODE_BYTES_PER_CHUNK;
-    let acc = new Uint8Array(take);
+    const acc = new Uint8Array(take);
     let head = 0;
     let remaining = take;
-    for (let i = chunks.length - 1; i >= 0 && remaining > 0; i--) {
+    // 正向遍历（先到的在前），只截取靠近末尾的部分
+    for (let i = 0; i < chunks.length && remaining > 0; i++) {
       const c = chunks[i];
-      const start = Math.max(0, c.length - remaining);
-      const slice = c.subarray(start);
+      // 若整体会超限，则跳过 chunk 的前面部分，仅保留可能落入窗口的尾部
+      const skip = Math.max(0, c.length - remaining);
+      const slice = c.subarray(skip);
       acc.set(slice, head);
       head += slice.length;
       remaining -= slice.length;
