@@ -1,5 +1,5 @@
 .main {
-  max-width: var(--ifm-container-width);
+  max-width: var(--content-width, 100%);
   margin: 0 auto;
   padding: 56px 24px 80px;
 }

@@ -1,8 +1,16 @@
 .page {
-  max-width: 1000px;
+  max-width: var(--content-width, 100%);
   margin: 0 auto;
   padding: 2rem 1.5rem 4rem;
   color: var(--ifm-font-color-base);
+}
+
+/* 移动端通栏，与全站内容区（导航栏/首页）对齐策略一致 */
+@media (max-width: 767px) {
+  .page {
+    max-width: 100%;
+    padding-inline: 20px;
+  }
 }
 
 /* 极简行：候选框 */

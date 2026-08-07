@@ -1,7 +1,6 @@
 /* ========== Hero 区域（与首页地球同宽） ========== */
 .heroArea {
   width: var(--content-width);
-  max-width: 1600px;
   height: 260px;
   margin: 0 auto;
   position: relative;
