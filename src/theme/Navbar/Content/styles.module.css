@@ -1,0 +1,615 @@
+/*
+ * Restore some Infima style that broke with CSS Cascade Layers
+ * See https://github.com/facebook/docusaurus/pull/11142
+ */
+:global(.navbar__items--right) > :last-child {
+  padding-right: 0;
+}
+
+/* GitHub：只保留图标，作为右侧的次级圆形图标按钮 */
+.githubLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: 999px;
+  color: rgba(255, 255, 255, 0.66);
+  text-decoration: none;
+  transition:
+    color 0.18s ease,
+    background 0.18s ease;
+}
+
+.githubLink:hover,
+.githubLink:focus-visible {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.09);
+  text-decoration: none;
+}
+
+.githubIcon {
+  flex: none;
+  width: 17px;
+  height: 17px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .githubLink {
+    transition: none;
+  }
+}
+
+/* 中间栏目导航：相对整个视口绝对居中，与左右两侧宽度无关 */
+.navbarInner {
+  position: relative;
+}
+
+.centerSlot {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.centerSlot > * {
+  pointer-events: auto;
+}
+
+.centerBar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/*
+ * 居中胶囊：Navigation 3 的 center links。
+ * 整条胶囊是略微抬起的深色面，栏目是内嵌小圆角，当前页用更亮的一层高亮。
+ * 选择器统一带 .navLinks 前缀，避免被 .navTriggerBtn 的按钮重置盖掉。
+ */
+.navLinks {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.055);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  white-space: nowrap;
+}
+
+.navLinks .navLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  height: 30px;
+  padding: 0 14px;
+  border-radius: 999px;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition:
+    color 0.18s ease,
+    background 0.18s ease;
+}
+
+.navLinks .navLink:hover,
+.navLinks .navLink:focus-visible {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.09);
+  text-decoration: none;
+}
+
+.navLinks .navLinkActive,
+.navLinks .navLinkActive:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* 「网页工具」是纯下拉触发器：button 复用 navLink 外观，需重置浏览器默认底色。 */
+.navTriggerBtn {
+  padding: 0 12px;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.navTextFull {
+  display: inline-block;
+}
+
+.inlineCaret {
+  flex: none;
+  width: 8px;
+  height: 5px;
+  color: currentColor;
+  opacity: 0.65;
+  transition: transform 0.18s ease;
+}
+
+.inlineCaret.caretOn {
+  transform: rotate(180deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .navLinks .navLink,
+  .inlineCaret {
+    transition: none;
+  }
+}
+
+/* ---------------- 网页工具下拉菜单 ---------------- */
+
+.toolsTrigger {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+/*
+ * 三列等宽菜单，
+ * 不与状态栏通栏等宽。底色与状态栏同色同材质（rgba(5,6,10) + 毛玻璃）。
+ * padding-top 是透明桥接区，鼠标从触发器移到面板不会闪退。
+ */
+.toolsMenu {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  z-index: 40;
+  width: min(760px, calc(100vw - 2 * var(--vs-gutter)));
+  padding-top: 14px;
+  transform: translateX(-50%);
+  animation: toolsMenuIn 0.22s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes toolsMenuIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -6px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+.toolsMenuInner {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  row-gap: 16px;
+  padding: 16px 6px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  background: rgba(5, 6, 10, 0.96);
+  backdrop-filter: blur(22px) saturate(160%);
+  -webkit-backdrop-filter: blur(22px) saturate(160%);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  text-align: left;
+}
+
+/* 每行从第二列起添加分隔线。 */
+.toolItem {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 6px 14px 8px;
+  text-decoration: none;
+}
+
+@media (min-width: 721px) {
+  .toolItem:not(:nth-child(3n + 1)) {
+    border-left: 1px solid rgba(255, 255, 255, 0.12);
+  }
+}
+
+.toolTitle,
+.toolDesc {
+  white-space: nowrap;
+}
+
+.toolTitle {
+  align-self: flex-start;
+  color: rgba(233, 240, 252, 0.88);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+  transition: color 0.16s ease;
+}
+
+.toolTitle::after {
+  content: '';
+  display: block;
+  height: 2px;
+  margin-top: 3px;
+  border-radius: 2px;
+  background: #9cc9ff;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.toolDesc {
+  color: rgba(224, 234, 250, 0.45);
+  font-size: 13px;
+  line-height: 1.55;
+  transition: color 0.16s ease;
+}
+
+.toolItem:hover,
+.toolItem:focus-visible {
+  outline: none;
+  text-decoration: none;
+}
+
+.toolItem:hover .toolTitle,
+.toolItem:focus-visible .toolTitle {
+  color: #ffffff;
+}
+
+.toolItem:hover .toolTitle::after,
+.toolItem:focus-visible .toolTitle::after {
+  transform: scaleX(1);
+}
+
+.toolItem:hover .toolDesc,
+.toolItem:focus-visible .toolDesc {
+  color: rgba(224, 234, 250, 0.6);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toolsMenu {
+    animation: none;
+  }
+
+  .toolTitle::after {
+    transition: none;
+  }
+}
+
+.navTextShort {
+  display: none;
+}
+
+/* 胶囊搜索：输入框在左，放大镜在右 */
+.searchPill {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 156px;
+  height: 32px;
+  padding: 0 4px 0 14px;
+  /* 搜索是次级控件：比居中的栏目胶囊更淡，避免两颗一样的胶囊并排 */
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.028);
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.searchPill:focus-within {
+  border-color: rgba(156, 201, 255, 0.55);
+  background: rgba(255, 255, 255, 0.09);
+}
+
+.pillInput {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 14px;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.pillInput::placeholder {
+  color: rgba(255, 255, 255, 0.46);
+}
+
+/* type="text" + autoComplete="off" 已避开浏览器历史；再兜底隐藏清除按钮 */
+.pillInput::-webkit-search-cancel-button {
+  display: none;
+}
+
+.pillClear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.pillClear:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.pillIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.72);
+  cursor: pointer;
+  transition: color 0.18s ease;
+}
+
+.pillIcon:hover {
+  color: #ffffff;
+}
+
+.pillIcon svg {
+  width: 15px;
+  height: 15px;
+}
+
+/* 仅在有输入时显示结果，定位在胶囊下方右对齐；底色与通栏工具菜单同源（状态栏色系） */
+.searchPanel {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  width: min(340px, 86vw);
+  padding: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 14px;
+  background: rgba(5, 6, 10, 0.96);
+  backdrop-filter: blur(22px) saturate(160%);
+  -webkit-backdrop-filter: blur(22px) saturate(160%);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+  text-align: left;
+}
+
+.searchItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 8px 11px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: rgba(233, 240, 252, 0.88);
+  font-family: inherit;
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.searchItemMain {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.searchItemTitle {
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.searchItemDesc {
+  overflow: hidden;
+  color: rgba(224, 234, 250, 0.5);
+  font-size: 13px;
+  line-height: 1.4;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.searchItemTag {
+  flex: 0 0 auto;
+  padding: 2px 7px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  color: rgba(255, 255, 255, 0.38);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.searchItem:hover,
+.searchItemActive {
+  background: rgba(156, 201, 255, 0.14);
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.searchTip {
+  margin: 6px 4px 2px;
+  padding-top: 7px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(224, 234, 250, 0.35);
+  font-size: 12px;
+}
+
+.searchEmpty {
+  margin: 10px 12px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 13px;
+}
+
+@media (max-width: 900px) {
+  .navLinks .navLink {
+    padding: 0 10px;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+  }
+
+  .searchPill {
+    width: 120px;
+  }
+}
+
+@media (max-width: 720px) {
+  .centerSlot {
+    transform: translate(calc(-50% + 16px), -50%);
+  }
+
+  .centerBar {
+    gap: 6px;
+  }
+
+  /* 窄屏把胶囊退化为紧凑内联链接，避免与左右两侧争抢空间 */
+  .navLinks {
+    gap: 2px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .navLinks .navLink {
+    height: 28px;
+    padding: 0 6px;
+    font-size: 12px;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  .navLinks .navLinkActive {
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  .navTriggerBtn {
+    padding: 0 6px;
+  }
+
+  .navTextFull {
+    display: none;
+  }
+
+  .navTextShort {
+    display: inline-block;
+  }
+
+  .searchPill {
+    width: 56px;
+    padding-left: 8px;
+  }
+
+  .pillInput {
+    font-size: 13px;
+  }
+
+  .pillInput::placeholder {
+    color: transparent;
+  }
+
+  .pillClear {
+    display: none;
+  }
+
+  .pillIcon {
+    flex-basis: 20px;
+    width: 20px;
+    height: 20px;
+  }
+
+  .pillIcon svg {
+    width: 13px;
+    height: 13px;
+  }
+
+  .inlineCaret {
+    width: 7px;
+    margin-left: -1px;
+  }
+
+  /* 窄屏：菜单贴住内容栅格两侧，单列堆叠，发丝线只作行间分隔 */
+  .toolsMenu {
+    left: var(--vs-gutter);
+    right: var(--vs-gutter);
+    width: auto;
+    transform: none;
+    animation: none;
+  }
+
+  .toolsMenuInner {
+    grid-template-columns: 1fr;
+    row-gap: 0;
+    padding: 6px;
+  }
+
+  .toolItem {
+    padding: 12px 10px 12px 14px;
+  }
+
+  .toolItem + .toolItem {
+    border-left: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 4px;
+  }
+
+  .searchPanel {
+    right: -6px;
+    width: min(300px, calc(100vw - 28px));
+  }
+}
+
+@media (max-width: 520px) {
+  /* 去掉 CTA 后右侧仍有 GitHub 图标 + 语言切换：中间栏稍左移，三块互不重叠 */
+  .centerSlot {
+    transform: translate(calc(-50% + 4px), -50%);
+  }
+
+  .centerBar {
+    gap: 4px;
+  }
+
+  .githubLink {
+    width: 28px;
+    height: 28px;
+  }
+
+  .githubIcon {
+    width: 15px;
+    height: 15px;
+  }
+
+  .navLinks .navLink {
+    padding: 0 5px;
+    font-size: 11.5px;
+  }
+
+  .searchPill {
+    width: 42px;
+    padding-left: 6px;
+  }
+}

@@ -1,0 +1,144 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>串口助手</title>
+<link rel="stylesheet" href="../terminal/terminal.css"></head><body><main><header><h1>串口助手</h1><span id="status" class="status" role="status">未连接</span></header>
+<section class="card"><div class="bar"><h2>设备连接</h2><div class="actions" style="margin-top:0"><button class="primary" id="connect">选择设备</button><button id="disconnect" hidden>断开连接</button></div></div>
+<div id="serialFields" class="fields"><div class="baudField"><label for="baud">波特率</label><div class="baudBox"><input id="baud" type="text" inputmode="numeric" pattern="[0-9]+" autocomplete="off" role="combobox" aria-haspopup="listbox" aria-controls="baudRates" aria-expanded="false" value="115200" placeholder="自定义波特率"><button id="baudToggle" type="button" aria-label="展开波特率候选">▾</button><div id="baudRates" role="listbox" aria-label="常用波特率" hidden><div role="option" id="rate9600" data-rate="9600">9600</div><div role="option" id="rate115200" data-rate="115200">115200</div><div role="option" id="rate1500000" data-rate="1500000">1500000</div></div></div></div><label>数据位<select id="bits"><option>8</option><option>7</option></select></label><label>校验位<select id="parity"><option value="none">无</option><option value="even">偶校验</option><option value="odd">奇校验</option></select></label><label>停止位<select id="stop"><option>1</option><option>2</option></select></label><label>流控<select id="flow"><option value="none">无</option><option value="hardware">硬件流控</option></select></label></div>
+<input id="device" aria-label="设备显示名称" title="可修改设备显示名称" maxlength="80" hidden><p class="hint" role="status" id="hint"></p><div class="terminal-config"><h2>终端设置</h2><div class="tools"><label>显示 <select id="view"><option value="text">UTF-8 文本</option><option value="hex">HEX · 十六进制</option><option value="bin">BIN · 二进制</option></select></label><button class="utility" id="pause" aria-pressed="false">暂停查看</button><button class="utility" id="clear">清空记录</button></div><div class="tools"><label>输入 <select id="format"><option value="text">UTF-8 文本</option><option value="hex">HEX · 十六进制</option><option value="bin">BIN · 二进制</option></select></label><label>Enter <select id="ending"><option value="cr">CR</option><option value="lf">LF</option><option value="both">CRLF</option><option value="">无</option></select></label><label><input id="echo" type="checkbox"> 本地回显</label><span id="badge"></span></div></div></section>
+<section class="terminal"><div class="bar"><h2>收发终端</h2><span class="count" id="count">RX 0 B · TX 0 B</span></div><div id="screen" aria-label="交互式串口终端"></div></section></main><script src="../terminal/xterm.js"></script><script src="../terminal/controls.js"></script><script>
+const english = new URLSearchParams(location.search).get('lang') === 'en' || location.pathname.startsWith('/en/');
+const localized = (zh, en) => english ? en : zh;
+if (english) {
+  document.documentElement.lang = 'en';
+  const labels = {
+    "串口助手": "Serial Assistant",
+    "未连接": "Disconnected",
+    "设备连接": "Device connection",
+    "选择设备": "Select device",
+    "断开连接": "Disconnect",
+    "波特率": "Baud rate",
+    "自定义波特率": "Custom baud rate",
+    "展开波特率候选": "Show baud rate options",
+    "常用波特率": "Common baud rates",
+    "数据位": "Data bits",
+    "校验位": "Parity",
+    "无": "None",
+    "偶校验": "Even",
+    "奇校验": "Odd",
+    "停止位": "Stop bits",
+    "流控": "Flow control",
+    "硬件流控": "Hardware flow control",
+    "设备显示名称": "Device display name",
+    "可修改设备显示名称": "Edit device display name",
+    "终端设置": "Terminal settings",
+    "显示": "Display",
+    "UTF-8 文本": "UTF-8 text",
+    "HEX · 十六进制": "HEX · hexadecimal",
+    "BIN · 二进制": "BIN · binary",
+    "暂停查看": "Pause display",
+    "清空记录": "Clear log",
+    "输入": "Input",
+    "本地回显": "Local echo",
+    "收发终端": "Serial terminal",
+    "交互式串口终端": "Interactive serial terminal"
+};
+  const walker = document.createTreeWalker(document.documentElement, NodeFilter.SHOW_TEXT);
+  while (walker.nextNode()) {
+    const node = walker.currentNode;
+    const key = node.textContent.trim();
+    if (Object.hasOwn(labels, key)) node.textContent = node.textContent.replace(key, labels[key]);
+  }
+  for (const element of document.querySelectorAll('[aria-label], [title], [placeholder]')) {
+    for (const name of ['aria-label', 'title', 'placeholder']) {
+      const value = element.getAttribute(name);
+      if (Object.hasOwn(labels, value)) element.setAttribute(name, labels[value]);
+    }
+  }
+}
+const $=id=>document.getElementById(id);
+let active=null,phase='idle';
+const names=new WeakMap();
+function deviceLabel(port){
+ const info=port.getInfo?.()||{};
+ if(info.usbVendorId!=null && info.usbProductId!=null){
+   const ids=[info.usbVendorId,info.usbProductId].map(n=>n.toString(16).padStart(4,'0').toUpperCase()).join(':');
+   return ids;
+ }
+ return info.bluetoothServiceClassId?localized('蓝牙串口设备', 'Bluetooth serial device'):localized('串口设备', 'Serial device');
+}
+$('device').onchange=()=>{if(active?.port){const label=$('device').value.trim()||deviceLabel(active.port);names.set(active.port,label);$('device').value=label}};
+const apiAvailable=()=>isSecureContext && !!navigator.serial;
+function ui(){
+ const idle=phase==='idle';$('serialFields').hidden=!idle;
+ $('connect').hidden=!idle;$('connect').disabled=!apiAvailable();$('disconnect').hidden=phase!=='open';
+ $('status').textContent=({idle:localized('未连接', 'Disconnected'),opening:localized('正在连接', 'Connecting'),open:localized('已连接', 'Connected'),closing:localized('正在断开', 'Disconnecting')})[phase];
+}
+function capability(){
+ $('hint').textContent=!isSecureContext?localized('请通过 HTTPS 或 localhost 打开页面。', 'Open this page over HTTPS or localhost.'):!apiAvailable()?localized('当前浏览器未提供此接口，请使用支持设备访问的桌面浏览器。', 'This browser does not provide Web Serial. Use a desktop browser that supports device access.'):'';
+ ui();
+}
+const {terminal, record, resetDigits} = createDeviceTerminal({localized, isOpen: () => phase === 'open', enqueue});
+async function closeSession(s,reason){
+ if(active!==s||phase==='closing')return;
+ phase='closing';ui();
+ try{
+ if(s.reader)await s.reader.cancel().catch(()=>{});
+ if(s.readTask)await s.readTask;
+ if(s.writeTask)await s.writeTask.catch(()=>{});
+ if(s.writer)s.writer.releaseLock();
+ if(s.portOpen)await s.port.close();
+ }catch(e){reason+=' · '+e.message}
+ finally{
+ active=null;phase='idle';$('device').hidden=true;$('device').value='';$('hint').textContent=reason;ui()}
+}
+async function receive(s){
+ let reason=localized('设备已停止接收', 'Device stopped receiving.');
+ try{while(phase==='open'){const {done,value}=await s.reader.read();if(done)break;if(value)record(s,'RX',value)}}catch(e){reason=localized('读取中断 · ', 'Read interrupted · ')+e.message}
+ finally{s.reader.releaseLock();s.reader=null;if(phase==='open')queueMicrotask(()=>closeSession(s,reason))}
+}
+$('connect').onclick=async()=>{
+ if(phase!=='idle')return;
+ const s={decoder:new TextDecoder(),txDecoder:new TextDecoder(),writeTask:Promise.resolve()};active=s;phase='opening';ui();
+ try{
+ const baudRate=Number($('baud').value);if(!/^[0-9]+$/.test($('baud').value.trim())||!Number.isInteger(baudRate)||baudRate<1||baudRate>4000000)throw Error(localized('波特率需为 1–4000000 的整数。', 'Baud rate must be an integer from 1 to 4000000.'));
+ s.port=await navigator.serial.requestPort();await s.port.open({baudRate,dataBits:Number($('bits').value),parity:$('parity').value,stopBits:Number($('stop').value),flowControl:$('flow').value});s.portOpen=true;
+ s.writer=s.port.writable.getWriter();s.reader=s.port.readable.getReader();$('device').value=names.get(s.port)||deviceLabel(s.port);$('device').hidden=false;
+ phase='open';resetDigits();ui();terminal.focus();$('hint').textContent=localized('设备已连接，可以收发数据。', 'Connected. Ready to send and receive.');if(s.reader)s.readTask=receive(s)
+ }catch(e){await closeSession(s,e.name==='NotFoundError'?localized('未选择设备或未找到对应服务。', 'No device selected or matching service found.'):localized('连接失败 · ', 'Connection failed · ')+e.message)}
+};
+$('disconnect').onclick=()=>{if(active)closeSession(active,localized('连接已断开', 'Disconnected'))};
+function enqueue(bytes){
+ if(!bytes.length||phase!=='open')return;
+ const s=active;
+ s.writeTask=s.writeTask.then(async()=>{
+   if(active!==s||phase!=='open')return;
+   await s.writer.write(bytes);record(s,'TX',bytes);
+ }).catch(err=>{if(active===s&&phase==='open')queueMicrotask(()=>closeSession(s,localized('写入失败 · ', 'Write failed · ')+err.message))});
+}
+window.addEventListener('pagehide',()=>{if(active&&phase==='open')closeSession(active,localized('页面已关闭', 'Page closed'))});
+const baud=$('baud'), menu=$('baudRates'), options=Array.from(menu.children);
+let highlighted=-1;
+function markRate(index){
+ highlighted=index;
+ options.forEach((option,i)=>option.setAttribute('aria-selected',String(i===index)));
+ if(index<0)baud.removeAttribute('aria-activedescendant');else baud.setAttribute('aria-activedescendant',options[index].id);
+}
+function rateMenu(open){
+ menu.hidden=!open;baud.setAttribute('aria-expanded',String(open));
+ markRate(open?options.findIndex(option=>option.dataset.rate===baud.value):-1);
+}
+function chooseRate(option){baud.value=option.dataset.rate;baud.focus();rateMenu(false)}
+baud.onclick=baud.oninput=()=>rateMenu(true);
+$('baudToggle').onclick=()=>{const open=menu.hidden;baud.focus();rateMenu(open)};
+menu.onmousedown=e=>e.preventDefault();
+menu.onclick=e=>{const option=e.target.closest('[data-rate]');if(option)chooseRate(option)};
+baud.onkeydown=e=>{
+ if(e.key==='ArrowDown'||e.key==='ArrowUp'){
+   e.preventDefault();if(menu.hidden)rateMenu(true);
+   const delta=e.key==='ArrowDown'?1:-1;
+   markRate((highlighted+(highlighted<0&&delta<0?0:delta)+options.length)%options.length);
+ }else if(e.key==='Escape')rateMenu(false);
+ else if(e.key==='Enter'&&!menu.hidden){e.preventDefault();if(highlighted>=0)chooseRate(options[highlighted]);else rateMenu(false)}
+};
+baud.closest('.baudBox').addEventListener('focusout',e=>{if(!e.currentTarget.contains(e.relatedTarget))rateMenu(false)});
+document.addEventListener('pointerdown',e=>{if(!e.target.closest('.baudBox'))rateMenu(false)});
+capability();
+</script></body></html>

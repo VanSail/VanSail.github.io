@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://www.vansail.cn/sitemap.xml
+Sitemap: https://www.vansail.cn/en/sitemap.xml

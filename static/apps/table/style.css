@@ -1,0 +1,162 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: #f6f7f4;
+  color: #20382f;
+  font:
+    16px/1.55 system-ui,
+    sans-serif;
+}
+main {
+  max-width: 1280px;
+  margin: auto;
+  padding: clamp(16px, 3vw, 36px);
+}
+h1 {
+  margin: 0;
+  font-size: clamp(24px, 4vw, 36px);
+}
+p {
+  margin: 6px 0 18px;
+  color: #455e53;
+}
+.actions,
+footer {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+button,
+select {
+  font: inherit;
+  border: 1px solid #9eb3a7;
+  background: white;
+  color: inherit;
+  border-radius: 7px;
+  padding: 7px 12px;
+}
+button {
+  cursor: pointer;
+}
+#open,
+#excel {
+  background: #21543e;
+  color: white;
+}
+button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin: 20px 0;
+}
+.columns section {
+  min-width: 0;
+}
+h2,
+.columns label {
+  display: block;
+  font-size: 1rem;
+  font-weight: 650;
+  margin: 0 0 6px;
+}
+textarea,
+#preview {
+  border: 1px solid #a5b8ae;
+  border-radius: 8px;
+  background: white;
+  width: 100%;
+  height: clamp(220px, 48vh, 580px);
+  overflow: auto;
+  padding: 12px;
+}
+textarea {
+  resize: vertical;
+  color: inherit;
+  font:
+    14px/1.6 ui-monospace,
+    monospace;
+}
+table {
+  border-collapse: collapse;
+  font-size: 14px;
+}
+th,
+td {
+  padding: 5px 9px;
+  border: 1px solid #c9d6ce;
+  text-align: left;
+  white-space: pre-wrap;
+}
+th {
+  background: #edf4ef;
+}
+#feedback {
+  font-size: 14px;
+  margin: 8px 0;
+}
+body.dragging {
+  outline: 3px dashed #337755;
+  outline-offset: -4px;
+}
+@media (max-width: 700px) {
+  .columns {
+    grid-template-columns: 1fr;
+  }
+  textarea,
+  #preview {
+    height: 200px;
+  }
+}
+
+.previewHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.previewHead button {
+  font-size: 14px;
+  padding: 2px 8px;
+}
+#preview {
+  padding: 0;
+}
+#preview table {
+  width: 100%;
+}
+#preview thead {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+#preview th {
+  text-align: center;
+  font-weight: 500;
+  color: #476252;
+  white-space: nowrap;
+}
+#preview tbody th {
+  position: sticky;
+  left: 0;
+  min-width: 36px;
+}
+#preview td {
+  min-width: 90px;
+  max-width: 320px;
+  height: 31px;
+  overflow-wrap: anywhere;
+  vertical-align: top;
+}
+#preview td:focus {
+  outline: 2px solid #287951;
+  outline-offset: -2px;
+  background: #f2faf4;
+}

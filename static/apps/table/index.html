@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Excel ⇄ Markdown</title>
+    <link rel="stylesheet" href="style.css" />
+    <script defer src="vendor/xlsx-0.20.3.min.js"></script>
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>Excel ⇄ Markdown</h1>
+        <p id="intro"></p>
+      </header>
+      <section class="actions">
+        <button id="open"></button><button id="clear"></button
+        ><input
+          id="file"
+          type="file"
+          accept=".xlsx,.xls,.md,.markdown"
+          hidden
+        /><label id="sheetLabel" hidden
+          ><span id="sheetTitle"></span>
+          <select id="sheet"></select
+        ></label>
+      </section>
+      <div class="columns">
+        <section>
+          <label for="md">Markdown</label
+          ><textarea id="md" spellcheck="false"></textarea>
+        </section>
+        <section>
+          <div class="previewHead">
+            <h2 id="previewTitle"></h2>
+            <button id="copyExcel"></button>
+          </div>
+          <div id="preview"></div>
+        </section>
+      </div>
+      <footer>
+        <button id="excel"></button><button id="copy"></button
+        ><button id="save"></button>
+      </footer>
+      <p id="feedback" role="status"></p>
+    </main>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

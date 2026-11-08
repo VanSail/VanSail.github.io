@@ -1,0 +1,81 @@
+export const galleryItems = [
+  {
+    name: 'MicroDuck',
+    src: '/img/projects/microduck.webp',
+    url: 'https://github.com/pollen-robotics/microduck/',
+    zh: 'MicroDuck 是 Pollen Robotics 打造的小型双足机器人，主打让强化学习走进真实世界',
+    en: 'MicroDuck is a small bipedal robot built by Pollen Robotics to bring reinforcement learning into the real world.',
+    features: [
+      {zh: '双足机器人', en: 'Bipedal robot'},
+      {zh: '强化学习', en: 'Reinforcement learning'},
+      {zh: '多自由度', en: 'Multiple degrees of freedom'},
+      {zh: '手柄遥控', en: 'Gamepad control'},
+    ],
+  },
+
+  {
+    name: 'OpenClaw',
+    src: '/img/projects/openclaw.webp',
+    url: 'https://github.com/openclaw/openclaw',
+    zh: '把个人 AI 助手运行在自己的设备上，在 Telegram、Slack 等常用聊天工具里直接交代任务。',
+    en: 'Run a personal AI assistant on your own device and give it tasks from chats you already use, including Telegram and Slack.',
+    features: [
+      {zh: '自托管助手', en: 'Self-hosted assistant'},
+      {zh: '多平台聊天', en: 'Chat integrations'},
+      {zh: '本地保存记忆', en: 'Local memory'},
+      {zh: '可切换模型', en: 'Model switching'},
+    ],
+  },
+  {
+    name: 'Hermes Agent',
+    src: '/img/projects/hermes.webp',
+    url: 'https://github.com/NousResearch/hermes-agent',
+    zh: 'Nous Research 开发的 AI 助手能从完成的任务中总结技能，下次遇到类似任务时再次使用，并根据结果改进。',
+    en: 'An AI agent from Nous Research that turns completed tasks into reusable skills and refines them as it works.',
+    features: [
+      {zh: '从任务提炼技能', en: 'Reusable skills'},
+      {zh: '检索历史对话', en: 'Session search'},
+      {zh: '定时执行任务', en: 'Scheduled tasks'},
+      {zh: '子助手并行工作', en: 'Parallel subagents'},
+    ],
+  },
+  {
+    name: 'OpenCode',
+    src: '/img/projects/opencode.webp',
+    url: 'https://github.com/anomalyco/opencode',
+    zh: '在终端里与 AI 一起开发。用 Plan 模式读代码、讨论方案，再切换到 Build 模式修改项目。',
+    en: 'Work with a coding agent in your terminal. Explore the code in Plan mode, then switch to Build to make changes.',
+    features: [
+      {zh: '终端交互', en: 'Terminal interface'},
+      {zh: '只读规划', en: 'Read-only planning'},
+      {zh: '代码编辑', en: 'Code editing'},
+      {zh: '桌面客户端', en: 'Desktop app'},
+    ],
+  },
+  {
+    name: 'Ollama',
+    src: '/img/projects/ollama.webp',
+    url: 'https://github.com/ollama/ollama',
+    zh: '在自己的电脑上下载并运行开放模型。用终端试聊，再通过本地 API 把同一个模型接入应用。',
+    en: 'Download and run open models on your computer. Try a model in the terminal, then connect your app to it through a local API.',
+    features: [
+      {zh: '本地推理', en: 'Local inference'},
+      {zh: '模型下载与管理', en: 'Model management'},
+      {zh: '终端对话', en: 'Terminal chat'},
+      {zh: '本地 API', en: 'Local API'},
+    ],
+  },
+  {
+    name: 'Hugging Face',
+    src: '/img/projects/hugging-face.webp',
+    url: 'https://github.com/huggingface',
+    zh: '在 Hugging Face Hub 上发现模型和数据集，阅读模型卡了解用途与限制，再到 Spaces 体验社区构建的 AI 应用。',
+    en: 'Explore models and datasets on the Hugging Face Hub, read model cards to understand their uses and limits, and try community apps in Spaces.',
+    features: [
+      {zh: '模型库', en: 'Model hub'},
+      {zh: '数据集共享', en: 'Dataset sharing'},
+      {zh: '模型卡', en: 'Model cards'},
+      {zh: 'Spaces 应用演示', en: 'Spaces demos'},
+    ],
+  },
+];

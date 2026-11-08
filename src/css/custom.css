@@ -1,0 +1,217 @@
+/**
+ * VanSail 单页站点全局样式
+ * 站点以深空滚动叙事为首页，页面级样式见 pages/index.module.css。
+ */
+
+:root,
+[data-theme='dark'] {
+  --ifm-color-primary: #9cc9ff;
+  --ifm-color-primary-dark: #7fb4f5;
+  --ifm-color-primary-darker: #6ba7f0;
+  --ifm-color-primary-darkest: #4b8bd8;
+  --ifm-color-primary-light: #b8daff;
+  --ifm-color-primary-lighter: #cbe5ff;
+  --ifm-color-primary-lightest: #e3f1ff;
+
+  --ifm-background-color: #05060a;
+  --ifm-background-surface-color: #0e121b;
+  --ifm-font-color-base: #dbe2ef;
+  --ifm-heading-color: #ffffff;
+  --ifm-link-color: #9cc9ff;
+  --ifm-link-hover-color: #cbe5ff;
+  --ifm-hr-border-color: rgba(255, 255, 255, 0.12);
+  --ifm-table-border-color: rgba(255, 255, 255, 0.14);
+  --ifm-font-family-base:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text',
+    'Helvetica Neue', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif;
+  --ifm-navbar-height: 68px;
+
+  /*
+   * 全站共享内容栅格：导航栏与首页所有文本都落在这两条竖直线上。
+   * shell = 视口两侧留白 16px 后、居中且最大 1440px 的容器；
+   * gutter = shell 内再缩进的距离。两者相乘即得内容区左右边界。
+   */
+  --vs-shell-pad: 16px;
+  --vs-shell-max: 1440px;
+  --vs-gutter: 32px;
+
+  /*
+   * 内容区上限：与 .navbar__inner 的内容区（logo 左边 → 语言按钮右边）等宽。
+   * navbar 的可用宽度是 clientWidth（不含滚动条），而 100vw 含滚动条，
+   * 故减去站点自定义滚动条宽度 9px 并留 1px 余量，保证内容只会略窄、绝不越界。
+   */
+  --vs-content-max: min(
+    calc(100vw - 2 * (var(--vs-shell-pad) + var(--vs-gutter)) - 10px),
+    calc(var(--vs-shell-max) - 2 * var(--vs-gutter))
+  );
+}
+
+/* 窄屏与导航栏共用同一缩进，首页文本可直接复用变量 */
+@media (max-width: 640px) {
+  :root,
+  [data-theme='dark'] {
+    --vs-gutter: 14px;
+  }
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background-color: #05060a !important;
+  color: var(--ifm-font-color-base);
+  font-family: var(--ifm-font-family-base) !important;
+  overflow-x: hidden;
+}
+
+#root,
+#__docusaurus {
+  background: transparent !important;
+  min-height: 100vh;
+}
+
+/* 细滚动条，和深色底统一 */
+::-webkit-scrollbar {
+  width: 9px;
+}
+::-webkit-scrollbar-track {
+  background: #05060a;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.16);
+  border-radius: 99px;
+  border: 2px solid #05060a;
+}
+
+/* ---------------- 顶部导航栏 ---------------- */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  height: var(--ifm-navbar-height);
+  padding-left: var(--vs-shell-pad);
+  padding-right: var(--vs-shell-pad);
+  background: transparent !important;
+  border-bottom: 1px solid transparent !important;
+  box-shadow: none !important;
+}
+
+.navbar__inner {
+  height: 100%;
+  max-width: var(--vs-shell-max);
+  margin: 0 auto;
+  padding: 0 var(--vs-gutter);
+  position: relative;
+}
+
+/*
+ * 文档页的 docRoot 默认铺满整个视口：宽屏下左侧侧栏从 x=0 起、右侧 TOC
+ * 一直伸到视口右缘，都超出导航栏的内容栅格。这里把整页收进同一上限并居中，
+ * 侧栏、正文与 TOC 会一起落回 logo 左边 → 语言按钮右边之间。
+ */
+[class*='docRoot_'],
+div:has(> .theme-doc-sidebar-container) {
+  max-width: var(--vs-content-max);
+  margin-inline: auto;
+}
+
+.navbar__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #ffffff !important;
+  text-decoration: none;
+}
+
+.navbar__brand:hover {
+  color: #ffffff !important;
+}
+
+/* 左上角 VanSail 字标：无图片 logo、无渐变流光 */
+.navbar__title {
+  font-size: 20px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff;
+  background: none;
+  animation: none;
+  filter: none;
+}
+
+.navbar__link {
+  color: rgba(255, 255, 255, 0.76) !important;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.navbar__link:hover {
+  color: #ffffff !important;
+  background: transparent;
+}
+
+.navbar__link--active {
+  color: #ffffff !important;
+}
+
+.navbar__toggle {
+  color: #ffffff !important;
+}
+
+.dropdown__menu {
+  background: rgba(5, 6, 10, 0.96) !important;
+  backdrop-filter: blur(22px) saturate(160%) !important;
+  -webkit-backdrop-filter: blur(22px) saturate(160%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  border-radius: 10px;
+  box-shadow: none !important;
+}
+
+.dropdown__link {
+  color: rgba(255, 255, 255, 0.88) !important;
+}
+
+.dropdown__link:hover {
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.navbar-sidebar--show {
+  box-shadow: none !important;
+}
+
+/* 让胶囊导航在窄屏也不被右侧语言切换挤走（gutter 已在 :root 覆盖） */
+@media (max-width: 640px) {
+  .navbar__inner {
+    padding: 0 var(--vs-gutter);
+  }
+}
+
+main {
+  background: transparent !important;
+}
+
+/* ---------------- 全局细节 ---------------- */
+:focus-visible {
+  outline: 2px solid rgba(156, 201, 255, 0.85) !important;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+::selection {
+  background: rgba(156, 201, 255, 0.3);
+  color: #ffffff;
+}
+
+a {
+  color: var(--ifm-link-color);
+}
+
+/* 窄屏：字标略收，给中间栏目与胶囊留出间隙 */
+@media (max-width: 720px) {
+  .navbar .navbar__title {
+    font-size: 15px;
+  }
+}

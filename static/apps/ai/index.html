@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-QyB+6i0GsqFz71uv92Tlg5UYEuAzzPHKjUFuo+wZ5MI='; style-src 'unsafe-inline'; img-src https: data:; connect-src https:; base-uri 'none'; object-src 'none'; form-action 'none'"><title>AI 实验室</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f7f7f6;color:#171717;font:15px/1.55 Inter,-apple-system,"PingFang SC",sans-serif}main{max-width:940px;margin:auto;padding:clamp(20px,4vw,48px) 18px}header,.bar,.compose,.keyline,.tabs{display:flex;align-items:center;gap:10px}header,.bar{justify-content:space-between}h1{font-size:clamp(28px,4vw,40px);letter-spacing:-.05em;margin:0}h2{font-size:16px;margin:0}header{padding-bottom:20px}small,label{font-size:13px}header small{color:#666}.panel{border:1px solid #dcdcdc;border-radius:14px;background:white;padding:20px clamp(16px,3vw,28px)}button,input,select,textarea{font:inherit}button{cursor:pointer;border:1px solid #ccc;background:white;color:#191919;border-radius:7px;padding:7px 13px}button:hover{background:#eee}button:disabled{opacity:.55;cursor:default}.tabs{background:#eee;border-radius:8px;padding:3px;gap:2px}.tabs button{border:0;padding:5px 12px;background:transparent;font-size:13px}.tabs [aria-pressed=true]{background:white;box-shadow:0 1px 3px #0002}.fields{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:15px 0}.wide{grid-column:1/-1}label{display:block;color:#555}input,select,textarea{display:block;width:100%;background:white;color:#161616;border:1px solid #ccc;border-radius:7px;padding:9px 12px;margin-top:4px;min-width:0}.keyline input{flex:1}.keyline button{white-space:nowrap}.note{min-height:20px;color:#666;margin:0;font-size:13px;overflow-wrap:anywhere}.terminal{margin-top:16px;background:#141414;color:#f5f5f5;border-radius:14px;padding:18px clamp(16px,3vw,28px)}.terminal .bar{border-bottom:1px solid #343434;padding-bottom:12px}.terminal h2:before{content:'›_';font:16px monospace;margin-right:10px;color:#aaa}.terminal .bar button{background:transparent;color:#ccc;border-color:#444;font-size:12px}.log{height:220px;overflow:auto;padding:16px 0}.empty{color:#aaa;font-size:14px;margin:0}.message{margin:0 0 16px;white-space:pre-wrap;overflow-wrap:anywhere}.message b{display:block;color:#aaa;font:12px/2 monospace}.compose{align-items:flex-end}.compose textarea{background:#222;color:white;border-color:#444;resize:vertical;min-height:44px;max-height:160px;margin:0}.compose button{background:#fafafa;white-space:nowrap}.foot{color:#aaa;font-size:12px;margin:7px 0 0}button:focus-visible,:is(input,select,textarea):focus-visible{outline:2px solid #888;outline-offset:2px}[hidden]{display:none!important}@media(max-width:570px){.fields{grid-template-columns:1fr}.panel>.bar{align-items:flex-start}.tabs button{padding:5px 8px}.log{height:200px}}
+details{border-top:1px solid #eee;padding:10px 0}summary{cursor:pointer;font-size:13px;color:#555}.log img{display:block;max-width:100%;max-height:360px;margin:10px 0;border-radius:8px} dialog{max-width:min(420px,90vw);border:1px solid #ccc;border-radius:12px;padding:24px}dialog strong{overflow-wrap:anywhere}dialog::backdrop{background:#0006}dialog form{text-align:right}dialog button+button{margin-left:8px;background:#171717;color:white}main.compact{min-height:100dvh;display:flex;flex-direction:column}.compact .terminal{flex:1;display:flex;flex-direction:column}.compact .log{flex:1 1 0;min-height:220px}main.compact{height:max(100dvh,440px)}.compact .panel{padding-block:12px}.config-summary{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:8px}.config-summary span{overflow-wrap:anywhere}.compact .note:empty{display:none}
+#searchField{display:inline-flex;align-items:center;gap:6px;color:#ddd;font-size:13px}#searchField input{width:auto;margin:0}.search-links{margin-top:8px;font-size:13px;color:#bbb}.terminal a{color:white;text-decoration:underline}
+</style></head><body><main>
+<header><h1>AI 实验室</h1></header>
+<section class="panel" aria-labelledby="config"><div class="bar"><h2 id="config">连接配置</h2><div class="tabs"><button id="chat" aria-pressed="true">对话</button><button id="picture" aria-pressed="false">图片生成</button></div></div>
+<div class="config-summary" id="summary" hidden><span id="summaryText"></span><button id="editConfig" aria-controls="configBody">编辑配置</button></div><div id="configBody"><div class="fields"><label>Base URL 或完整接口地址<input id="address" type="url" placeholder="https://api.example.com/v1"></label>
+<label>模型名称<input id="model" placeholder="输入模型 ID"></label>
+<div class="wide"><label for="key">API Key</label><div class="note" id="recipient">接收域名：待填写接口地址</div><div class="keyline"><input id="key" type="password" autocomplete="off" spellcheck="false" placeholder="输入 API Key"><button id="test">测试连接</button></div></div></div>
+<section id="researchConfig" hidden><h2>图片搜索配置</h2><div class="fields"><label>搜索接口（Responses）<input id="researchURL" placeholder="https://api.example.com/v1"></label><label>搜索模型 ID<input id="researchModel"></label><label>搜索 API Key<input id="researchKey" type="password" autocomplete="off"></label></div><p class="note" id="researchRecipient">接收域名：待填写搜索接口</p></section><details id="imageContext" hidden><summary>图片上下文</summary><div class="fields"><label>参考历史描述<select id="imageRounds"><option value="0">仅当前提示词</option><option value="1" selected>最近 1 轮</option><option value="3">最近 3 轮</option><option value="6">最近 6 轮</option></select></label><label>固定画面要求（可选）<textarea id="artDirection" rows="2" placeholder="例如：黑白摄影，柔和自然光"></textarea></label></div><p class="note">沿用之前成功生成的文字描述；上一张图片不会作为参考图上传。</p></details><details id="context"><summary>对话上下文</summary><div class="fields"><label>历史轮数<select id="rounds"><option value="0">仅当前消息</option><option value="3">最近 3 轮</option><option selected value="6">最近 6 轮</option><option value="12">最近 12 轮</option></select></label><label>系统指令（可选）<textarea id="instruction" rows="2" placeholder="例如：用中文回答，先给结论。"></textarea></label></div></details><details><summary>高级配置</summary><div class="fields">
+<label id="protocolField">接口协议<select id="protocol"><option value="chat">Chat Completions</option><option value="responses">Responses</option></select></label>
+<label id="limitField">最大输出 token<input type="number" id="limit" min="1" step="1" placeholder="使用模型默认值"></label>
+<label id="sizeField" hidden>分辨率<select id="size"><option value="">标准</option><option>4K</option><option>2K</option><option>1080P</option><option>720P</option></select></label><label id="ratioField" hidden>画幅比例<select id="ratio"><option>1:1</option><option>16:9</option><option>9:16</option></select><small id="pixels"></small></label><label>请求超时（秒）<input type="number" id="timeout" value="90" min="1" max="600"></label>
+</div></details><p class="note">密钥仅在当前页面内存中使用。</p></div><p class="note" id="note" role="status"></p></section>
+<section class="terminal"><div class="bar"><h2 id="resultTitle">对话</h2><label id="searchField" title="本次对话使用 Responses 网页搜索工具"><input id="search" type="checkbox">联网搜索</label><button id="clear">清空对话</button></div><div class="log" id="log" role="log"></div><form class="compose" id="composer"><textarea id="prompt" rows="1" aria-label="消息" placeholder="输入消息…"></textarea><button id="stop" type="button" hidden>停止等待</button><button id="send">发送 ↗</button></form><p class="foot">Enter 发送 · Shift + Enter 换行</p></section></main><dialog id="approval" aria-labelledby="approvalTitle"><h2 id="approvalTitle">确认密钥接收方</h2><p>本次请求将把 API Key 和请求内容发送到</p><strong id="origin"></strong><p>请核对地址。本页再次使用同一来源时会直接发送。</p><form method="dialog"><button value="cancel" autofocus>取消</button><button value="send">确认发送</button></form></dialog>
+<script>
+const english = new URLSearchParams(location.search).get('lang') === 'en' || location.pathname.startsWith('/en/');
+const localized = (zh, en) => english ? en : zh;
+if (english) {
+  document.documentElement.lang = 'en';
+  const labels = {
+    "AI 实验室": "AI Lab",
+    "连接配置": "Connection settings",
+    "对话": "Chat",
+    "图片生成": "Image generation",
+    "编辑配置": "Edit settings",
+    "Base URL 或完整接口地址": "Base URL or full endpoint",
+    "模型名称": "Model name",
+    "输入模型 ID": "Enter model ID",
+    "接收域名：待填写接口地址": "Recipient: enter an endpoint",
+    "输入 API Key": "Enter API key",
+    "测试连接": "Test connection",
+    "图片搜索配置": "Image research settings",
+    "搜索接口（Responses）": "Search endpoint (Responses)",
+    "搜索模型 ID": "Search model ID",
+    "搜索 API Key": "Search API key",
+    "接收域名：待填写搜索接口": "Recipient: enter a search endpoint",
+    "图片上下文": "Image context",
+    "参考历史描述": "Previous descriptions",
+    "仅当前提示词": "Current prompt only",
+    "最近 1 轮": "Last turn",
+    "最近 3 轮": "Last 3 turns",
+    "最近 6 轮": "Last 6 turns",
+    "固定画面要求（可选）": "Persistent image instructions (optional)",
+    "例如：黑白摄影，柔和自然光": "Example: black-and-white photography, soft natural light",
+    "沿用之前成功生成的文字描述；上一张图片不会作为参考图上传。": "Reuses descriptions from successful requests. Previous images are not uploaded.",
+    "对话上下文": "Chat context",
+    "历史轮数": "Conversation history",
+    "仅当前消息": "Current message only",
+    "最近 12 轮": "Last 12 turns",
+    "系统指令（可选）": "System instructions (optional)",
+    "例如：用中文回答，先给结论。": "Example: lead with the conclusion.",
+    "高级配置": "Advanced settings",
+    "接口协议": "API protocol",
+    "最大输出 token": "Maximum output tokens",
+    "使用模型默认值": "Use model default",
+    "分辨率": "Resolution",
+    "标准": "Standard",
+    "画幅比例": "Aspect ratio",
+    "请求超时（秒）": "Request timeout (seconds)",
+    "密钥仅在当前页面内存中使用。": "Keys are held in page memory only.",
+    "本次对话使用 Responses 网页搜索工具": "Use the Responses web search tool for this chat",
+    "联网搜索": "Web search",
+    "清空对话": "Clear chat",
+    "消息": "Message",
+    "输入消息…": "Enter a message…",
+    "停止等待": "Stop waiting",
+    "发送 ↗": "Send ↗",
+    "Enter 发送 · Shift + Enter 换行": "Enter to send · Shift + Enter for a new line",
+    "确认密钥接收方": "Confirm API key recipient",
+    "本次请求将把 API Key 和请求内容发送到": "Your API key and request will be sent to",
+    "请核对地址。本页再次使用同一来源时会直接发送。": "Verify the address. Future requests to this origin on this page will be sent directly.",
+    "取消": "Cancel",
+    "确认发送": "Confirm and send",
+    "待填写接口地址": "Enter an endpoint",
+    "接收域名：": "Recipient: "
+};
+  const walker = document.createTreeWalker(document.documentElement, NodeFilter.SHOW_TEXT);
+  while (walker.nextNode()) {
+    const node = walker.currentNode;
+    const key = node.textContent.trim();
+    if (Object.hasOwn(labels, key)) node.textContent = node.textContent.replace(key, labels[key]);
+  }
+  for (const element of document.querySelectorAll('[aria-label], [title], [placeholder]')) {
+    for (const name of ['aria-label', 'title', 'placeholder']) {
+      const value = element.getAttribute(name);
+      if (Object.hasOwn(labels, value)) element.setAttribute(name, labels[value]);
+    }
+  }
+}
+const $=id=>document.getElementById(id);
+let imageHistory=[];
+const sessions=new Map();
+let controller;
+$('stop').onclick=()=>controller?.abort();
+let imageMode=false,busy=false,history=[];
+const drafts={chat:{model:'',prompt:''},image:{model:'',prompt:''}};
+// Entries specify the square edge, landscape width and landscape height.
+const resolutions={
+ '':[1024,1280,720], '720P':[720,1280,720], '1080P':[1080,1920,1080],
+ '2K':[2048,2048,1152], '4K':[3840,3840,2160]
+};
+function dimensions(){
+ const [square,width,height]=resolutions[$('size').value];
+ if($('ratio').value==='16:9')return [width,height];
+ if($('ratio').value==='9:16')return [height,width];
+ return [square,square];
+}
+function updateDimensions(){$('pixels').textContent=dimensions().join(' × ')+' px'}
+$('size').onchange=$('ratio').onchange=updateDimensions;
+function resetLog(){history=[];imageHistory=[];$('log').replaceChildren();const p=document.createElement('p');p.className='empty';p.textContent=imageMode?localized('生成的图片将显示在这里。', 'Generated images will appear here.'):localized('填写连接信息后，即可开始对话。', 'Enter connection settings to start chatting.');$('log').append(p)}
+let collapseAfterSuccess=true;
+function compactConfig(compact){
+ $('configBody').hidden=compact;
+ $('summary').hidden=!compact;
+ document.querySelector('main').classList.toggle('compact',compact);
+ if(compact){
+   $('summaryText').textContent=$('model').value.trim()+' · '+endpointURL().host;
+   $('log').scrollTop=$('log').scrollHeight;
+ }
+}
+function connectionReady(){if(collapseAfterSuccess){compactConfig(true);collapseAfterSuccess=false}}
+$('editConfig').onclick=()=>{compactConfig(false);$('address').focus()};
+function setMode(next){
+ compactConfig(false);collapseAfterSuccess=true;
+ const old=drafts[imageMode?'image':'chat'];old.model=$('model').value;old.prompt=$('prompt').value;
+ sessions.set(imageMode,{nodes:Array.from($('log').childNodes),history,imageHistory});
+ drafts[imageMode?'image':'chat'].search=$('search').checked;
+ imageMode=next;$('search').checked=!!drafts[next?'image':'chat'].search;$('researchConfig').hidden=!next||!$('search').checked;$('context').hidden=next;$('imageContext').hidden=!next;const draft=drafts[next?'image':'chat'];$('model').value=draft.model;$('prompt').value=draft.prompt;
+ $('chat').setAttribute('aria-pressed',String(!next));$('picture').setAttribute('aria-pressed',String(next));
+ $('protocolField').hidden=$('limitField').hidden=next;$('sizeField').hidden=$('ratioField').hidden=!next;updateDimensions();
+ $('resultTitle').textContent=next?localized('图片生成', 'Image generation'):localized('对话', 'Chat');$('send').textContent=next?localized('生成图片 ↗', 'Generate image ↗'):localized('发送 ↗', 'Send ↗');$('clear').textContent=next?localized('清空结果', 'Clear results'):localized('清空对话', 'Clear chat');
+ $('prompt').placeholder=next?localized('描述你想生成的画面…', 'Describe the image you want…'):localized('输入消息…', 'Enter a message…');$('timeout').value=next?'240':'90';$('note').textContent='';
+ const saved=sessions.get(next);
+ if(saved?.nodes.length){history=saved.history;imageHistory=saved.imageHistory;$('log').replaceChildren(...saved.nodes)}else resetLog();
+}
+$('chat').onclick=()=>{if(imageMode)setMode(false)};$('picture').onclick=()=>{if(!imageMode)setMode(true)};
+function endpointURL(address=$('address').value.trim()){
+ const url=new URL(address);
+ if(url.protocol!=='https:'||url.username||url.password||url.search||url.hash)throw Error(localized('请输入不含凭据或查询参数的 HTTPS 接口地址。', 'Enter an HTTPS endpoint without credentials or query parameters.'));
+ return url;
+}
+function updateRecipient(){
+ let label=localized('待填写接口地址', 'Enter an endpoint');
+ if($('address').value.trim()){
+   try{label=endpointURL().origin}catch{label=localized('地址无效，请填写 HTTPS 地址', 'Invalid address. Enter an HTTPS URL.')}
+ }
+ $('recipient').textContent=localized('接收域名：', 'Recipient: ')+label;
+}
+$('address').oninput=()=>{$('key').value='';sessions.clear();updateRecipient();resetLog()};$('model').onchange=resetLog;
+const approvedOrigins=new Set();
+async function approveDestination(address){
+ const origin=new URL(address).origin;
+ if(approvedOrigins.has(origin))return true;
+ const dialog=$('approval');
+ $('origin').textContent=origin;
+ dialog.returnValue='';
+ const choice=new Promise(resolve=>dialog.addEventListener('close',()=>resolve(dialog.returnValue==='send'),{once:true}));
+ dialog.showModal();
+ if(!await choice)return false;
+ approvedOrigins.add(origin);
+ return true;
+}
+for(const id of ['address','model','key','protocol'])$(id).addEventListener('change',()=>{collapseAfterSuccess=true});
+function config(search=false){let url;try{url=endpointURL()}catch{throw Error(localized('请输入有效的 HTTPS 接口地址。', 'Enter a valid HTTPS endpoint.'))}const model=$('model').value.trim(),key=$('key').value.trim();if(!model||!key)throw Error(localized('请填写模型名称和 API Key。', 'Enter a model name and API key.'));if(imageMode&&/(^|\/)minimax-m3\.1-flash$/i.test(model))throw Error(localized('MiniMax-M3.1-Flash 仅输出文本，请选择图像生成模型。', 'MiniMax-M3.1-Flash returns text only. Choose an image model.'));const protocol=search?'responses':$('protocol').value;
+ const responses=protocol==='responses', anthropic=protocol==='messages';
+ const miniImage=imageMode && (['api.minimax.cn','api.minimax.io'].includes(url.hostname)||url.pathname.replace(/\/+$/,'').endsWith('/image_generation'));
+ const suffix=imageMode?(miniImage?'/image_generation':'/images/generations'):anthropic?'/messages':responses?'/responses':'/chat/completions';
+ let path=url.pathname.replace(/\/+$/,'');
+ if(/\/(image_generation|images\/generations|messages|responses|chat\/completions)$/.test(path)&&!path.endsWith(suffix))throw Error(localized('完整接口地址与所选协议不符。', 'The endpoint does not match the selected protocol.'));
+ if(!path.endsWith(suffix))path+=suffix;
+ url.pathname=path;
+ if((!imageMode&&!$('limit').checkValidity())||!$('timeout').checkValidity()||!$('timeout').value)throw Error(localized('请检查输出上限和请求超时的数值。', 'Check the output limit and timeout.'));
+ return {address:url.href,model,key,responses,anthropic,miniImage,limit:Number($('limit').value),timeout:Number($('timeout').value)}}
+function lock(value){busy=value;for(const id of ['chat','picture','size','ratio','model','address','key','test','clear','send','search','researchURL','researchModel','researchKey','protocol','limit','timeout','instruction','rounds','imageRounds','artDirection'])$(id).disabled=value}
+function append(role,text){$('log').querySelector('.empty')?.remove();const p=document.createElement('p'),b=document.createElement('b');p.className='message';b.textContent=role;p.append(b,document.createTextNode(text));$('log').append(p);$('log').scrollTop=$('log').scrollHeight;return p}
+function showSearchSources(container,output){
+ const sources=new Map();
+ function collect(source){
+   try{
+     const url=new URL(source.url);
+     if(['https:','http:'].includes(url.protocol))sources.set(url.href,source.title||sources.get(url.href)||url.hostname);
+   }catch{}
+ }
+ let searched=false;
+ for(const item of output){
+   if(item.type==='web_search_call'){
+     if(item.status==='completed')searched=true;
+     for(const source of item.action?.sources||[])collect(source);
+   }
+   for(const part of item.content||[]){
+     for(const note of part.annotations||[])if(note.type==='url_citation')collect(note);
+   }
+ }
+ const section=document.createElement('div');section.className='search-links';
+ section.textContent=sources.size?localized('网页来源', 'Web sources'):searched?localized('检索已完成，接口未提供来源链接。', 'Search completed without source links.'):localized('接口未返回可验证的检索记录。', 'The endpoint returned no verifiable search record.');
+ for(const [href,title] of sources){
+   const link=document.createElement('a');link.href=href;link.target='_blank';link.rel='noopener noreferrer';link.textContent=title;
+   section.append(document.createElement('br'),link);
+ }
+ container.append(section);
+}
+function researchConfig(){
+ let url;
+ try{url=endpointURL($('researchURL').value.trim())}catch{throw Error(localized('请填写搜索服务的 HTTPS Base URL 或 /responses 地址。', 'Enter the HTTPS base URL or /responses endpoint for search.'))}
+ const path=url.pathname.replace(/\/+$/,'');
+ if(/\/(chat\/completions|images\/generations|image_generation)$/.test(path))throw Error(localized('搜索接口需要 Responses 地址。', 'Search requires a Responses endpoint.'));
+ url.pathname=path.endsWith('/responses')?path:path+'/responses';
+ const model=$('researchModel').value.trim(),key=$('researchKey').value.trim();
+ if(!model||!key)throw Error(localized('请填写支持网页搜索的模型 ID 和搜索 API Key。', 'Enter a search-capable model ID and search API key.'));
+ return {address:url.href,model,key};
+}
+$('researchURL').oninput=()=>{
+ $('researchKey').value='';
+ try{$('researchRecipient').textContent=localized('接收域名：', 'Recipient: ')+endpointURL($('researchURL').value.trim()).origin}
+ catch{$('researchRecipient').textContent=localized('接收域名：待填写有效 HTTPS 地址', 'Recipient: enter a valid HTTPS URL')}
+};
+async function imageResearch(service,prompt,signal){
+ const response=await fetch(service.address,{method:'POST',redirect:'error',credentials:'omit',signal,
+ headers:{Authorization:'Bearer '+service.key,'Content-Type':'application/json'},
+ body:JSON.stringify({model:service.model,input:prompt,store:false,tools:[{type:'web_search'}],tool_choice:'required',
+ include:['web_search_call.action.sources'],instructions:localized('检索网页，提供与画面相关且有来源支持的可见特征。只返回简洁的视觉事实，限 200 字。', 'Search the web for source-backed visual details relevant to the image. Return concise visual facts in 100 words or fewer.')})});
+ if(!response.ok)throw Error(localized('网页检索失败（HTTP ', 'Web search failed (HTTP ')+response.status+localized('），请检查搜索接口、模型权限和密钥。', '). Check the search endpoint, model permissions and key.'));
+ const {output=[]}=await response.json();
+ if(!output.some(item=>item.type==='web_search_call'&&item.status==='completed'))throw Error(localized('搜索服务未返回已完成的联网检索记录。', 'The service returned no completed web search.'));
+ const brief=output.flatMap(item=>item.content||[]).filter(part=>part.type==='output_text').map(part=>part.text).join(' ').trim();
+ if(!brief)throw Error(localized('搜索服务未返回可用于绘图的资料。', 'The service returned no usable image references.'));
+ return {brief,output};
+}
+const serialEmbed=new URLSearchParams(location.search).get('serial')==='1'&&parent!==window;
+if(serialEmbed){
+ window.addEventListener('message',event=>{
+   if(event.origin!==location.origin||event.source!==parent||event.data?.type!=='serial-context'||typeof event.data.prompt!=='string')return;
+   if(busy){$('note').textContent=localized('请等待当前请求结束后重新带入串口数据。', 'Wait for the current request to finish before importing serial data.');return}
+   if(imageMode)setMode(false);
+   $('prompt').value=event.data.prompt.slice(0,16000);$('prompt').focus();
+ });
+ parent.postMessage({type:'lab-ready'},location.origin);
+}
+function offerSerialCommand(container,reply){
+ if(!serialEmbed)return;
+ for(const block of reply.matchAll(/`{3}[^\n]*\n([\s\S]*?)`{3}/g)){
+   const command=block[1].trim();
+   if(!command||command.length>1024||/[\x00-\x1f\x7f]/.test(command))continue;
+   const button=document.createElement('button');button.type='button';button.textContent=localized('带回串口预览', 'Preview in serial terminal');
+   button.onclick=()=>parent.postMessage({type:'serial-draft',command},location.origin);
+   container.append(document.createElement('br'),button);break;
+ }
+}
+async function run(test,retryText){if(busy)return;const question=imageMode&&test?localized('白色背景中央的一个黑色圆点。', 'A black dot centered on a white background.'):(retryText??$('prompt').value.trim());if(!test&&!question)return;
+ let pending,timer;
+ const search=!test&&!imageMode&&$('search').checked;
+ try{const c=config(search);const research=imageMode&&!test&&$('search').checked?researchConfig():null;lock(true);
+ if(!await approveDestination(c.address)||(research&&!await approveDestination(research.address))){ $('note').textContent=localized('已取消，未发送请求。', 'Canceled. No request was sent.');return }
+ controller=new AbortController();timer=setTimeout(()=>controller.abort(new DOMException('Timeout','TimeoutError')),c.timeout*1000);
+ if(!test||imageMode){
+   append(test?localized('连接测试', 'Connection test'):localized('你', 'You'),question);
+   if(!test&&retryText===undefined&&$('prompt').value.trim()===question)$('prompt').value='';
+   pending=append(c.model,imageMode?localized('正在生成图片…', 'Generating image…'):localized('等待回复…', 'Waiting for reply…'));
+   $('stop').hidden=false;
+ }
+ $('note').textContent=imageMode?localized('正在生成图片…', 'Generating image…'):test?localized('正在测试连接…', 'Testing connection…'):localized('正在等待模型回复…', 'Waiting for model…');const count=Number($('rounds').value);const previous=count?history.slice(-count*2):[];const messages=test?[{role:'user',content:'Reply OK.'}]:[...previous,{role:'user',content:question}];
+ const promptParts=[];
+ if(imageMode&&!test){
+   const rounds=Number($('imageRounds').value);
+   const style=$('artDirection').value.trim();
+   if(style)promptParts.push(localized('固定画面要求：', 'Persistent image requirements: ')+style);
+   if(rounds&&imageHistory.length)promptParts.push(localized('此前的画面描述（按时间顺序）：\n', 'Previous descriptions in chronological order:\n')+imageHistory.slice(-rounds).join('\n'));
+ }
+ const imagePrompt=promptParts.length?[...promptParts,localized('本次画面要求（优先）：', 'Current image requirements (take priority): ')+question].join('\n\n'):question;
+ const payload=imageMode?{model:c.model,prompt:imagePrompt}:c.responses?{model:c.model,input:messages,store:false}:{model:c.model,messages};
+ if(search){payload.tools=[{type:'web_search'}];payload.tool_choice='required';payload.include=['web_search_call.action.sources']}
+ const instruction=$('instruction').value.trim();
+ if(!imageMode&&!test&&instruction){if(c.responses)payload.instructions=instruction;else payload.messages=[{role:'system',content:instruction},...messages]}
+ if(c.miniImage){
+   payload.response_format='url';
+   payload.n=1;
+   const [width,height]=dimensions();
+   if(Math.max(width,height)>2048)throw Error(localized('MiniMax image-01 每边最多 2048 px，请选择 2K 或更低档位。', 'MiniMax image-01 supports up to 2048 px per side. Choose 2K or lower.'));
+   payload.width=width;payload.height=height;
+ }else if(imageMode)payload.size=dimensions().join('x');
+ if(!imageMode&&c.limit){const field=c.responses?'max_output_tokens':'max_tokens';payload[field]=c.limit}
+ if(!imageMode&&c.anthropic) payload.max_tokens=c.limit||1024;
+ if(research){
+   const progress=pending.lastChild;
+   progress.textContent=$('note').textContent=localized('正在检索画面资料…', 'Researching image references…');
+   const result=await imageResearch(research,imagePrompt,controller.signal);
+   const addition=localized('\n\n网页参考资料：', '\n\nWeb references: ')+result.brief;
+   const capacity=c.miniImage?1500:Array.from(imagePrompt+addition).length;
+   if(c.miniImage&&Array.from(imagePrompt).length+12>=capacity)throw Error(localized('画面描述过长，请缩短描述，为检索资料预留空间。', 'Shorten the description to leave room for research.'));
+   payload.prompt=Array.from(imagePrompt+addition).slice(0,capacity).join('');
+   showSearchSources(pending,result.output);
+   pending.insertBefore(pending.lastChild,progress);
+   progress.textContent=$('note').textContent=localized('检索完成，正在生成图片…', 'Research complete. Generating image…');
+ }
+ const headers={'Content-Type':'application/json',Authorization:'Bearer '+c.key};
+ if(!imageMode&&c.anthropic) headers['anthropic-version']='2023-06-01';
+ const r=await fetch(c.address,{method:'POST',redirect:'error',credentials:'omit',headers,body:JSON.stringify(payload),signal:controller.signal});
+ if(search&&!r.ok&&[400,404,422].includes(r.status))throw Error(localized('接口拒绝了搜索请求（HTTP ', 'Search request rejected (HTTP ')+r.status+localized('）。请确认该地址和模型支持 Responses 的 web_search 工具，或关闭联网搜索。', '). Verify that the endpoint and model support the Responses web_search tool, or turn off web search.'));
+ if(!r.ok)throw Error(({401:localized('密钥无效', 'Invalid API key'),403:localized('没有访问权限', 'Access denied'),404:localized('请检查接口地址和模型名称', 'Check the endpoint and model name'),429:localized('配额不足或请求过于频繁', 'Quota exceeded or rate limit reached')})[r.status]||'HTTP '+r.status);
+ const data=await r.json();
+ if(imageMode){
+ if(c.miniImage && data.base_resp?.status_code)throw Error('MiniMax '+data.base_resp.status_code+' · '+(data.base_resp.status_msg||localized('图片生成失败', 'Image generation failed')));
+ const item=c.miniImage?{url:data.data?.image_urls?.[0]}:data.data?.[0];let src;
+ if(item?.b64_json){const mime=item.b64_json.startsWith('/9j/')?'image/jpeg':item.b64_json.startsWith('UklGR')?'image/webp':'image/png';src='data:'+mime+';base64,'+item.b64_json}
+ else if(item?.url&&new URL(item.url).protocol==='https:')src=item.url;
+ if(!src)throw Error(localized('接口未返回可显示的图片。', 'The endpoint returned no displayable image.'));
+ if(!test)imageHistory.push(question);
+ const status=pending.lastChild;status.textContent=localized('图片加载中…', 'Loading image…');const img=document.createElement('img');img.alt=question;img.referrerPolicy='no-referrer';img.onerror=()=>{status.textContent=localized('图片加载失败，请检查接口返回的图片地址。', 'Image failed to load. Check the image URL.')};img.onload=()=>{status.textContent='';$('log').scrollTop=$('log').scrollHeight};pending.append(img);img.src=src;connectionReady();$('note').textContent=(test?localized('连接测试成功 · ', 'Connection successful · '):localized('图片已生成 · ', 'Image generated · '))+c.model;return
+ }
+ const reply=c.anthropic?(data.content||[]).filter(part=>part.type==='text').map(part=>part.text).join(''):c.responses?(data.output||[]).flatMap(item=>item.content||[]).filter(part=>part.type==='output_text').map(part=>part.text).join(''):data.choices?.[0]?.message?.content;if(typeof reply!=='string'||!reply.trim())throw Error(localized('接口没有返回文本回复。', 'The endpoint returned no text reply.'));
+ if(!test){history.push({role:'user',content:question},{role:'assistant',content:reply});pending.lastChild.textContent=reply;offerSerialCommand(pending,reply);if(search)showSearchSources(pending,data.output||[]);$('log').scrollTop=$('log').scrollHeight}
+ connectionReady();
+ $('note').textContent=(test?localized('连接测试成功', 'Connection successful'):localized('已收到回复', 'Reply received'))+' · '+c.model;
+ }catch(e){$('note').textContent=e.name==='AbortError'?localized('已停止等待。', 'Stopped waiting.'):e.name==='TimeoutError'?localized('请求超时，请重试。', 'Request timed out. Try again.'):e instanceof TypeError?localized('请求失败，请检查网络及供应商的浏览器跨域设置。', 'Request failed. Check your network and the provider’s CORS settings.'):e.message;
+ if(pending){pending.lastChild.textContent=$('note').textContent+' ';const retry=document.createElement('button');retry.textContent=localized('重试', 'Retry');retry.onclick=()=>{if(!busy){retry.remove();run(test,question)}};pending.append(retry)}
+ }finally{clearTimeout(timer);controller=null;$('stop').hidden=true;lock(false)}}
+$('test').onclick=()=>run(true);$('clear').onclick=resetLog;$('composer').onsubmit=e=>{e.preventDefault();run(false)};$('prompt').onkeydown=e=>{if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing&&e.keyCode!==229){e.preventDefault();run(false)}};
+$('search').onchange=()=>{if(imageMode){$('researchConfig').hidden=!$('search').checked;if($('search').checked)compactConfig(false);$('note').textContent=$('search').checked?localized('画面描述将发送至搜索接口，检索资料将随提示词发送至绘图接口。', 'Your description goes to the search endpoint. The references and prompt go to the image endpoint.'):'';return}$('note').textContent=$('search').checked?localized('联网搜索使用 Responses 协议，请填写 Base URL 或完整 /responses 地址。', 'Web search uses Responses. Enter a base URL or a full /responses endpoint.'):''};
+$('protocol').onchange=()=>{resetLog()};
+setMode(false);
+</script></body></html>

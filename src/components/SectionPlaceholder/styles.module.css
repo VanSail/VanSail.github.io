@@ -1,0 +1,66 @@
+.wrapper {
+  display: block;
+}
+
+.main {
+  min-height: calc(100vh - 60px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 12vh 24px;
+  text-align: center;
+  background:
+    radial-gradient(
+      ellipse 60% 50% at 50% 42%,
+      rgba(34, 66, 120, 0.22),
+      transparent 78%
+    ),
+    #05060a;
+}
+
+.eyebrow {
+  margin: 0;
+  font-family: var(--ifm-font-family-monospace, monospace);
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: #9cc9ff;
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(40px, 6vw, 80px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: #ffffff;
+}
+
+.note {
+  margin: 0;
+  font-size: 15px;
+  color: rgba(224, 234, 250, 0.68);
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 16px;
+  padding: 10px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  border-radius: 999px;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    border-color 0.18s ease,
+    background 0.18s ease;
+}
+
+.back:hover {
+  border-color: rgba(156, 201, 255, 0.8);
+  background: rgba(156, 201, 255, 0.1);
+  color: #ffffff;
+  text-decoration: none;
+}

@@ -1,0 +1,67 @@
+.localeSwitcher {
+  display: inline-flex;
+  align-items: center;
+  height: 26px;
+  padding: 2px;
+  margin-left: 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  gap: 2px;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.localeSwitcher:hover {
+  background: rgba(255, 255, 255, 0.11);
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.segment {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 20px;
+  padding: 0 7px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  line-height: 1;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.66);
+  transition:
+    color 0.15s ease,
+    background 0.15s ease;
+}
+
+.segment:hover:not(.active) {
+  color: #ffffff;
+}
+
+/* 当前语种：白色填充 + 深色字 */
+.segment.active {
+  background: rgba(255, 255, 255, 0.92);
+  color: #080b12;
+  cursor: default;
+}
+
+/* 窄屏：收紧语言切换，给中间栏目与搜索胶囊留出余量 */
+@media (max-width: 720px) {
+  .localeSwitcher {
+    height: 22px;
+    padding: 1px;
+    margin-left: 4px;
+    gap: 1px;
+  }
+
+  .segment {
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    font-size: 9px;
+    letter-spacing: 0;
+  }
+}

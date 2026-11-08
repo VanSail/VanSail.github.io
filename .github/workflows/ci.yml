@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  GITHUB_ACTIONS_SKIP_NODE_DEPRECATION_WARNING: true
+  HUSKY: '0'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: 'ci-${{ github.workflow }}-${{ github.ref }}'
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Check formatting
+        run: yarn format:check
+
+      - name: Check commit message format (commitlint)
+        run: npx commitlint --from "${{ github.event.pull_request.base.sha }}" --to "${{ github.event.pull_request.head.sha }}" --verbose
+
+      - name: Type check
+        run: yarn typecheck
+
+      - name: Build website (zh-CN + en)
+        run: yarn build
+
+      - name: Open built tools in Chrome
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 --directory build &
+          trap 'kill $!' EXIT
+          curl --retry 10 --retry-connrefused --retry-delay 1 -fsS http://127.0.0.1:4173/ -o /dev/null
+          for route in src/pages/tools/*/index.tsx; do
+            app=$(basename "$(dirname "$route")")
+            for locale in zh-CN en; do
+              prefix=""
+              if [ "$locale" = en ]; then prefix="en/"; fi
+              page="build/${prefix}apps/$app/index.html"
+              test -s "$page"
+              google-chrome --headless --no-sandbox --disable-gpu --dump-dom \
+                "http://127.0.0.1:4173/${prefix}apps/$app/?lang=$locale" > "$RUNNER_TEMP/tool.html"
+              grep -Fq "<html lang=\"$locale\">" "$RUNNER_TEMP/tool.html"
+              if [ "$app" = ai ]; then
+                grep -Fq '<p class="empty">' "$RUNNER_TEMP/tool.html"
+              elif [ "$app" = cad ]; then
+                grep -Fq 'id="file"' "$RUNNER_TEMP/tool.html"
+                for asset in step.js dxf.js dxf-worker.js occt-import-js.wasm; do
+                  test -s "build/${prefix}apps/cad/generated/$asset"
+                done
+              elif [[ "$app" == serial || "$app" == bluetooth ]]; then
+                grep -Fq 'class="xterm-rows"' "$RUNNER_TEMP/tool.html"
+              fi
+            done
+          done

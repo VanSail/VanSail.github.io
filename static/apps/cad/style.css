@@ -1,0 +1,285 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: #101a21;
+  color: #edf4f4;
+  font:
+    16px/1.5 system-ui,
+    sans-serif;
+}
+main {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  padding: clamp(12px, 3vw, 30px);
+  gap: 12px;
+}
+header,
+footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+h1 {
+  margin: 0;
+  font-size: clamp(24px, 3vw, 34px);
+}
+button {
+  border: 1px solid #526973;
+  border-radius: 7px;
+  padding: 7px 14px;
+  background: #243740;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+}
+#open {
+  background: #a9e6d5;
+  border-color: #a9e6d5;
+  color: #12382f;
+  font-weight: 600;
+}
+.workspace {
+  position: relative;
+  height: clamp(280px, calc(100dvh - 165px), 850px);
+  overflow: hidden;
+  border: 1px solid #38505b;
+  border-radius: 10px;
+  background-color: #182730;
+  background-image:
+    linear-gradient(#243842 1px, transparent 1px),
+    linear-gradient(90deg, #243842 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+#view {
+  position: absolute;
+  inset: 0;
+}
+canvas {
+  display: block;
+}
+#empty {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  min-width: min(90%, 270px);
+  text-align: center;
+  pointer-events: none;
+  background: #182730ed;
+  padding: 20px;
+  border-radius: 10px;
+}
+#empty strong {
+  font-size: 1.35rem;
+}
+#empty p {
+  color: #b2d9cf;
+  letter-spacing: 0.1em;
+  margin: 6px 0;
+}
+small,
+#status {
+  color: #becdd1;
+}
+#status {
+  flex: 1;
+  overflow-wrap: anywhere;
+}
+body.dragging .workspace {
+  outline: 3px solid #a9e6d5;
+  outline-offset: -3px;
+}
+.layout {
+  display: flex;
+  align-items: stretch;
+  height: clamp(280px, calc(100dvh - 165px), 850px);
+  gap: 8px;
+}
+.layout .workspace {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+}
+#structure {
+  background: #162229;
+  border: 1px solid #38505b;
+  border-radius: 8px;
+  padding: 10px;
+  overflow: auto;
+  font-size: 14px;
+}
+#structure[open] {
+  width: clamp(215px, 26%, 320px);
+}
+#structure > summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+#items ul {
+  list-style: none;
+  padding-left: 0.75em;
+  margin: 4px 0;
+}
+#items > ul {
+  padding-left: 0;
+}
+#items label {
+  display: block;
+}
+.partRow {
+  display: flex;
+  align-items: center;
+}
+.partRow button {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  padding: 4px;
+  font-size: inherit;
+}
+.partRow button[aria-pressed='true'] {
+  background: #315247;
+  color: #c3f4e5;
+}
+.modelTools {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: min(165px, 48%);
+  max-height: calc(100% - 16px);
+  overflow: auto;
+  background: #162229;
+  border: 1px solid #38505b;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 14px;
+}
+.modelTools summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.modelTools select,
+.modelTools output {
+  width: 100%;
+  margin-top: 6px;
+}
+.modelTools output {
+  display: block;
+  white-space: pre-line;
+}
+.modelTools [hidden] {
+  display: none;
+}
+.modelTools select {
+  background: #243740;
+  color: inherit;
+  padding: 4px;
+}
+.modelTools details button {
+  font-size: 12px;
+  margin-top: 6px;
+}
+.modelTools .editor {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #38505b;
+}
+.editor label {
+  display: block;
+}
+.editor strong {
+  display: block;
+  overflow-wrap: anywhere;
+  margin-bottom: 6px;
+}
+.editor input {
+  vertical-align: middle;
+  margin-left: 6px;
+}
+.editor button {
+  font-size: 12px;
+  margin-top: 6px;
+}
+@media (max-width: 639px) {
+  .layout {
+    position: relative;
+  }
+  #structure {
+    position: absolute;
+    z-index: 2;
+    left: 6px;
+    top: 6px;
+    max-height: 96%;
+  }
+  #structure[open] {
+    width: min(220px, 65%);
+  }
+}
+#loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(80%, 320px);
+  padding: 18px 22px;
+  border-radius: 10px;
+  background: #17272f;
+  text-align: center;
+}
+#progress {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  accent-color: #a9e6d5;
+}
+
+.modelTools:has(.referencePhoto:not([hidden])) {
+  width: min(280px, 45%);
+}
+.editor .referencePhoto:not([hidden]) {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-top: 8px;
+  cursor: crosshair;
+}
+.editor small {
+  display: block;
+}
+
+.photoZoom {
+  width: min(92vw, 1100px);
+  padding: 12px;
+  background: #162229;
+  color: inherit;
+  border: 1px solid #526973;
+  border-radius: 10px;
+}
+.photoZoom::backdrop {
+  background: #0b131bc9;
+}
+.photoZoom header {
+  margin-bottom: 10px;
+}
+.photoZoom header input {
+  flex: 1;
+  min-width: 0;
+}
+.photoViewport {
+  height: 70dvh;
+  overflow: auto;
+  background: #101a21;
+}
+.photoViewport img {
+  display: block;
+  margin: 0 auto;
+  height: auto;
+  max-width: none;
+  cursor: crosshair;
+}

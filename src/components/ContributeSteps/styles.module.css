@@ -1,0 +1,623 @@
+/**
+ * /join/ 贡献指南页：竖向交错时间线。
+ *
+ * 一根竖线贯穿全篇，10 个白色圆形序号挂在线上、自上而下 1→10 递增；
+ * 步骤卡左右交替排列。不划分阶段、不折叠，10 步始终全部可见。
+ * 配色沿用首页的深空蓝与玻璃卡片语言。
+ */
+
+.join {
+  position: relative;
+  z-index: 2;
+  padding: clamp(56px, 7vh, 96px) var(--vs-shell-pad) 0;
+  background: linear-gradient(180deg, #05060a 0%, #080c16 100%);
+  color: #ffffff;
+}
+
+/* 与上方 sticky 镜头之间的淡出过渡，避免画面硬切到纯色 */
+.join::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -120px;
+  height: 120px;
+  background: linear-gradient(180deg, rgba(5, 6, 10, 0), #05060a 92%);
+  pointer-events: none;
+}
+
+/*
+ * 内容栅格：--vs-content-max 就是导航栏 logo 左边 → 语言按钮右边的宽度。
+ * .inner 直接用它作上限，容器本身也不会超出该区间（--vs-content-max 已含
+ * 两侧 gutter 与滚动条余量，这里不再叠加 padding，避免盒子比内容区更宽）。
+ */
+.inner {
+  position: relative;
+  width: 100%;
+  max-width: var(--vs-content-max);
+  margin: 0 auto;
+}
+
+/* ---------------- 区块头部 ---------------- */
+.header {
+  text-align: center;
+  margin-bottom: clamp(34px, 5vw, 56px);
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(28px, 3.4vw, 44px);
+  font-weight: 650;
+  line-height: 1.22;
+  letter-spacing: -0.035em;
+  color: #ffffff;
+  text-wrap: balance;
+}
+
+.intro {
+  max-width: 620px;
+  margin: 14px auto 0;
+  font-size: 14px;
+  line-height: 1.8;
+  color: rgba(214, 228, 248, 0.76);
+}
+
+.repoLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 100%;
+  margin-top: 22px;
+  padding: 9px 16px;
+  border: 1px solid rgba(156, 201, 255, 0.32);
+  border-radius: 999px;
+  background: rgba(14, 23, 40, 0.62);
+  color: rgba(220, 233, 255, 0.94);
+  font-family: var(--ifm-font-family-monospace, monospace);
+  font-size: 12px;
+  text-decoration: none;
+  transition:
+    border-color 0.18s ease,
+    background 0.18s ease;
+}
+
+.repoLink:hover {
+  border-color: rgba(156, 201, 255, 0.8);
+  background: rgba(20, 34, 58, 0.82);
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.repoLink span:not([aria-hidden]) {
+  overflow-wrap: anywhere;
+}
+
+.repoIcon {
+  flex: none;
+  width: 15px;
+  height: 15px;
+}
+
+/* ---------------- 竖向时间线：贯穿竖线 + 线上序号 ---------------- */
+.timelineWrap {
+  position: relative;
+}
+
+/* 发丝竖线自上而下贯穿，进入视口后沿 1→10 的方向描出；两端淡出 */
+.spine {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  z-index: 0;
+  width: 1px;
+  background: linear-gradient(
+    180deg,
+    rgba(156, 201, 255, 0.04),
+    rgba(156, 201, 255, 0.62) 8%,
+    rgba(156, 201, 255, 0.62) 92%,
+    rgba(156, 201, 255, 0.04)
+  );
+  transform: scaleY(0);
+  transform-origin: top center;
+  transition: transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+
+.timelineWrap[data-drawn='true'] .spine {
+  transform: scaleY(1);
+}
+
+.timeline {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  position: relative;
+  display: flex;
+  padding-bottom: 32px;
+}
+
+.item:last-child {
+  padding-bottom: 0;
+}
+
+/* 奇偶左右交错：卡片两侧各留出 44px 给竖线与序号 */
+.itemLeft {
+  justify-content: flex-start;
+}
+
+.itemRight {
+  justify-content: flex-end;
+}
+
+.node {
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  background: #f4f6fb;
+  color: #080b12;
+  font-family: var(--ifm-font-family-monospace, monospace);
+  font-size: 12px;
+  font-weight: 700;
+  transform: translateX(-50%);
+  transition: box-shadow 0.2s ease;
+}
+
+.item:hover .node {
+  box-shadow: 0 0 0 5px rgba(156, 201, 255, 0.22);
+}
+
+/* ---------------- 步骤卡 ---------------- */
+.card {
+  width: calc(50% - 44px);
+  min-width: 0;
+  padding: 18px 18px 20px;
+  border: 1px solid rgba(156, 201, 255, 0.16);
+  border-radius: 16px;
+  background: rgba(11, 16, 28, 0.62);
+  scroll-margin-top: 90px;
+  transition: border-color 0.2s ease;
+}
+
+.card:hover,
+.card:focus-within {
+  border-color: rgba(156, 201, 255, 0.4);
+}
+
+.cardHead {
+  margin-bottom: 14px;
+}
+
+.stepTitle {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.45;
+  color: #ffffff;
+}
+
+.visualWrap {
+  margin-bottom: 14px;
+}
+
+/* ---------------- 纯 CSS 示意卡 ---------------- */
+.mockCard {
+  min-height: 148px;
+  padding: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  background: #111726;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.32);
+}
+
+.mockHead {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  color: rgba(214, 228, 248, 0.55);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.mockDots {
+  display: inline-flex;
+  gap: 3px;
+}
+
+.mockDots i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.24);
+}
+
+.mockStatus {
+  margin-left: auto;
+  color: #9cc9ff;
+  font-family: var(--ifm-font-family-monospace, monospace);
+  letter-spacing: 0;
+}
+
+.mockTerminal {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mockLine {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+  font-family: var(--ifm-font-family-monospace, monospace);
+  font-size: 10.5px;
+  line-height: 1.4;
+}
+
+.mockLine > span {
+  color: #7fd8a4;
+}
+
+.mockLine code {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  border: 0;
+  background: none;
+  color: rgba(220, 234, 255, 0.82);
+  font: inherit;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mockLine em {
+  flex: none;
+  color: #7fd8a4;
+  font-size: 10px;
+  font-style: normal;
+}
+
+.mockFoot {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 14px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(214, 228, 248, 0.62);
+  font-size: 10.5px;
+}
+
+.mockOk {
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #7fd8a4;
+}
+
+.mockPr {
+  flex: none;
+  padding: 1px 6px;
+  border: 1px solid rgba(156, 201, 255, 0.45);
+  border-radius: 5px;
+  color: #9cc9ff;
+  font-family: var(--ifm-font-family-monospace, monospace);
+  font-size: 9.5px;
+}
+
+/* ---------------- 步骤详情 ---------------- */
+.stepDetail {
+  min-width: 0;
+}
+
+.desc {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.75;
+  color: rgba(214, 228, 248, 0.76);
+}
+
+.descLink {
+  color: #9cc9ff;
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1px dashed rgba(156, 201, 255, 0.6);
+}
+
+.descLink:hover {
+  color: #cbe5ff;
+  border-bottom-color: #cbe5ff;
+  text-decoration: none;
+}
+
+/* ---------------- 命令代码块 ---------------- */
+.codeWrap {
+  position: relative;
+  margin-top: 12px;
+}
+
+.code {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 14px 76px 14px 16px;
+  overflow-x: auto;
+  border: 1px solid rgba(156, 201, 255, 0.2);
+  border-radius: 10px;
+  background: rgba(3, 6, 12, 0.78);
+  color: rgba(220, 234, 255, 0.92);
+  font-family: var(--ifm-font-family-monospace, monospace);
+  font-size: 12.5px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.code code {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.copyBtn {
+  position: absolute;
+  top: 9px;
+  right: 9px;
+  padding: 4px 9px;
+  border: 1px solid rgba(156, 201, 255, 0.26);
+  border-radius: 6px;
+  background: rgba(14, 23, 40, 0.86);
+  color: rgba(220, 234, 255, 0.88);
+  font-family: inherit;
+  font-size: 11px;
+  cursor: pointer;
+  transition:
+    color 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.copyBtn:hover {
+  color: #ffffff;
+  border-color: rgba(156, 201, 255, 0.7);
+}
+
+/* ---------------- 平台切换 ---------------- */
+.tabs {
+  margin-top: 12px;
+}
+
+.tabBar {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid rgba(156, 201, 255, 0.2);
+  border-radius: 999px;
+  background: rgba(156, 201, 255, 0.07);
+}
+
+.tab {
+  padding: 6px 15px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: rgba(214, 228, 248, 0.72);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.18s ease,
+    color 0.18s ease;
+}
+
+.tab:hover {
+  color: #ffffff;
+}
+
+.tabActive,
+.tabActive:hover {
+  background: #9cc9ff;
+  color: #080b12;
+}
+
+/* ---------------- 资源链接胶囊 ---------------- */
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  border: 1px solid rgba(156, 201, 255, 0.38);
+  border-radius: 999px;
+  background: rgba(156, 201, 255, 0.1);
+  color: #9cc9ff;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.link::after {
+  content: '↗';
+  font-size: 0.85em;
+  opacity: 0.72;
+}
+
+.link:hover {
+  background: rgba(156, 201, 255, 0.2);
+  border-color: rgba(156, 201, 255, 0.7);
+  color: #cbe5ff;
+  text-decoration: none;
+}
+
+/* ---------------- 底部 CTA ---------------- */
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 34px;
+  padding-bottom: 40px;
+}
+
+.ghostButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 20px;
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+  transition: transform 0.18s ease;
+}
+
+.ghostButton:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.6);
+  color: #ffffff;
+  text-decoration: none;
+}
+
+/* ---------------- 响应式 ---------------- */
+@media (max-width: 1100px) {
+  .stepTitle {
+    font-size: 15px;
+  }
+
+  .card {
+    width: calc(50% - 36px);
+  }
+}
+
+@media (max-width: 900px) {
+  .card {
+    padding: 15px 15px 17px;
+  }
+
+  .mockCard {
+    min-height: 136px;
+  }
+
+  .item {
+    padding-bottom: 24px;
+  }
+}
+
+@media (max-width: 767px) {
+  .join {
+    padding-top: 52px;
+  }
+
+  .join::before {
+    top: -80px;
+    height: 80px;
+  }
+
+  .header {
+    margin-bottom: 32px;
+  }
+
+  .repoLink {
+    font-size: 10.5px;
+    padding: 8px 12px;
+  }
+
+  /* 窄屏放不下左右错位：竖线靠左，所有卡片排在线右侧 */
+  .spine {
+    left: 15px;
+  }
+
+  .node {
+    top: 16px;
+    left: 15px;
+    width: 28px;
+    height: 28px;
+    font-size: 11px;
+  }
+
+  .item,
+  .itemLeft,
+  .itemRight {
+    justify-content: flex-end;
+  }
+
+  .item {
+    padding-bottom: 20px;
+  }
+
+  .card {
+    width: calc(100% - 46px);
+    scroll-margin-top: 72px;
+  }
+
+  .mockCard {
+    min-height: 0;
+  }
+
+  .stepTitle {
+    font-size: 16px;
+  }
+
+  .desc {
+    font-size: 13px;
+  }
+
+  .code {
+    font-size: 11.5px;
+    padding: 12px 68px 12px 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spine {
+    transform: scaleY(1);
+    transition: none;
+  }
+
+  .node,
+  .card,
+  .copyBtn,
+  .tab,
+  .link,
+  .repoLink,
+  .ghostButton {
+    transition: none;
+  }
+
+  .ghostButton:hover {
+    transform: none;
+  }
+}

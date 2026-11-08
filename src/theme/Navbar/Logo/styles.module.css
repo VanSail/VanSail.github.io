@@ -1,0 +1,4 @@
+/* 纯字标：不换行，避免窄屏与居中的栏目导航挤在一起。 */
+.wordmark {
+  white-space: nowrap;
+}

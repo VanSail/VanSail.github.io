@@ -1,0 +1,65 @@
+/**
+ * 两个工具独立页面的公共外壳：与目录页、导航栏共用 --vs-shell-* 栅格。
+ * 工具组件以 embedded 模式渲染，由本页提供 Layout 与内容容器。
+ */
+
+.wrapper {
+  display: block;
+}
+
+.page {
+  position: relative;
+  min-height: calc(100vh - var(--ifm-navbar-height));
+  padding: 0 var(--vs-shell-pad) 88px;
+  background:
+    radial-gradient(
+      ellipse 62% 34% at 20% -8%,
+      rgba(52, 108, 208, 0.18),
+      transparent 72%
+    ),
+    radial-gradient(
+      ellipse 48% 30% at 88% 2%,
+      rgba(128, 84, 224, 0.12),
+      transparent 74%
+    ),
+    #05060a;
+}
+
+.shell {
+  max-width: var(--vs-shell-max);
+  margin: 0 auto;
+  padding: 0 var(--vs-gutter);
+}
+
+/* 工具以自包含 HTML 形态内嵌：同源 iframe 装进一张浅色应用面板，
+ * 圆角 + 发丝边框 + 投影，与站内深空背景形成“应用窗口”层次。 */
+.frameCard {
+  margin-top: 22px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 16px;
+  background: #f6f6f4;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+}
+
+.frame {
+  display: block;
+  width: 100%;
+  height: calc(100dvh - var(--ifm-navbar-height) - 108px);
+  min-height: 540px;
+  border: 0;
+  background: #f6f6f4;
+}
+
+@media (max-width: 640px) {
+  .frame {
+    height: calc(100dvh - var(--ifm-navbar-height) - 84px);
+    min-height: 480px;
+  }
+}
+
+@media (max-width: 640px) {
+  .page {
+    padding-bottom: 56px;
+  }
+}

@@ -1,0 +1,61 @@
+.card {
+  --code-toolbar-fg: #bfb7ca;
+  --prism-color: #f6f2fa;
+  --docusaurus-highlighted-code-line-bg: #52465f;
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 1rem 0;
+  background: linear-gradient(115deg, #2b253e, #352d3d);
+  box-shadow: none;
+  width: 100%;
+}
+
+.toolbar {
+  display: grid;
+  grid-template-columns: 62px minmax(0, 1fr) 62px;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 6px;
+}
+
+.toolbar::before {
+  content: '';
+  margin-left: 9px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #595165;
+  box-shadow:
+    18px 0 #595165,
+    36px 0 #595165;
+}
+
+.tab > * {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--code-toolbar-fg);
+  font:
+    600 13px/1.4 system-ui,
+    sans-serif;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.content {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 0.3s ease;
+}
+
+.card[data-collapsed='true'] .content {
+  grid-template-rows: 0fr;
+}
+
+.contentInner {
+  min-height: 0;
+  overflow: hidden;
+}
