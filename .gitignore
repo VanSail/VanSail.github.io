@@ -28,3 +28,4 @@ design/
 /.workbuddy/
 
 /static/apps/cad/generated/
+/static/apps/python/generated/

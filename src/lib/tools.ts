@@ -53,6 +53,17 @@ export const tools = [
     accent: '#7acda1',
     soft: 'rgba(122, 205, 161, 0.45)',
   },
+  {
+    id: 'python',
+    zh: 'Python 实验室',
+    en: 'Python Lab',
+    descZh: '运行 Python 笔记本与图表',
+    descEn: 'Run Python notebooks',
+    keywords:
+      'python jupyter jupyterlab notebook ipynb matplotlib python解释器 笔记本 代码 画图 数据分析',
+    accent: '#79b5ef',
+    soft: 'rgba(121,181,239,.45)',
+  },
 ] as const;
 
 export type ToolId = (typeof tools)[number]['id'];

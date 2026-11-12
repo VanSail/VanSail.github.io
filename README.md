@@ -8,10 +8,11 @@
     - [蓝牙助手](https://www.vansail.cn/tools/bluetooth/)
     - [CAD 看图](https://www.vansail.cn/tools/cad/)
     - [AI 实验室](https://www.vansail.cn/tools/ai/)
+    - [Python 实验室](https://www.vansail.cn/tools/python/)
 
 ## 本地开发
 
-要求 Node `>=20 <25`（CI 固定 24，见 `.nvmrc`）与 Yarn 1.22.22。
+要求 Node `>=20 <25`（CI 固定 24，见 `.nvmrc`）与 Yarn 1.22.22。Python 实验室的静态构建还需 Python（CI 使用 3.12），可用环境变量 `PYTHON` 指定解释器路径。首次构建会安装 JupyterLite，示例笔记本位于 `python-lab/notebooks/`。
 
 ```bash
 yarn install --frozen-lockfile

@@ -293,6 +293,7 @@ function startWatch() {
     'docs',
     'i18n',
     'static',
+    'python-lab',
     'cad',
     'scripts/cad-assets.cjs',
     'docusaurus.config.ts',
@@ -305,6 +306,7 @@ function startWatch() {
     ignoreInitial: true,
     ignored: [
       path.join(root, 'static/apps/cad/generated'),
+      path.join(root, 'static/apps/python/generated'),
       /node_modules/,
       /\.docusaurus/,
       /(^|[\\/])build[\\/]/,

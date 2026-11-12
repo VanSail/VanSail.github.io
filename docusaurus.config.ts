@@ -30,7 +30,10 @@ const config: Config = {
     },
   },
 
-  plugins: [require.resolve('./scripts/cad-assets.cjs')],
+  plugins: [
+    require.resolve('./scripts/cad-assets.cjs'),
+    require.resolve('./scripts/python-lab.cjs'),
+  ],
 
   presets: [
     [

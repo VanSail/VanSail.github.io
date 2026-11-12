@@ -25,6 +25,9 @@ jobs:
         with:
           fetch-depth: 0
 
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
       - name: Setup Node
         uses: actions/setup-node@v5
         with:
@@ -60,6 +63,11 @@ jobs:
               test -s "$page"
               google-chrome --headless --no-sandbox --disable-gpu --dump-dom \
                 "http://127.0.0.1:4173/${prefix}apps/$app/?lang=$locale" > "$RUNNER_TEMP/tool.html"
+              if [ "$app" = python ]; then
+                test -s "build/${prefix}apps/python/generated/lab/index.html"
+                test -s "build/${prefix}apps/python/generated/files/HelloWorld.ipynb"
+                continue
+              fi
               grep -Fq "<html lang=\"$locale\">" "$RUNNER_TEMP/tool.html"
               if [ "$app" = ai ]; then
                 grep -Fq '<p class="empty">' "$RUNNER_TEMP/tool.html"

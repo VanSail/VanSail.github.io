@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Python 实验室</title></head>
+<body><script type="module">
+import {retireExamples} from "./retire-examples.js";
+const en=new URLSearchParams(location.search).get('lang')==='en';
+document.documentElement.lang=en?'en':'zh-CN';
+const target=new URL('generated/lab/index.html',location.href);
+target.searchParams.set('path','HelloWorld.ipynb');
+try { await retireExamples(new URL("generated/",location.href).pathname); }
+catch(error) { console.warn("Could not retire saved examples",error); }
+location.replace(target);
+</script></body></html>
