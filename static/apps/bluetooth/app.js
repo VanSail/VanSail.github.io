@@ -156,7 +156,7 @@ const tx = el('tx');
 const rx = el('rx');
 let stream;
 let writeTask = Promise.resolve();
-const {terminal, record, resetDigits} = createDeviceTerminal({
+const {terminal, record, resetDigits, cancelLab} = createDeviceTerminal({
   localized: t,
   isOpen: () => Boolean(writer),
   enqueue(bytes) {
@@ -204,6 +204,7 @@ function receive(event) {
     );
 }
 function resetTerminal() {
+  cancelLab();
   subscribed?.removeEventListener('characteristicvaluechanged', receive);
   subscribed = writer = undefined;
   writers.length = receivers.length = 0;
@@ -228,6 +229,7 @@ function addChannel(item) {
   }
 }
 async function activateTerminal() {
+  cancelLab();
   const attempt = session;
   const receiver = receivers[rx.value];
   writer = undefined;

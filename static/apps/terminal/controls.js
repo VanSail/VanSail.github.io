@@ -59,7 +59,9 @@ function createDeviceTerminal({localized, isOpen, enqueue}) {
     terminal.reset();
     records.forEach(display);
   }
+  const lab = attachDeviceLab({localized, isOpen, enqueue});
   function record(s, dir, data) {
+    if (dir === 'RX') lab.receive(data);
     const bytes = new Uint8Array(data);
     if (dir === 'RX') rx += bytes.length;
     else tx += bytes.length;
@@ -158,6 +160,7 @@ function createDeviceTerminal({localized, isOpen, enqueue}) {
   return {
     terminal,
     record,
+    cancelLab: lab.cancel,
     resetDigits() {
       digits = '';
       digitHint();
