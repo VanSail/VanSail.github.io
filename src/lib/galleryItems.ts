@@ -91,4 +91,17 @@ export const galleryItems = [
       {zh: '仿真与可视化', en: 'Simulation & RViz'},
     ],
   },
+  {
+    name: 'Oh My Zsh',
+    src: '/img/projects/oh-my-zsh.webp',
+    url: 'https://github.com/ohmyzsh/ohmyzsh',
+    zh: 'Oh My Zsh 是社区驱动的 Zsh 配置框架，内置数百个插件、主题与别名，让终端开箱即用。',
+    en: 'Oh My Zsh is a community-driven framework for managing your Zsh configuration, bundling hundreds of plugins, themes and aliases.',
+    features: [
+      {zh: '插件生态', en: 'Plugin ecosystem'},
+      {zh: '主题与提示符', en: 'Themes & prompts'},
+      {zh: '命令别名', en: 'Command aliases'},
+      {zh: '自动更新', en: 'Auto updates'},
+    ],
+  },
 ];
