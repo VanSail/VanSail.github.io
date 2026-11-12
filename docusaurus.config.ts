@@ -6,7 +6,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 const config: Config = {
   title: 'VanSail',
   tagline: '扬帆起航，探索无界',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/favicon-blue-sail.ico',
 
   future: {
     v4: true,

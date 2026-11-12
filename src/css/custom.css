@@ -128,17 +128,12 @@ div:has(> .theme-doc-sidebar-container) {
   color: #ffffff !important;
 }
 
-/* 左上角 VanSail 字标：无图片 logo、无渐变流光 */
+/* 左上角 VanSail 字标 */
 .navbar__title {
   font-size: 20px;
   font-weight: 650;
   letter-spacing: -0.02em;
   line-height: 1;
-  color: #ffffff !important;
-  -webkit-text-fill-color: #ffffff;
-  background: none;
-  animation: none;
-  filter: none;
 }
 
 .navbar__link {

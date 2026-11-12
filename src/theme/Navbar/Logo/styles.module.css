@@ -1,4 +1,53 @@
-/* 纯字标：不换行，避免窄屏与居中的栏目导航挤在一起。 */
+.mask {
+  display: inline-flex;
+  overflow: hidden;
+}
 .wordmark {
+  display: inline-block;
   white-space: nowrap;
+  color: #fff;
+  padding-block: 0.08em;
+}
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+  .wordmark {
+    background-color: #afdbff;
+    background-image:
+      radial-gradient(ellipse at 22% 30%, #f5fcff 7%, transparent 40%),
+      radial-gradient(ellipse at 68% 76%, #70e5ee 8%, transparent 43%),
+      linear-gradient(112deg, #83a4ff 10%, #d8e4ff 50%, #86acff 88%);
+    background-size: 210% 160%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .wordmark {
+      animation:
+        rise 550ms ease-out both,
+        drift 6s ease-in-out infinite alternate;
+    }
+  }
+}
+@keyframes rise {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes drift {
+  from {
+    background-position: 0% 20%;
+  }
+  to {
+    background-position: 100% 80%;
+  }
+}
+@media (forced-colors: active) {
+  .wordmark {
+    background: none;
+    -webkit-text-fill-color: LinkText;
+    animation: none;
+  }
 }

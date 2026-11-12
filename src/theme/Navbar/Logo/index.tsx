@@ -5,7 +5,6 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import styles from './styles.module.css';
 
-/** 左上角品牌：纯 VanSail 字标，不带图形 mark。 */
 export default function NavbarLogo(): ReactNode {
   const {
     siteConfig: {title},
@@ -13,7 +12,10 @@ export default function NavbarLogo(): ReactNode {
 
   return (
     <Link to={useBaseUrl('/')} className="navbar__brand" aria-label={title}>
-      <span className={clsx('navbar__title', styles.wordmark)}>{title}</span>
+      <img src={useBaseUrl('img/logo.svg')} width={32} height={32} alt="" />
+      <span className={styles.mask}>
+        <span className={clsx('navbar__title', styles.wordmark)}>{title}</span>
+      </span>
     </Link>
   );
 }
