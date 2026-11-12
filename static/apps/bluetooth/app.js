@@ -68,6 +68,17 @@ if (en) {
   }
 }
 
+const foldSettings = el('foldSettings');
+function showSettings(open) {
+  el('deviceSettings').hidden = el('terminalSettings').hidden = !open;
+  foldSettings.setAttribute('aria-expanded', String(open));
+  foldSettings.textContent = open
+    ? t('收起配置', 'Collapse settings')
+    : t('展开配置', 'Expand settings');
+}
+foldSettings.onclick = () => showSettings(el('deviceSettings').hidden);
+showSettings(true);
+
 el('label').textContent = t(
   '服务 UUID（选填，多个用逗号分隔）',
   'Service UUIDs (optional, comma-separated)',
