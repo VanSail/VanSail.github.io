@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="referrer" content="no-referrer"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-m5K5DYAXqD8yTW0oN04maLKmw/wKkdGkzkXs0k1SfgE='; style-src 'unsafe-inline'; img-src https: data:; connect-src https:; base-uri 'none'; object-src 'none'; form-action 'none'"><title>AI 实验室</title>
+<meta name="referrer" content="no-referrer"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-qgDaDu2xJfiGwq4GoswDgjIllr5svLLbFHStgXSU2JA='; style-src 'unsafe-inline'; img-src https: data:; connect-src https:; base-uri 'none'; object-src 'none'; form-action 'none'"><title>AI 实验室</title>
 <style>
 *{box-sizing:border-box}body{margin:0;background:#f7f7f6;color:#171717;font:15px/1.55 Inter,-apple-system,"PingFang SC",sans-serif}main{max-width:940px;margin:auto;padding:clamp(20px,4vw,48px) 18px}header,.bar,.compose,.keyline,.tabs{display:flex;align-items:center;gap:10px}header,.bar{justify-content:space-between}h1{font-size:clamp(28px,4vw,40px);letter-spacing:-.05em;margin:0}h2{font-size:16px;margin:0}header{padding-bottom:20px}small,label{font-size:13px}header small{color:#666}.panel{border:1px solid #dcdcdc;border-radius:14px;background:white;padding:20px clamp(16px,3vw,28px)}button,input,select,textarea{font:inherit}button{cursor:pointer;border:1px solid #ccc;background:white;color:#191919;border-radius:7px;padding:7px 13px}button:hover{background:#eee}button:disabled{opacity:.55;cursor:default}.tabs{background:#eee;border-radius:8px;padding:3px;gap:2px}.tabs button{border:0;padding:5px 12px;background:transparent;font-size:13px}.tabs [aria-pressed=true]{background:white;box-shadow:0 1px 3px #0002}.fields{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:15px 0}.wide{grid-column:1/-1}label{display:block;color:#555}input,select,textarea{display:block;width:100%;background:white;color:#161616;border:1px solid #ccc;border-radius:7px;padding:9px 12px;margin-top:4px;min-width:0}.keyline input{flex:1}.keyline button{white-space:nowrap}.note{min-height:20px;color:#666;margin:0;font-size:13px;overflow-wrap:anywhere}.terminal{margin-top:16px;background:#141414;color:#f5f5f5;border-radius:14px;padding:18px clamp(16px,3vw,28px)}.terminal .bar{border-bottom:1px solid #343434;padding-bottom:12px}.terminal h2:before{content:'›_';font:16px monospace;margin-right:10px;color:#aaa}.terminal .bar button{background:transparent;color:#ccc;border-color:#444;font-size:12px}.log{height:220px;overflow:auto;padding:16px 0}.empty{color:#aaa;font-size:14px;margin:0}.message{width:fit-content;max-width:90%;margin:0 auto 12px 0;padding:8px 12px;background:#252525;border-radius:10px 10px 10px 3px;text-align:start;white-space:pre-wrap;overflow-wrap:anywhere}.message.user-message{margin-left:auto;margin-right:0;background:#193a40;border-radius:10px 10px 3px 10px}.message>b{display:block;color:#aaa;font:12px/2 monospace}.compose{align-items:flex-end}.compose textarea{background:#222;color:white;border-color:#444;resize:vertical;min-height:44px;max-height:160px;margin:0}.compose button{background:#fafafa;white-space:nowrap}.foot{color:#aaa;font-size:12px;margin:7px 0 0}button:focus-visible,:is(input,select,textarea):focus-visible{outline:2px solid #888;outline-offset:2px}[hidden]{display:none!important}@media(max-width:570px){.fields{grid-template-columns:1fr}.panel>.bar{align-items:flex-start}.tabs button{padding:5px 8px}.log{height:200px}}
 details{border-top:1px solid #eee;padding:10px 0}summary{cursor:pointer;font-size:13px;color:#555}.log img{display:block;max-width:100%;max-height:360px;margin:10px 0;border-radius:8px} dialog{max-width:min(420px,90vw);border:1px solid #ccc;border-radius:12px;padding:24px}dialog strong{overflow-wrap:anywhere}dialog::backdrop{background:#0006}dialog form{text-align:right}dialog button+button{margin-left:8px;background:#171717;color:white}main.compact{min-height:100dvh;display:flex;flex-direction:column}.compact .terminal{flex:1;display:flex;flex-direction:column}.compact .log{flex:1 1 0;min-height:220px}main.compact{height:max(100dvh,440px)}.compact .panel{padding-block:12px}.config-summary{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:8px}.config-summary span{overflow-wrap:anywhere}.compact .note:empty{display:none}
@@ -31,7 +31,7 @@ details{border-top:1px solid #eee;padding:10px 0}summary{cursor:pointer;font-siz
 <div class="config-summary" id="summary" hidden><span id="summaryText"></span><button id="editConfig" aria-controls="configBody">编辑配置</button></div><div id="configBody"><div class="fields"><label>Base URL 或完整接口地址<input id="address" type="url" placeholder="https://api.example.com/v1"></label>
 <label>模型名称<input id="model" placeholder="输入模型 ID"></label>
 <div class="wide"><label for="key">API Key</label><div class="note" id="recipient">接收域名：待填写接口地址</div><div class="keyline"><input id="key" type="password" autocomplete="off" spellcheck="false" placeholder="输入 API Key"><button id="test">测试连接</button></div></div></div>
-<section id="researchConfig" hidden><h2>图片搜索配置</h2><div class="fields"><label>搜索接口（Responses）<input id="researchURL" placeholder="https://api.example.com/v1"></label><label>搜索模型 ID<input id="researchModel"></label><label>搜索 API Key<input id="researchKey" type="password" autocomplete="off"></label></div><p class="note" id="researchRecipient">接收域名：待填写搜索接口</p></section><details id="imageContext" hidden><summary>图片上下文</summary><div class="fields"><label>参考历史描述<select id="imageRounds"><option value="0">仅当前提示词</option><option value="1" selected>最近 1 轮</option><option value="3">最近 3 轮</option><option value="6">最近 6 轮</option></select></label><label>固定画面要求（可选）<textarea id="artDirection" rows="2" placeholder="例如：黑白摄影，柔和自然光"></textarea></label></div><p class="note">沿用之前成功生成的文字描述；上一张图片不会作为参考图上传。</p></details><details id="context"><summary>对话上下文</summary><div class="fields"><label>上下文窗口（tokens）<select id="contextPreset"><option value="0">仅当前消息</option><option value="8K">8K</option><option value="16K">16K</option><option value="32K">32K</option><option value="64K">64K</option><option selected value="128K">128K</option><option value="200K">200K</option><option value="256K">256K</option><option value="512K">512K</option><option value="1M">1M</option><option value="custom">自定义</option></select><input hidden id="contextSize" aria-label="Custom token budget" placeholder="96K" value="96K"></label><label>系统指令（可选）<textarea id="instruction" rows="2" placeholder="例如：用中文回答，先给结论。"></textarea></label></div><p class="note">按模型填写，如 128K 或 1M（100 万 tokens）。按估算用量保留最近对话并预留回复空间；0 表示不带历史。</p></details><details><summary>高级配置</summary><div class="fields">
+<section id="researchConfig" hidden><h2>图片搜索配置</h2><div class="fields"><label>搜索接口（Responses）<input id="researchURL" placeholder="https://api.example.com/v1"></label><label>搜索模型 ID<input id="researchModel"></label><label>搜索 API Key<input id="researchKey" type="password" autocomplete="off"></label></div><p class="note" id="researchRecipient">接收域名：待填写搜索接口</p></section><details id="imageContext" hidden><summary>图片上下文</summary><div class="fields"><label>上下文窗口（tokens）<select id="imagePreset"><option value="0">仅当前提示词</option><option selected value="8K">8K</option><option value="16K">16K</option><option value="32K">32K</option><option value="64K">64K</option><option value="128K">128K</option><option value="200K">200K</option><option value="256K">256K</option><option value="512K">512K</option><option value="1M">1M</option><option value="custom">自定义</option></select><input hidden id="imageSize" aria-label="Custom token budget" placeholder="96K" value="96K"></label><label>固定画面要求（可选）<textarea id="artDirection" rows="2" placeholder="例如：黑白摄影，柔和自然光"></textarea></label></div><p class="note">按估算 token 数保留最近的画面描述。1M 表示 100 万，0 表示仅使用当前要求。模型的提示词上限仍然适用。</p></details><details id="context"><summary>对话上下文</summary><div class="fields"><label>上下文窗口（tokens）<select id="contextPreset"><option value="0">仅当前消息</option><option value="8K">8K</option><option value="16K">16K</option><option value="32K">32K</option><option value="64K">64K</option><option selected value="128K">128K</option><option value="200K">200K</option><option value="256K">256K</option><option value="512K">512K</option><option value="1M">1M</option><option value="custom">自定义</option></select><input hidden id="contextSize" aria-label="Custom token budget" placeholder="96K" value="96K"></label><label>系统指令（可选）<textarea id="instruction" rows="2" placeholder="例如：用中文回答，先给结论。"></textarea></label></div><p class="note">按模型填写，如 128K 或 1M（100 万 tokens）。按估算用量保留最近对话并预留回复空间；0 表示不带历史。</p></details><details><summary>高级配置</summary><div class="fields">
 <label id="protocolField">接口协议<select id="protocol"><option value="chat">Chat Completions</option><option value="responses">Responses</option></select></label>
 <label id="limitField">最大输出 token<input type="number" id="limit" min="1" step="1" placeholder="使用模型默认值"></label>
 <label id="sizeField" hidden>分辨率<select id="size"><option value="">标准</option><option>4K</option><option>2K</option><option>1080P</option><option>720P</option></select></label><label id="ratioField" hidden>画幅比例<select id="ratio"><option>1:1</option><option>16:9</option><option>9:16</option></select><small id="pixels"></small></label><label>请求超时（秒）<input type="number" id="timeout" value="90" min="1" max="600"></label>
@@ -68,7 +68,7 @@ if (english) {
     "最近 6 轮": "Last 6 turns",
     "固定画面要求（可选）": "Persistent image instructions (optional)",
     "例如：黑白摄影，柔和自然光": "Example: black-and-white photography, soft natural light",
-    "沿用之前成功生成的文字描述；上一张图片不会作为参考图上传。": "Reuses descriptions from successful requests. Previous images are not uploaded.",
+    "按估算 token 数保留最近的画面描述。1M 表示 100 万，0 表示仅使用当前要求。模型的提示词上限仍然适用。": "Retains recent descriptions within an estimated token budget. 1M means one million. Use 0 for current requirements only. Model prompt limits still apply.",
     "会话列表":"Conversations","收起":"Collapse","新建对话":"New chat","刷新页面会清除会话。":"Conversations are cleared on reload.",
     "收起配置":"Collapse settings",
     "自定义": "Custom",
@@ -118,6 +118,7 @@ if (english) {
   }
 }
 const $=id=>document.getElementById(id);
+$('imagePreset').onchange=()=>{$('imageSize').hidden=$('imagePreset').value!=='custom';};
 $('contextPreset').onchange=()=>{$('contextSize').hidden=$('contextPreset').value!=='custom';};
 let imageHistory=[];
 let sessions=new Map();
@@ -246,7 +247,7 @@ function config(search=false){let url;try{url=endpointURL()}catch{throw Error(lo
  url.pathname=path;
  if((!imageMode&&!$('limit').checkValidity())||!$('timeout').checkValidity()||!$('timeout').value)throw Error(localized('请检查输出上限和请求超时的数值。', 'Check the output limit and timeout.'));
  return {address:url.href,model,key,responses,anthropic,miniImage,limit:Number($('limit').value),timeout:Number($('timeout').value)}}
-function lock(value){busy=value;renderThreads();for(const id of ['chat','picture','size','ratio','model','address','key','test','clear','send','search','researchURL','researchModel','researchKey','protocol','limit','timeout','instruction','contextPreset','contextSize','imageRounds','artDirection'])$(id).disabled=value}
+function lock(value){busy=value;renderThreads();for(const id of ['chat','picture','size','ratio','model','address','key','test','clear','send','search','researchURL','researchModel','researchKey','protocol','limit','timeout','instruction','contextPreset','contextSize','imagePreset','imageSize','artDirection'])$(id).disabled=value}
 const markdown=window.markdownit({html:false,breaks:true});
 markdown.disable('image');
 // Some models leave spaces before closing ** or put a Chinese colon directly before ** and a digit after it.
@@ -363,15 +364,19 @@ function deviceCommand(action,signal){
    parent.postMessage({type:'device-write',id,command:action.command,format:action.format},location.origin);
  });
 }
-function chatMessages(question, instruction, outputLimit, trace=[]) {
- const value=$('contextPreset').value==='custom'?$('contextSize').value.trim():$('contextPreset').value;
+const cost=text=>4+Math.ceil((text.length+(text.match(/[^\x00-\x7f]/g)||[]).length*4)/4);
+function tokenWindow(preset,size) {
+ const value=$(preset).value==='custom'?$(size).value.trim():$(preset).value;
  const match=/^(\d+(?:\.\d+)?)\s*([km]?)$/i.exec(value);
  const windowSize=match?Number(match[1])*({k:1000,m:1000000}[match[2].toLowerCase()]||1):NaN;
  if(!Number.isSafeInteger(windowSize)||windowSize<0)throw Error(localized('上下文窗口请输入 token 数，如 128K、1M 或 0。','Enter a token count such as 128K, 1M or 0.'));
+ return windowSize;
+}
+function chatMessages(question, instruction, outputLimit, trace=[]) {
+ const windowSize=tokenWindow('contextPreset','contextSize');
  const current={role:'user',content:question};
  if(!windowSize)return [current,...trace];
  // Approximate tokenization across providers without downloading model vocabularies.
- const cost=text=>4+Math.ceil((text.length+(text.match(/[^\x00-\x7f]/g)||[]).length*4)/4);
  const reserve=outputLimit||Math.min(4096,Math.ceil(windowSize/8));
  let left=windowSize-reserve-cost(question)-trace.reduce((n,m)=>n+cost(m.content),0)-(instruction?cost(instruction):0)-3;
  if(left<0)throw Error(localized('当前消息、系统指令和预留回复已超出上下文窗口，请调整设置或缩短输入。','The current message, instructions and reply allowance exceed the window. Adjust settings or shorten the input.'));
@@ -401,14 +406,29 @@ async function run(test,retryText){if(busy)return;const question=imageMode&&test
    $('stop').hidden=false;
  }
  $('note').textContent=imageMode?localized('正在生成图片…', 'Generating image…'):test?localized('正在测试连接…', 'Testing connection…'):localized('正在等待模型回复…', 'Waiting for model…');
- const promptParts=[];
+ const imageWindow=imageMode&&!test?tokenWindow('imagePreset','imageSize'):0;
+ const fitsImage=text=>(!imageWindow||cost(text)<=imageWindow)&&(!c.miniImage||Array.from(text).length<=1500);
+ let imagePrompt=question;
  if(imageMode&&!test){
-   const rounds=Number($('imageRounds').value);
    const style=$('artDirection').value.trim();
-   if(style)promptParts.push(localized('固定画面要求：', 'Persistent image requirements: ')+style);
-   if(rounds&&imageHistory.length)promptParts.push(localized('此前的画面描述（按时间顺序）：\n', 'Previous descriptions in chronological order:\n')+imageHistory.slice(-rounds).join('\n'));
+   const current=localized('本次画面要求（优先）：','Current image requirements (take priority): ')+question;
+   const prefix=style?localized('固定画面要求：','Persistent image requirements: ')+style+'\n\n':'';
+   imagePrompt=style?prefix+current:question;
+   if(!fitsImage(imagePrompt))throw Error(localized('当前画面要求超过提示词预算，请缩短描述或调整上下文。','Current requirements exceed the prompt budget. Shorten them or adjust the window.'));
+   if(imageWindow&&imageHistory.length){
+     const heading=localized('此前的画面描述：\n','Previous descriptions:\n');
+     let left=imageWindow-cost(prefix+heading+'\n\n'+current);
+     let chars=c.miniImage?1500-Array.from(prefix+heading+'\n\n'+current).length:Infinity;
+     let start=imageHistory.length;
+     while(start>0){
+       const previous=imageHistory[start-1];
+       left-=cost(previous+'\n');chars-=Array.from(previous).length+(start<imageHistory.length?1:0);
+       if(left<0||chars<0)break;
+       start--;
+     }
+     if(start<imageHistory.length)imagePrompt=prefix+heading+imageHistory.slice(start).join('\n')+'\n\n'+current;
+   }
  }
- const imagePrompt=promptParts.length?[...promptParts,localized('本次画面要求（优先）：', 'Current image requirements (take priority): ')+question].join('\n\n'):question;
  const payload=imageMode?{model:c.model,prompt:imagePrompt}:c.responses?{model:c.model,input:messages,store:false}:{model:c.model,messages};
  if(search){payload.tools=[{type:'web_search'}];payload.tool_choice='required';payload.include=['web_search_call.action.sources']}
  if(!imageMode&&!test&&instruction){if(c.responses)payload.instructions=instruction;else payload.messages=[{role:'system',content:instruction},...messages]}
@@ -429,6 +449,12 @@ async function run(test,retryText){if(busy)return;const question=imageMode&&test
    const capacity=c.miniImage?1500:Array.from(imagePrompt+addition).length;
    if(c.miniImage&&Array.from(imagePrompt).length+12>=capacity)throw Error(localized('画面描述过长，请缩短描述，为检索资料预留空间。', 'Shorten the description to leave room for research.'));
    payload.prompt=Array.from(imagePrompt+addition).slice(0,capacity).join('');
+   if(imageWindow&&!fitsImage(payload.prompt)){
+     const extra=Array.from(payload.prompt.slice(imagePrompt.length));
+     let low=0,high=extra.length;
+     while(low<high){const mid=Math.ceil((low+high)/2);if(fitsImage(imagePrompt+extra.slice(0,mid).join('')))low=mid;else high=mid-1;}
+     payload.prompt=imagePrompt+extra.slice(0,low).join('');
+   }
    showSearchSources(pending,result.output);
    pending.insertBefore(pending.lastChild,progress);
    progress.textContent=$('note').textContent=localized('检索完成，正在生成图片…', 'Research complete. Generating image…');
