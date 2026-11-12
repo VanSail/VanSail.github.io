@@ -78,4 +78,17 @@ export const galleryItems = [
       {zh: 'Spaces 应用演示', en: 'Spaces demos'},
     ],
   },
+  {
+    name: 'ROS',
+    src: '/img/projects/ros.webp',
+    url: 'https://github.com/ros2/ros2',
+    zh: 'ROS 是机器人开发的开源框架，提供节点通信、硬件驱动与调试工具。ROS 1 已停止维护，ROS 2 是当前主线。',
+    en: 'ROS is an open-source robotics framework with node messaging, hardware drivers and debugging tools. ROS 1 has reached end of life; ROS 2 is the active line.',
+    features: [
+      {zh: '节点通信', en: 'Node messaging'},
+      {zh: 'ROS 1 与 ROS 2', en: 'ROS 1 & ROS 2'},
+      {zh: '宽松开源许可', en: 'Permissive licenses'},
+      {zh: '仿真与可视化', en: 'Simulation & RViz'},
+    ],
+  },
 ];
