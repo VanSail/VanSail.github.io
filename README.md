@@ -5,7 +5,7 @@
 - [VanSail 官网](https://www.vansail.cn/)
 - 网页工具
     - [串口助手](https://www.vansail.cn/tools/serial/)
-    - [蓝牙探针](https://www.vansail.cn/tools/bluetooth/)
+    - [蓝牙助手](https://www.vansail.cn/tools/bluetooth/)
     - [CAD 看图](https://www.vansail.cn/tools/cad/)
     - [AI 实验室](https://www.vansail.cn/tools/ai/)
 

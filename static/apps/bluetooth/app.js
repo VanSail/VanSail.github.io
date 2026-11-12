@@ -12,7 +12,7 @@ const empty = t(
   'Connect to inspect authorized services and their characteristics.',
 );
 document.documentElement.lang = en ? 'en' : 'zh-CN';
-document.title = el('title').textContent = t('蓝牙探针', 'BLE Explorer');
+document.title = el('title').textContent = t('蓝牙助手', 'Bluetooth Assistant');
 if (en) {
   document.documentElement.lang = 'en';
   const labels = {

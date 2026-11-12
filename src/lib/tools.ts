@@ -13,8 +13,8 @@ export const tools = [
   {
     id: 'bluetooth',
     keywords: '蓝牙 连接 bluetooth ble gatt uuid 服务 特征 characteristic',
-    zh: '蓝牙探针',
-    en: 'BLE Explorer',
+    zh: '蓝牙助手',
+    en: 'Bluetooth Assistant',
     descZh: '收发蓝牙设备指令',
     descEn: 'Send BLE commands',
     accent: '#37baa7',
