@@ -15,7 +15,13 @@ module.exports = function cadAssets({siteDir}) {
       const bundle = await build({
         metafile: true,
         absWorkingDir: siteDir,
-        entryPoints: ['cad/step.js', 'cad/dxf.js', 'cad/dxf-worker.js'],
+        entryPoints: [
+          'cad/step.js',
+          'cad/stl.js',
+          'cad/stl-worker.js',
+          'cad/dxf.js',
+          'cad/dxf-worker.js',
+        ],
         outdir,
         bundle: true,
         splitting: true,

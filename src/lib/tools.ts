@@ -34,11 +34,11 @@ export const tools = [
   {
     id: 'cad',
     keywords:
-      'CAD 看图 STP STEP DXF 模型 图纸 三维 二维 预览 viewer model drawing',
+      'CAD 看图 STP STEP STL DXF 模型 图纸 三维 二维 预览 viewer model drawing',
     zh: 'CAD 看图',
     en: 'CAD Viewer',
-    descZh: '预览 STEP 模型与 DXF 图纸',
-    descEn: 'View STEP and DXF files',
+    descZh: '预览 STEP、STL 模型与 DXF 图纸',
+    descEn: 'View STEP, STL and DXF files',
     accent: '#77cfbc',
     soft: 'rgba(119, 207, 188, 0.45)',
   },

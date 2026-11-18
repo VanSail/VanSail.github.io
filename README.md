@@ -12,7 +12,7 @@
 
 ## 本地开发
 
-要求 Node `>=20 <25`（CI 固定 24，见 `.nvmrc`）与 Yarn 1.22.22。Python 实验室的静态构建还需 Python（CI 使用 3.12），可用环境变量 `PYTHON` 指定解释器路径。首次构建会安装 JupyterLite，示例笔记本位于 `python-lab/notebooks/`。
+要求 Node `>=20 <25`（CI 固定 24，见 `.nvmrc`）与 Yarn 1.22.22。Python 实验室的静态构建还需 Python >=3.10（推荐及 CI 使用 3.12）。构建脚本会自动查找兼容版本，也可用环境变量 `PYTHON` 指定解释器路径。托管虚拟环境位于 `node_modules/.cache/vansail-python/venv-py310`，不会复用旧的 Python 3.9 环境；自定义环境可通过 `VANSAIL_JUPYTER_ENV` 指定。首次构建会安装 JupyterLite，示例笔记本位于 `python-lab/notebooks/`。
 
 ```bash
 yarn install --frozen-lockfile

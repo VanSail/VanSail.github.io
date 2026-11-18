@@ -32,10 +32,10 @@ function clear() {
 async function openFile(file) {
   if (!file) return;
   const type = file.name.split('.').pop().toLowerCase();
-  if (!['dxf', 'stp', 'step'].includes(type)) {
+  if (!['dxf', 'stp', 'step', 'stl'].includes(type)) {
     el('status').textContent = t(
-      '请选择 STP、STEP 或 DXF 文件。',
-      'Choose a STP, STEP or DXF file.',
+      '请选择 STP、STEP、STL 或 DXF 文件。',
+      'Choose a STP, STEP, STL or DXF file.',
     );
     return;
   }
@@ -62,7 +62,9 @@ async function openFile(file) {
     const dxf = type === 'dxf';
     const module = dxf
       ? await import('./generated/dxf.js')
-      : await import('./generated/step.js');
+      : type === 'stl'
+        ? await import('./generated/stl.js')
+        : await import('./generated/step.js');
     current.signal.throwIfAborted();
     const result = await module.preview({
       view,

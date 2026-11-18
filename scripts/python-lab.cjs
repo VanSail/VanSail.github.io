@@ -1,8 +1,39 @@
 // Build the static JupyterLite distribution once for both Docusaurus locales.
-const {execFileSync} = require('node:child_process');
+const {execFileSync, spawnSync} = require('node:child_process');
 const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
+
+// Match the Python floor of the pinned JupyterLite/JupyterLab packages.
+function compatiblePython(executable) {
+  return (
+    spawnSync(
+      executable,
+      ['-c', 'import sys; sys.exit(0 if sys.version_info >= (3, 10) else 1)'],
+      {stdio: 'ignore', timeout: 10000},
+    ).status === 0
+  );
+}
+
+function findPython() {
+  const candidates = process.env.PYTHON
+    ? [process.env.PYTHON]
+    : [
+        'python3.12',
+        'python3',
+        'python',
+        'python3.14',
+        'python3.13',
+        'python3.11',
+        'python3.10',
+      ];
+  const executable = candidates.find(compatiblePython);
+  if (!executable)
+    throw new Error(
+      'Python 实验室需要 Python >=3.10（推荐 3.12）。请安装后通过 PYTHON 指定兼容的解释器路径。 / Python >=3.10 is required; set PYTHON to a compatible executable.',
+    );
+  return executable;
+}
 
 module.exports = function pythonLab({siteDir, i18n}) {
   return {
@@ -25,7 +56,8 @@ module.exports = function pythonLab({siteDir, i18n}) {
       const stamp = path.join(output, '.build-key');
       if (fs.existsSync(stamp) && fs.readFileSync(stamp, 'utf8') === key)
         return;
-      const env = process.env.VANSAIL_JUPYTER_ENV || path.join(cache, 'venv');
+      const env =
+        process.env.VANSAIL_JUPYTER_ENV || path.join(cache, 'venv-py310');
       const bin = path.join(
         env,
         process.platform === 'win32' ? 'Scripts' : 'bin',
@@ -39,12 +71,14 @@ module.exports = function pythonLab({siteDir, i18n}) {
           env: {...process.env, PATH: bin + path.delimiter + process.env.PATH},
         });
       fs.mkdirSync(cache, {recursive: true});
-      if (!fs.existsSync(exe('python')))
-        run(
-          process.env.PYTHON ||
-            (process.platform === 'win32' ? 'python' : 'python3'),
-          ['-m', 'venv', env],
+      if (!fs.existsSync(exe('python'))) run(findPython(), ['-m', 'venv', env]);
+      if (!compatiblePython(exe('python')))
+        throw new Error(
+          `JupyterLite 虚拟环境需要 Python >=3.10：${env}。请将 VANSAIL_JUPYTER_ENV 指向兼容环境，或使用新路径重建。`,
         );
+      console.info(
+        '[python-lab] Installing JupyterLite dependencies (Python >=3.10)...',
+      );
       run(exe('python'), [
         '-m',
         'pip',
